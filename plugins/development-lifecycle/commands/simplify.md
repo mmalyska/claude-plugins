@@ -27,11 +27,14 @@ SCOPE="$ARGUMENTS"
 
 **If $ARGUMENTS is blank:**
 ```bash
-# Use recent changes: staged + unstaged
-git diff --cached --name-only 2>/dev/null | sort -u > /tmp/staged.txt
-git diff HEAD --name-only 2>/dev/null | sort -u > /tmp/unstaged.txt
-cat /tmp/staged.txt /tmp/unstaged.txt 2>/dev/null | sort -u | grep -E '\.(js|ts|tsx|jsx|py|go|rs|rb|java|cs|php)$' > /tmp/changed_files.txt
-SCOPE=$(cat /tmp/changed_files.txt)
+# Use recent changes: try last commit, then staged, then error
+git diff HEAD~1..HEAD --name-only 2>/dev/null | grep -E '\.(js|ts|tsx|jsx|py|go|rs|rb|java|cs|php)$' > /tmp/changed_files.txt
+
+if [ ! -s /tmp/changed_files.txt ]; then
+  git diff --cached --name-only 2>/dev/null | grep -E '\.(js|ts|tsx|jsx|py|go|rs|rb|java|cs|php)$' > /tmp/changed_files.txt
+fi
+
+SCOPE=$(cat /tmp/changed_files.txt 2>/dev/null)
 ```
 
 ### Display Scope
@@ -78,22 +81,24 @@ Store detected command as `$test_command`.
 
 ## Phase 2 — SIMPLIFICATION PASSES
 
-Run the following passes sequentially on scoped files. After each change, run `$test_command`.
+Run the following passes sequentially on scoped files. After each change, run `$test_command` (the test command detected in Phase 1).
 
 ### Pass 1 — Guard Clauses
 
 **Goal**: Flatten deep nesting by inverting conditions and returning early.
 
-**Find**: Functions with nesting depth > 3 (typically if/else chains with 4+ levels)
+**Find**: Functions with nesting depth of 4 or more levels
 
 **Example Transformation**:
 ```javascript
-// BEFORE (3+ levels)
+// BEFORE (4 nested levels)
 function validate(user) {
   if (user) {
     if (user.email) {
       if (isValidEmail(user.email)) {
-        return processUser(user);
+        if (user.active) {
+          return processUser(user);
+        }
       }
     }
   }
@@ -147,9 +152,13 @@ function processOrder(order) {
   sendConfirmationEmail(discounted);
 }
 
-// New helper functions
-function validateOrderItems(order) { /* ... */ }
-function calculateTaxAndShipping(order) { /* ... */ }
+// New helper functions (returns new objects, does not mutate)
+function validateOrderItems(order) {
+  return { ...order, items: order.items.filter(isValid) };
+}
+function calculateTaxAndShipping(order) {
+  return { ...order, tax: order.subtotal * 0.1, shipping: 10 };
+}
 ```
 
 **Per function**:
@@ -168,7 +177,7 @@ function calculateTaxAndShipping(order) { /* ... */ }
 
 **Goal**: Extract repeated code blocks to a shared function.
 
-**Find**: Repeated code blocks (3+ similar lines appearing 2+ times in the same file or adjacent files)
+**Find**: Repeated code blocks (3+ similar lines appearing 2+ times within files already in the review scope ($SCOPE))
 
 **Example Transformation**:
 ```javascript
@@ -295,7 +304,7 @@ if (isUserEligible(user)) {
 After all passes complete, generate:
 
 ```
-## Simplification Summary
+## Simplification summary
 
 ### Changed
 [List all changes made across all passes, one per line]
