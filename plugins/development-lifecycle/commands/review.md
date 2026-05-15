@@ -16,7 +16,7 @@ Run a comprehensive review across five quality dimensions: correctness, readabil
 **If `$ARGUMENTS` is provided:**
 - Check if it names a file or directory
 - If file: include only that file
-- If directory: include all source files in that directory (recursively)
+- If directory: include all source files in that directory (recursively); exclude `node_modules`, `dist`, `.git`, build artifacts, and binary files — include files with source extensions (`.ts`, `.js`, `.py`, `.go`, `.rs`, `.cs`, etc.)
 
 **If `$ARGUMENTS` is empty or unspecified:**
 - Run: `git diff HEAD~1..HEAD` to get files changed in the last commit
@@ -140,7 +140,7 @@ After reviewing all axes, produce a summary with findings grouped by severity an
 ### Format
 
 ```
-## Review Findings
+## Review findings
 
 ### CRITICAL
 - [file:line] [Axis] — Description and why it matters
@@ -183,8 +183,9 @@ After presenting the findings, ask:
 
 For each item the user approves:
 
-1. Read the file at the specified line
-2. Apply the fix based on the review finding
+1. Re-read the current file (line numbers may have shifted from earlier edits)
+2. Locate the relevant code by searching for the context, not relying on the original line number
+3. Apply the fix based on the review finding
 3. Follow the coding style rules in `~/.claude/rules/`
 
 After all fixes are applied:
