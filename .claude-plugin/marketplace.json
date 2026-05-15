@@ -1,0 +1,37 @@
+{
+  "name": "mmalyska-claude-plugins",
+  "owner": {
+    "name": "Michał Małyska",
+    "email": "michal.malyska@docplanner.com"
+  },
+  "metadata": {
+    "description": "Personal Claude Code plugins: git workflows, development lifecycle, .NET/C#, and frontend development"
+  },
+  "plugins": [
+    {
+      "name": "personal-essentials",
+      "source": "./plugins/personal-essentials",
+      "description": "Meta-plugin — installs all mmalyska/claude-plugins at once via /personal-setup"
+    },
+    {
+      "name": "git-workflows",
+      "source": "./plugins/git-workflows",
+      "description": "Git discipline and automation — PR creation, commit conventions, reusable workflow patterns, MegaLinter integration"
+    },
+    {
+      "name": "development-lifecycle",
+      "source": "./plugins/development-lifecycle",
+      "description": "Full development lifecycle — agents, commands, and rules for Spec→Plan→Build→Test→Review→Simplify→Ship"
+    },
+    {
+      "name": "dotnet",
+      "source": "./plugins/dotnet",
+      "description": ".NET/C# development — code reviewer agent, database reviewer, and C# coding rules"
+    },
+    {
+      "name": "frontend",
+      "source": "./plugins/frontend",
+      "description": "React/Next.js and TypeScript frontend — coding style, testing, performance, design quality, and security rules"
+    }
+  ]
+}
