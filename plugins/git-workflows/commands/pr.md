@@ -5,8 +5,6 @@ argument-hint: [base-branch] (default: main)
 
 # Create Pull Request
 
-> Adapted from PRPs-agentic-eng by Wirasm. Part of the PRP workflow series.
-
 **Input**: `$ARGUMENTS` — optional, may contain a base branch name and/or flags (e.g., `--draft`).
 
 **Parse `$ARGUMENTS`**:

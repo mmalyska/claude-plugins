@@ -5,8 +5,6 @@ argument-hint: [target description] (blank = all changes)
 
 # Smart Commit
 
-> Adapted from PRPs-agentic-eng by Wirasm. Part of the PRP workflow series.
-
 **Input**: $ARGUMENTS
 
 ---
