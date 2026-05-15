@@ -30,6 +30,29 @@ Wait for clarification, then proceed to the appropriate mode.
 
 ---
 
+## Phase 1.5 — TEST-RUNNER DETECTION
+
+Before proceeding to the mode-specific phases, detect the test command:
+
+**Check for test scripts/configs:**
+1. If `package.json` exists: look for `test`, `vitest`, or `jest` in scripts
+2. If `pytest.ini`, `setup.cfg`, or `pyproject.toml` exist: use `pytest`
+3. If `go.mod` exists: use `go test ./...`
+4. If `Cargo.toml` exists: use `cargo test`
+
+**If no test command detected:**
+**GATE**: Ask the user:
+
+> What command runs your tests in this project?
+> 
+> Examples: `npm test`, `pytest`, `go test ./...`, `cargo test`
+
+Wait for the user's response. Store the result as `test_command`.
+
+**Throughout this workflow**, use `test_command` in all bash code blocks (previously shown as `test_command`).
+
+---
+
 ## Feature Mode — Phase 2 (RED)
 
 Write test(s) that describe the expected behavior. Place tests in the project's standard test location:
@@ -43,7 +66,7 @@ Write test(s) that describe the expected behavior. Place tests in the project's 
 Write tests specific to the feature's behavior. Run the test suite:
 
 ```bash
-{detected_test_command}
+test_command
 ```
 
 Confirm the tests FAIL:
@@ -52,9 +75,12 @@ Confirm the tests FAIL:
 > 
 > {failure_output}
 
-**GATE**: If tests pass unexpectedly:
+**GATE**: If the tests pass unexpectedly, STOP:
 
-> Tests already pass — feature may already exist. Confirm this is intentional?
+> Tests already pass — this feature may already exist.
+> Confirm whether to: (a) revise the tests, (b) treat this as already implemented, or (c) abandon.
+
+Wait for user response before proceeding.
 
 Otherwise, proceed to Phase 3.
 
@@ -67,7 +93,7 @@ Implement the minimal code to make the tests pass. Do NOT over-engineer or add f
 Run the tests again:
 
 ```bash
-{detected_test_command}
+test_command
 ```
 
 Confirm the tests PASS:
@@ -78,25 +104,31 @@ Confirm the tests PASS:
 
 **GATE**: If tests still fail:
 
-> Tests still failing. Fix implementation or test?
+Fix the implementation to make the test pass. Do NOT modify or delete the failing test.
 
-Clarify with the user, fix, and rerun.
+If the test itself appears incorrect, STOP and ask the user.
 
 ---
 
 ## Feature Mode — Phase 4 (REFACTOR)
 
-Improve clarity and remove duplication while keeping tests green. After each change, run the full test suite:
+Improve clarity and remove duplication while keeping tests green. **Limit refactoring to code written or modified in this feature. Do not refactor pre-existing unrelated code.**
+
+After each change, run the full test suite:
 
 ```bash
-{detected_test_command}
+test_command
 ```
 
 If any test goes red after a refactor, undo the change:
 
 > Regression detected during refactor. Reverting change.
 
-When the suite is green and the code is clean, proceed to coverage check.
+**GATE**: When the test suite is green and the code is clean, confirm with the user:
+
+> Refactoring complete. Suite is green. Proceed to coverage check?
+
+Wait for user confirmation before proceeding.
 
 ---
 
@@ -105,7 +137,7 @@ When the suite is green and the code is clean, proceed to coverage check.
 Write a test that reproduces the bug (it must FAIL). The test should demonstrate the exact failure described:
 
 ```bash
-{detected_test_command}
+test_command
 ```
 
 Confirm the test FAILS with the expected error:
@@ -114,11 +146,11 @@ Confirm the test FAILS with the expected error:
 > 
 > {failure_output}
 
-**GATE**: If the test passes:
+**GATE**: If the test passes, STOP and tell the user:
 
-> Test passes — bug may already be fixed. Verify this with the user?
+> Test passes — bug may already be fixed or the test is incorrect. Confirm whether to continue or revise the test.
 
-Otherwise, proceed to Phase 3.
+Wait for user response before proceeding.
 
 ---
 
@@ -127,7 +159,7 @@ Otherwise, proceed to Phase 3.
 Implement the fix. Run the reproducing test:
 
 ```bash
-{detected_test_command}
+test_command
 ```
 
 Confirm the test PASSES:
@@ -141,7 +173,7 @@ Do NOT modify pre-existing tests to make them pass. Fix the implementation inste
 Then run the full test suite to detect regressions:
 
 ```bash
-{detected_test_command}
+test_command
 ```
 
 Report results:
@@ -157,6 +189,8 @@ Report results:
 > Fix the implementation to restore the test(s).
 
 Once all tests pass, proceed to coverage check.
+
+Bug Fix Mode does not include a REFACTOR phase — proceed directly to Coverage Check.
 
 ---
 
@@ -186,17 +220,17 @@ cargo tarpaulin
 # or: cargo llvm-cov
 ```
 
+**Fallback**: If the coverage tool is not installed or not configured, warn the user and skip the coverage gate, noting that coverage was not verified.
+
 Report coverage:
 
 > Coverage: {coverage_percent}%
 
-**GATE**: If coverage is below 80%, identify untested paths and add tests:
+**GATE**: If coverage is below 80%:
 
-> Coverage below 80%. Identify untested branches and add tests?
+Identify untested branches and add tests for them.
 
-Add tests for uncovered paths, rerun the full suite to confirm green, then complete.
-
-Otherwise, proceed to final status.
+Then re-run the coverage tool and check the percentage again. Only proceed to Final Status when coverage is at or above 80% (or the user explicitly accepts the current level).
 
 ---
 
@@ -204,7 +238,7 @@ Otherwise, proceed to final status.
 
 Print:
 
-> Test suite complete and green. Run `/review` for code quality check, or `/build` for the next task.
+> Suite is green. Run `/review` for code quality, `/simplify` to clean up, or `/build` for the next task.
 
 ---
 
