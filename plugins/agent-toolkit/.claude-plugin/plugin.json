@@ -1,0 +1,12 @@
+{
+  "name": "agent-toolkit",
+  "description": "AI agent patterns and meta-skills — autonomous loops, eval harnesses, context management, safety guards, and Claude Code workspace tooling",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["agents", "eval", "context", "autonomous", "safety", "claude-code", "meta"]
+}

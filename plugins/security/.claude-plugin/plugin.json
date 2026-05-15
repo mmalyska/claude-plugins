@@ -1,0 +1,12 @@
+{
+  "name": "security",
+  "description": "Security skills — comprehensive security review checklists and Claude Code configuration security scanning",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["security", "owasp", "auth", "injection", "secrets", "agentshield"]
+}

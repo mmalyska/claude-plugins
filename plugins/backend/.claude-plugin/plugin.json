@@ -1,0 +1,12 @@
+{
+  "name": "backend",
+  "description": "Backend engineering — API design, Node.js/NestJS patterns, hexagonal architecture, PostgreSQL, database migrations, and MCP server development",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["nodejs", "nestjs", "api", "postgresql", "backend", "hexagonal", "mcp"]
+}

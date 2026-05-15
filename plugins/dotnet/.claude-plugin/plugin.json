@@ -1,6 +1,6 @@
 {
   "name": "dotnet",
-  "description": ".NET/C# development — code reviewer agent, database reviewer, and C# coding rules",
+  "description": ".NET/C# development — C# code reviewer agent, testing patterns, and coding rules",
   "version": "1.0.0",
   "author": {
     "name": "Michał Małyska"

@@ -1,0 +1,12 @@
+{
+  "name": "devops",
+  "description": "DevOps and infrastructure — CI/CD pipelines, Docker, deployment workflows, and production readiness",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["docker", "ci-cd", "deployment", "devops", "infrastructure", "containers"]
+}
