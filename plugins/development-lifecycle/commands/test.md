@@ -49,7 +49,7 @@ Before proceeding to the mode-specific phases, detect the test command:
 
 Wait for the user's response. Store the result as `test_command`.
 
-**Throughout this workflow**, use `test_command` in all bash code blocks (previously shown as `test_command`).
+**Throughout this workflow**, use `test_command` in all bash code blocks below.
 
 ---
 
