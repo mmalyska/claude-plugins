@@ -1,0 +1,12 @@
+{
+  "name": "personal-essentials",
+  "description": "Meta-plugin — installs all mmalyska/claude-plugins at once via /personal-setup",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["meta", "setup", "bootstrap"]
+}

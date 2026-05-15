@@ -1,0 +1,12 @@
+{
+  "name": "development-lifecycle",
+  "description": "Full development lifecycle — agents, commands, and rules for Spec→Plan→Build→Test→Review→Simplify→Ship",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["tdd", "planning", "code-review", "agents", "workflow", "lifecycle"]
+}

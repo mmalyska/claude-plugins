@@ -1,0 +1,12 @@
+{
+  "name": "renovate",
+  "description": "Renovate config authoring — extend mmalyska/renovate-config presets, custom regex managers, datasource-specific automerge",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["renovate", "dependencies", "automation", "docker", "helm", "terraform"]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "android",
+  "description": "Android mobile development — agents, rules, and patterns (coming soon)",
+  "version": "0.1.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["android", "kotlin", "mobile"]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "dotnet",
+  "description": ".NET/C# development — code reviewer agent, database reviewer, and C# coding rules",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["dotnet", "csharp", "backend", "xunit", "asp-net"]
+}

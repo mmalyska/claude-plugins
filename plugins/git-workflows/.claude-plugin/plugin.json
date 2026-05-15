@@ -1,0 +1,12 @@
+{
+  "name": "git-workflows",
+  "description": "Git discipline and automation — PR creation, commit conventions, reusable workflow patterns, MegaLinter integration",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["git", "github", "pull-request", "commit", "workflows", "megalinter"]
+}

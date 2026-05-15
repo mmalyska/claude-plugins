@@ -1,0 +1,12 @@
+{
+  "name": "frontend",
+  "description": "React/Next.js and TypeScript frontend — coding style, testing, performance, design quality, and security rules",
+  "version": "1.0.0",
+  "author": {
+    "name": "Michał Małyska"
+  },
+  "homepage": "https://github.com/mmalyska/claude-plugins",
+  "repository": "https://github.com/mmalyska/claude-plugins",
+  "license": "MIT",
+  "keywords": ["react", "nextjs", "typescript", "frontend", "web", "css"]
+}
