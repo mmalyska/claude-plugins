@@ -25,6 +25,24 @@ Full development lifecycle agents, commands, and rules for Claude Code.
 - `/skill-create` — Create a new skill
 - `/learn-eval` — Evaluate and learn from session
 
+## Lifecycle Commands
+
+A structured 7-stage workflow for feature development:
+
+```
+/spec → /plan → loop(/build → /test → /review → /simplify) → /ship
+```
+
+| Command | Stage | Description |
+|---------|-------|-------------|
+| `/spec` | 1 | Define the problem — interactive spec with verification gate |
+| `/plan` | 2 | Break work into tasks (existing command) |
+| `/build` | 3 | Implement one task — TDD red/green cycle, commit |
+| `/test` | 3 | TDD workflow — red/green for features, Prove-It for bugs |
+| `/review` | 4 | Five-axis code review — correctness, readability, arch, security, perf |
+| `/simplify` | 5 | Reduce complexity — guard clauses, extract helpers, name constants |
+| `/ship` | 6 | Delivery gate — parallel review, GO/NO-GO, PR creation |
+
 ## Rules
 
 Common coding standards loaded into every session: coding style, testing, security, performance, hooks, patterns, code review, agent orchestration.
