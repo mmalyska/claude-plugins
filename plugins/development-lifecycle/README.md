@@ -37,11 +37,11 @@ A structured 7-stage workflow for feature development:
 |---------|-------|-------------|
 | `/spec` | 1 | Define the problem — interactive spec with verification gate |
 | `/plan` | 2 | Break work into tasks (existing command) |
-| `/build` | 3 | Implement one task — TDD red/green cycle, commit |
-| `/test` | 3 | TDD workflow — red/green for features, Prove-It for bugs |
-| `/review` | 4 | Five-axis code review — correctness, readability, arch, security, perf |
-| `/simplify` | 5 | Reduce complexity — guard clauses, extract helpers, name constants |
-| `/ship` | 6 | Delivery gate — parallel review, GO/NO-GO, PR creation |
+| `/build` | loop | Implement one task — TDD red/green cycle, commit |
+| `/test` | loop | TDD workflow — red/green for features, Prove-It for bugs |
+| `/review` | loop | Five-axis code review — correctness, readability, arch, security, perf |
+| `/simplify` | loop | Reduce complexity — guard clauses, extract helpers, name constants |
+| `/ship` | 7 | Delivery gate — parallel review, GO/NO-GO, PR creation |
 
 ## Rules
 

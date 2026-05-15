@@ -76,6 +76,8 @@ Wait for explicit confirmation.
 
 Dispatch three independent review passes. Each review focuses on a specific dimension and reports only [CRITICAL] and [HIGH] issues.
 
+**Run all three reviews simultaneously as parallel sub-tasks, then collect all findings before proceeding to Phase 3.**
+
 ### Review 1 — Code Quality and Correctness
 
 Run the code quality review:
@@ -197,10 +199,27 @@ If the user chooses **Proceed** (and decision is GO) or **Override** (and decisi
 
 ### Ensure All Changes Are Committed
 
-Run:
+Run `git status` to check the current state:
 
 ```bash
-git add -A
+git status
+```
+
+Show the user what will be staged:
+
+> Current staged changes:
+> [output of git status]
+
+**GATE**: Check for untracked files. If any exist, ask the user:
+
+> Include untracked files in this commit? (yes/no)
+
+If **yes**: run `git add -A` to stage all files (tracked and untracked).
+If **no**: run `git add -u` to stage only tracked files.
+
+Then run:
+
+```bash
 git status
 ```
 
@@ -208,13 +227,6 @@ Show the user what will be committed:
 
 > Files to commit:
 > [output of git status]
-
-**GATE**: If there are uncommitted changes, ask:
-
-> Include untracked files in this commit? (yes/no)
-
-If **no**: do not add them.
-If **yes**: they are already included from `git add -A`.
 
 ### Derive Commit Message
 
