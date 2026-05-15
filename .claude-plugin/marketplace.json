@@ -1,11 +1,10 @@
 {
   "name": "mmalyska-claude-plugins",
   "owner": {
-    "name": "Michał Małyska",
-    "email": "michal.malyska@docplanner.com"
+    "name": "Michał Małyska"
   },
   "metadata": {
-    "description": "Personal Claude Code plugins: git workflows, development lifecycle, .NET/C#, and frontend development"
+    "description": "Personal Claude Code plugins: git workflows, development lifecycle, .NET/C#, frontend, renovate, devcontainer, and android"
   },
   "plugins": [
     {
@@ -32,6 +31,21 @@
       "name": "frontend",
       "source": "./plugins/frontend",
       "description": "React/Next.js and TypeScript frontend — coding style, testing, performance, design quality, and security rules"
+    },
+    {
+      "name": "renovate",
+      "source": "./plugins/renovate",
+      "description": "Renovate config authoring — extend mmalyska/renovate-config presets, custom regex managers, datasource-specific automerge"
+    },
+    {
+      "name": "devcontainer",
+      "source": "./plugins/devcontainer",
+      "description": "Dev container setup — custom GHCR image pipelines, secrets injection, Renovate integration for digest pinning"
+    },
+    {
+      "name": "android",
+      "source": "./plugins/android",
+      "description": "Android mobile development — agents, rules, and patterns (coming soon)"
     }
   ]
 }
