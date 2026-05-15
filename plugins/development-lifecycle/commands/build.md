@@ -247,14 +247,9 @@ Show the user:
 
 ## Phase 8 — FINAL STATUS
 
-Print final status:
+Print:
 
-> Task complete.
-> 
-> - Run `/build` again for the next task
-> - Run `/test` to run the full test suite
-> - Run `/review` to review the code quality
-> - Run `/simplify` to clean up after multiple tasks
+> Task complete. Run `/build` again for the next task, or `/test` to run the full suite.
 
 Do NOT auto-continue to the next task. Wait for the user to run `/build` again.
 
