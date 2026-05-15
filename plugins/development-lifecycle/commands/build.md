@@ -40,7 +40,7 @@ Show the task to the user:
 
 **GATE**: If no pending tasks remain, stop with:
 
-> All tasks complete. Run `/ship` to finish the development cycle.
+> All tasks complete. Run `/ship` to finish.
 
 Otherwise, proceed to Phase 2.
 
@@ -53,6 +53,8 @@ Read each file listed in the task's "Files:" section. For each file:
 - Note the language/framework (TypeScript, Python, Go, Rust, etc.)
 - Check the project structure for existing patterns (test framework, directory layout, naming conventions)
 
+**Fallback if no Files section**: If the task has no "Files:" section or it is empty, search the codebase for files likely related to the task name and acceptance criteria. Show the candidates to the user and ask for confirmation before proceeding.
+
 Detect the test framework:
 - JavaScript/TypeScript: Check `package.json` for test script, look for `jest`, `vitest`, `mocha`, `playwright`
 - Python: Look for `pytest.ini`, `setup.cfg`, or `pyproject.toml`
@@ -61,6 +63,14 @@ Detect the test framework:
 - Other: Ask the user: "What test framework does this project use?"
 
 Store the test command for later (e.g. `npm test`, `pytest`, `go test ./...`, `cargo test`).
+
+**Regression Baseline**: Run the full test suite once and record which tests are currently passing. Store this as the baseline. Phase 5 will compare against this baseline to detect regressions.
+
+```
+{test_command}
+```
+
+> Baseline recorded: {pass_count} tests passing
 
 ---
 
@@ -71,6 +81,8 @@ Write a test that validates the task's acceptance criteria. Place it in the appr
 - For Python: Same directory or `tests/` folder with `test_` prefix
 - For Go: `*_test.go` file in the same package
 - For Rust: `#[cfg(test)]` module or `tests/` directory
+
+**Match existing conventions**: If the project has existing tests, match the directory and naming convention of the nearest existing test file instead of applying the default placement rules above.
 
 The test must:
 - Be specific to the acceptance criteria
@@ -89,11 +101,11 @@ Confirm the failure:
 > 
 > {failure_output}
 
-**GATE**: If the test passes unexpectedly, stop:
+**Verify the failure is semantic**: Confirm the test failure is due to missing behavior (the feature does not exist yet), not a compilation error, import error, or test setup error. If it's a setup error (missing imports, broken test framework config), fix the import or setup first before considering RED complete.
 
-> The test already passes. The behavior may exist. Verify and either:
-> - Mark the task complete if already done, or
-> - Revise the test to validate new behavior
+**GATE**: If the test passes unexpectedly, skip to Phase 5:
+
+> Test already passes — behavior exists. Skipping to Phase 5.
 
 Otherwise, proceed to Phase 4.
 
@@ -128,7 +140,7 @@ Wait for the user to clarify, then fix and rerun.
 
 ## Phase 5 — REGRESSION CHECK
 
-Run the full test suite to ensure no pre-existing tests broke:
+Run the full test suite to ensure no pre-existing tests broke. Compare against the baseline from Phase 2:
 
 ```
 {test_command}
@@ -140,13 +152,15 @@ Report results:
 > - {pass_count} tests passing
 > - {fail_count} tests failing
 
-**GATE**: If any test fails that was passing before, stop:
+**GATE**: If any test fails that was passing before (regression), stop:
 
 > Regression detected: {failing_test_names}
 > 
-> Fix the broken test(s) before continuing.
+> Fix the implementation to restore the test(s).
 
-Fix the test or implementation, rerun the full suite, then proceed to Phase 6 only when all tests pass.
+**Do NOT modify existing tests**: Do NOT modify or delete a previously-passing test to clear the regression gate. Fix the implementation instead. If the existing test appears wrong, stop and ask the user before proceeding.
+
+Fix the implementation, rerun the full suite, then proceed to Phase 6 only when all tests pass.
 
 ---
 
@@ -154,7 +168,7 @@ Fix the test or implementation, rerun the full suite, then proceed to Phase 6 on
 
 Detect the build command from the project:
 - Node.js/TypeScript: `npm run build` or `pnpm build` or `yarn build`
-- Python: `python setup.py build` or project-specific command
+- Python: `python -m build` (or project-specific command; if `pyproject.toml` has no `[build-system]` section, skip the build check for Python projects)
 - Go: `go build ./...`
 - Rust: `cargo build`
 - Other: Ask the user: "What is the build command?"
@@ -183,43 +197,6 @@ Fix the code, rerun the full test suite (Phase 5), then rerun build. Once the bu
 
 ## Phase 7 — COMMIT
 
-Stage only the files changed for this task:
-
-```bash
-git add {files_changed_for_this_task}
-```
-
-Also update the plan file to mark the task complete:
-
-```bash
-git add {plan_file_path}
-```
-
-Commit with a descriptive message following conventional commits format:
-
-```bash
-git commit -m "feat: {task_name_in_lower_case}"
-```
-
-Example commit message:
-```
-feat: add user authentication with jwt tokens
-```
-
-Show the user:
-
-> Committed:
-> 
-> {git_commit_output}
->
-> Files staged: {list_of_files}
-> 
-> Message: feat: {task_name}
-
----
-
-## Phase 8 — MARK COMPLETE
-
 Update the plan file to mark the task as complete. Find the task line and change:
 
 ```
@@ -232,11 +209,43 @@ to:
 - [x] Task Name
 ```
 
-Ensure this change is included in the commit from Phase 7 (re-run git commit if needed).
+Stage the task files and the updated plan file:
+
+```bash
+git add {files_changed_for_this_task} {plan_file_path}
+```
+
+Commit with a descriptive message following conventional commits format. Infer the type from the task intent:
+- `fix:` for bug fixes
+- `test:` for test-only tasks
+- `refactor:` for cleanup/refactoring
+- `feat:` (default) for new behavior
+
+```bash
+git commit -m "{type}: {task_name_in_lower_case}"
+```
+
+Example commit messages:
+```
+feat: add user authentication with jwt tokens
+fix: correct off-by-one error in pagination
+test: add integration tests for user service
+refactor: extract validation logic to utility
+```
+
+Show the user:
+
+> Committed:
+> 
+> {git_commit_output}
+>
+> Files staged: {list_of_files}
+> 
+> Message: {type}: {task_name}
 
 ---
 
-## Loop
+## Phase 8 — FINAL STATUS
 
 Print final status:
 
