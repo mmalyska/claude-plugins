@@ -4,7 +4,7 @@
     "name": "Michał Małyska"
   },
   "metadata": {
-    "description": "Personal Claude Code plugins: git workflows, development lifecycle, .NET/C#, frontend, renovate, devcontainer, and android"
+    "description": "Personal Claude Code plugins: development lifecycle, git workflows, .NET/C#, frontend, backend, devops, security, agent toolkit, renovate, devcontainer, and android"
   },
   "plugins": [
     {
@@ -25,12 +25,32 @@
     {
       "name": "dotnet",
       "source": "./plugins/dotnet",
-      "description": ".NET/C# development — code reviewer agent, database reviewer, and C# coding rules"
+      "description": ".NET/C# development — C# code reviewer agent, testing patterns, and coding rules"
     },
     {
       "name": "frontend",
       "source": "./plugins/frontend",
       "description": "React/Next.js and TypeScript frontend — coding style, testing, performance, design quality, and security rules"
+    },
+    {
+      "name": "backend",
+      "source": "./plugins/backend",
+      "description": "Backend engineering — API design, Node.js/NestJS patterns, hexagonal architecture, PostgreSQL, database migrations, and MCP server development"
+    },
+    {
+      "name": "devops",
+      "source": "./plugins/devops",
+      "description": "DevOps and infrastructure — CI/CD pipelines, Docker, deployment workflows, and production readiness"
+    },
+    {
+      "name": "security",
+      "source": "./plugins/security",
+      "description": "Security skills — comprehensive security review checklists and Claude Code configuration security scanning"
+    },
+    {
+      "name": "agent-toolkit",
+      "source": "./plugins/agent-toolkit",
+      "description": "AI agent patterns and meta-skills — autonomous loops, eval harnesses, context management, safety guards, and Claude Code workspace tooling"
     },
     {
       "name": "renovate",
