@@ -1,47 +1,63 @@
 # development-lifecycle
 
-Full development lifecycle agents, commands, and rules for Claude Code.
+Extension to [superpowers](https://github.com/obra/superpowers) — agents, commands, and rules for Claude Code. Relies on superpowers for the core workflow; adds project-specific agents, quality commands, and coding standards.
+
+## Lifecycle
+
+Skill-driven (superpowers handles the flow; these commands are entry points and quality gates):
+
+```text
+/spec → superpowers execution → /ship
+```
+
+| Command       | Stage                   | Delegates to                                                               |
+|---------------|-------------------------|----------------------------------------------------------------------------|
+| `/spec`       | Define the problem      | `superpowers:brainstorming` → `superpowers:writing-plans`                  |
+| _(execution)_ | Implement task-by-task  | `superpowers:subagent-driven-development` or `superpowers:executing-plans` |
+| `/ship`       | Quality gate + delivery | `superpowers:finishing-a-development-branch`                               |
+
+## Quality Commands
+
+Standalone commands that add value on top of the superpowers flow:
+
+| Command            | Description                                                                           |
+|--------------------|---------------------------------------------------------------------------------------|
+| `/review`          | Five-axis code review — correctness, readability, architecture, security, performance |
+| `/test fix: {bug}` | Bug fix TDD — Prove-It pattern (write reproducing test, fix, coverage check)          |
+| `/code-review`     | GitHub PR review via `gh` — posts inline comments and approve/request-changes         |
+| `/aside`           | Answer a quick side question without losing current task context                      |
+
+## Utility Commands
+
+| Command            | Description                                                   |
+|--------------------|---------------------------------------------------------------|
+| `/learn-eval`      | Extract reusable patterns from the session and save as skills |
+| `/skill-create`    | Analyze git history to generate SKILL.md files                |
+| `/update-docs`     | Sync documentation with codebase                              |
+| `/update-codemaps` | Generate token-lean architecture docs in `docs/CODEMAPS/`     |
 
 ## Agents
 
-- `architect` — System design and architectural decisions
-- `build-error-resolver` — Fix build/type errors
-- `code-reviewer` — Code quality, security, maintainability
-- `doc-updater` — Update codemaps and documentation
-- `docs-lookup` — Fetch current library docs via Context7
-- `planner` — Implementation planning for complex features
-- `tdd-guide` — Test-driven development enforcement
+Specialized subagents invoked by commands and skills:
 
-## Commands
+| Agent                  | Description                                  |
+|------------------------|----------------------------------------------|
+| `architect`            | System design and architectural decisions    |
+| `build-error-resolver` | Fix build/type errors with minimal diffs     |
+| `code-reviewer`        | Code quality, security, maintainability      |
+| `doc-updater`          | Update codemaps and documentation            |
+| `docs-lookup`          | Fetch current library docs via Context7      |
+| `tdd-guide`            | Test-driven development enforcement          |
 
-- `/prp-prd` — Interactive PRD generator
-- `/prp-plan` — Create feature implementation plan
-- `/prp-implement` — Execute an implementation plan
-- `/code-review` — Review local changes or a GitHub PR
-- `/plan` — Restate requirements and create implementation plan
-- `/aside` — Simplify and refine recently changed code
-- `/update-docs` — Update project documentation
-- `/update-codemaps` — Update CODEMAPS files
-- `/skill-create` — Create a new skill
-- `/learn-eval` — Evaluate and learn from session
+## Skills
 
-## Lifecycle Commands
-
-A structured 7-stage workflow for feature development:
-
-```
-/spec → /plan → loop(/build → /test → /review → /simplify) → /ship
-```
-
-| Command | Stage | Description |
-|---------|-------|-------------|
-| `/spec` | 1 | Define the problem — interactive spec with verification gate |
-| `/plan` | 2 | Break work into tasks (existing command) |
-| `/build` | loop | Implement one task — TDD red/green cycle, commit |
-| `/test` | loop | TDD workflow — red/green for features, Prove-It for bugs |
-| `/review` | loop | Five-axis code review — correctness, readability, arch, security, perf |
-| `/simplify` | loop | Reduce complexity — guard clauses, extract helpers, name constants |
-| `/ship` | 7 | Delivery gate — parallel review, GO/NO-GO, PR creation |
+| Skill                           | Description                                                                   |
+|---------------------------------|-------------------------------------------------------------------------------|
+| `ai-regression-testing`         | AI-specific regression test patterns                                          |
+| `architecture-decision-records` | Write and maintain ADRs                                                       |
+| `claude-devfleet`               | Multi-agent fleet coordination                                                |
+| `e2e-testing`                   | End-to-end testing patterns                                                   |
+| `simplify`                      | Auto-applied after review or before ship — guard clauses, helpers, constants  |
 
 ## Rules
 
