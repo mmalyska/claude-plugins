@@ -9,7 +9,7 @@ argument-hint: [feature idea, or blank to start with questions]
 
 ---
 
-Invoke the `development-lifecycle:brainstorming` skill to run the full spec process.
+Invoke the `superpowers:brainstorming` skill to run the full spec process.
 
 **Output format override:** When the brainstorming skill reaches the "Write design doc" step, use the spec template below instead of a freeform design doc.
 
@@ -63,6 +63,6 @@ If a brainstorming question has no answer, record it as `- [ ] Still unclear: �
 
 ## Lifecycle Position
 
-```
-/spec → /plan → loop(/build → /test → /review → /simplify) → /ship
+```text
+/spec → superpowers execution → /ship
 ```

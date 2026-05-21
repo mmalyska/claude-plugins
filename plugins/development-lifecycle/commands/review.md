@@ -157,7 +157,7 @@ After reviewing all axes, produce a summary with findings grouped by severity an
 
 **If no findings exist:**
 
-> No issues found. Code looks good. Run `/simplify` to check for unnecessary complexity.
+> No issues found. Code looks good.
 
 ### Ordering Within Each Severity
 
@@ -175,7 +175,7 @@ After presenting the findings, ask:
 >
 > - **Fix all CRITICAL/HIGH** — I'll apply the recommended fixes
 > - **Fix specific items** — List the line numbers or item numbers (e.g., "1, 3, 5")
-> - **Skip** — Proceed to `/simplify` without making changes
+> - **Skip** — Proceed without making changes
 
 **GATE**: Wait for the user's explicit decision. Do not proceed until they respond.
 
@@ -207,6 +207,8 @@ After all fixes are applied:
 
 ## Lifecycle Position
 
-/spec → /plan → loop(/build → /test → /review → /simplify) → /ship
+```text
+/spec → superpowers execution → /review → /ship
+```
 
-After review, run `/simplify` to remove unnecessary complexity, or return to `/build` for the next task.
+After review, fix findings and run `/ship` when ready.
