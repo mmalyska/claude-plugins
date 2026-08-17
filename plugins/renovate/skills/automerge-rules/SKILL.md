@@ -139,6 +139,27 @@ Use `matchPackageNames` to limit to specific packages:
 
 ---
 
+## `automergeSchedule` requires `platformAutomerge: false`
+
+`platformAutomerge` defaults to `true`. When enabled, Renovate hands the PR to the platform's native auto-merge (e.g. GitHub's "Enable auto-merge") **at PR-creation time**, and the platform merges it as soon as CI passes — with no awareness of `automergeSchedule`. The schedule is silently ignored; PRs merge any hour, any day.
+
+If a packageRule needs `automergeSchedule` to actually restrict merge timing, you must also set `platformAutomerge: false` so Renovate performs the merge itself (Renovate re-checks the schedule on each run before merging):
+
+```json5
+{
+  "description": "Weekly-only digest updates (e.g. a noisy upstream `:main` tag)",
+  "matchDatasources": ["docker"],
+  "matchPackageNames": ["some/noisy-image"],
+  "matchUpdateTypes": ["digest"],
+  "automergeSchedule": ["before 5am on monday"],
+  "platformAutomerge": false
+}
+```
+
+Symptom if you miss this: the rule looks correct, but PRs keep merging outside the schedule window — because it's GitHub merging them, not Renovate. Confirmed in home-ops: a first attempt at scheduling hermes-agent digest automerge (added `automergeSchedule` alone) kept merging multiple times a day for over a month before `platformAutomerge: false` was added.
+
+---
+
 ## Safety: `minimumReleaseAge`
 
 Add a minimum age before automerging to avoid immediately pulling in a botched release:
