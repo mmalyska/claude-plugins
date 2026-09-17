@@ -1,7 +1,7 @@
 {
   "name": "git-workflows",
   "description": "Git discipline and automation — enforces worktree-first development with a pre-write hook, plus PR creation and commit conventions",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": {
     "name": "Michał Małyska"
   },

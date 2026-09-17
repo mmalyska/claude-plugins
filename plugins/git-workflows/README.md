@@ -8,11 +8,12 @@ Git discipline and automation for Claude Code.
 
 The hook enforces one rule: **the primary checkout is never a workspace.** It stays on the default branch with a clean tree, and work happens in `.worktrees/<branch>`.
 
-- Writing to the primary checkout **asks you first**, naming the repo and branch.
+- Writing to the primary checkout **asks you first** in `default` and `plan` mode, naming the repo and branch. In `auto`, `acceptEdits`, `dontAsk` and `bypassPermissions` it **denies** instead — those modes answer their own prompts, so an `ask` there is granted silently and enforces nothing. An unrecognised mode falls back to `ask`.
 - A **subagent** writing to the primary checkout is **denied** outright, and told to re-dispatch with `isolation: "worktree"`.
-- Writes inside a worktree, inside `.git/`, inside a submodule, or outside any repo are untouched. So are read-only commands — `git status`, `grep`, and test runs never pay a cost.
-- On `Bash` it only intercepts unambiguous git mutations: `commit`, `merge`, `rebase`, `cherry-pick`, `revert`, `apply`, `stash pop`/`apply`, and `checkout`/`switch` to a non-default branch. `git pull`, `git fetch`, and `git worktree add` are deliberately left alone — they are how the primary checkout stays current and how worktrees get made.
-- It does **not** see shell writes (`sed -i`, heredocs, `>` redirection). The `worktree-workflow.md` rule covers those; the hook is a backstop, not a fence.
+- Writes inside a worktree, inside `.git/`, inside a submodule, or outside any repo are untouched. So are read-only commands — `git status`, `grep`, `sed -n`, and test runs never pay a cost.
+- On `Bash` it intercepts two things. Unambiguous git mutations: `commit`, `merge`, `rebase`, `cherry-pick`, `revert`, `apply`, `stash pop`/`apply`, and `checkout`/`switch` to a non-default branch. `git pull`, `git fetch`, and `git worktree add` are deliberately left alone — they are how the primary checkout stays current and how worktrees get made. And shell writes: `>`, `>>`, `tee`, `sed -i`, heredoc redirects, `cp`, `mv`, `rm`, `mkdir` and friends.
+- Shell writes are matched **by target, not by cwd**. `echo x > /tmp/f` from the primary checkout is allowed; `echo x > /abs/path/into/primary` from a worktree is caught. A `cd` earlier in the command line moves the base that relative paths resolve against.
+- It still cannot see writes from inside a program — `python -c "open('f','w')"` and the like. The `worktree-workflow.md` rule covers those; the hook is a backstop, not a fence.
 - It **fails open**. If `jq` is missing or anything errors, the write proceeds. A broken guard must never brick every write on your machine — but it does mean no `jq` means no enforcement.
 
 To work in the primary checkout deliberately, start the session with `CLAUDE_ALLOW_MAIN_EDITS=1`.
@@ -41,14 +42,19 @@ The hook uses only shell builtins, `git`, and `jq`. It deliberately avoids `sed`
 
 ## Rules
 
-- `worktree-workflow.md` — The invariant, branch naming, subagent policy
+**Claude Code has no plugin-rules loader.** The plugin manifest schema accepts `commands`, `agents`, `skills`, `hooks`, `workflows`, `themes`, `outputStyles`, `monitors` and `mcpServers` — there is no `rules` key and no `rules/` auto-scan (verified against 2.1.274). A `rules/` directory in a plugin is inert on its own: readable on demand, never loaded.
+
+So `worktree-workflow.md` is injected deliberately, by a `SessionStart` hook. The other two are reference documents that the commands and skills point at; they reach the model only when something reads them.
+
+- `worktree-workflow.md` — The invariant, branch naming, subagent policy. **Injected at session start** whenever the session is inside a git repo.
 - `git-workflow.md` — Commit message format, PR workflow
 - `development-workflow.md` — Full feature pipeline (research → worktree → plan → TDD → review → commit)
 
 ## Hooks
 
-- `hooks/guard-main-checkout.sh` — The guard described above
-- `hooks/test-guard.sh` — Its tests. Run it directly; no framework needed.
+- `hooks/guard-main-checkout.sh` — The guard described above (`PreToolUse`)
+- `hooks/inject-worktree-rule.sh` — Puts `worktree-workflow.md` in context (`SessionStart`). Silent outside a git repo, so it costs nothing in sessions where the rule cannot apply.
+- `hooks/test-guard.sh` — The guard's tests. Run it directly; no framework needed.
 - `hooks/test-linux-container.sh` — Runs the same suite on Linux in Docker:
 
   ```sh
