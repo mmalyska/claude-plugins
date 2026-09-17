@@ -60,6 +60,51 @@ classify_target() {
   printf 'primary'
 }
 
+default_branch() {
+  d=$1
+  b=$(git -C "$d" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
+  if [ -n "$b" ]; then printf '%s' "${b#origin/}"; return; fi
+  if git -C "$d" show-ref --verify --quiet refs/heads/main 2>/dev/null; then printf 'main'; return; fi
+  if git -C "$d" show-ref --verify --quiet refs/heads/master 2>/dev/null; then printf 'master'; return; fi
+  printf 'main'
+}
+
+# 0 = mutating, 1 = not.
+# Pure shell: no sed/awk/grep, because BSD and GNU disagree on all three.
+is_mutating_command() {
+  cmd=$1 dir=$2
+  case "$cmd" in
+    *"git commit"*|*"git merge"*|*"git rebase"*|*"git cherry-pick"*|\
+    *"git revert"*|*"git apply"*|*"git stash pop"*|*"git stash apply"*) return 0 ;;
+  esac
+  case "$cmd" in
+    *"git checkout "*|*"git switch "*) ;;
+    *) return 1 ;;
+  esac
+
+  # First non-flag word after `checkout`/`switch` is the branch.
+  # set -f stops the unquoted expansion from globbing on a command like
+  # `git switch main && git add *.md`.
+  set -f
+  # shellcheck disable=SC2086
+  set -- $cmd
+  set +f
+  target='' seen=0
+  for w in "$@"; do
+    if [ "$seen" = "1" ]; then
+      case "$w" in
+        -*) continue ;;
+        *)  target=$w; break ;;
+      esac
+    fi
+    case "$w" in checkout|switch) seen=1 ;; esac
+  done
+
+  [ -n "$target" ] || return 1
+  [ "$target" = "$(default_branch "$dir")" ] && return 1
+  return 0
+}
+
 [ "${CLAUDE_ALLOW_MAIN_EDITS:-}" = "1" ] && exit 0
 
 TOOL=$(field '.tool_name')
@@ -68,7 +113,12 @@ FILE_PATH=$(field '.tool_input.file_path')
 
 case "$TOOL" in
   Edit|Write|NotebookEdit) TARGET=$FILE_PATH ;;
-  *)                       exit 0 ;;
+  Bash)
+    COMMAND=$(field '.tool_input.command')
+    BASH_DIR=$(nearest_dir "$CWD")
+    is_mutating_command "$COMMAND" "$BASH_DIR" || exit 0
+    TARGET=$CWD ;;
+  *) exit 0 ;;
 esac
 
 [ -n "$TARGET" ] || exit 0
