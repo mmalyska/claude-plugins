@@ -64,6 +64,20 @@ run_guard() {
   GUARD_RC=$?
 }
 
+# run_guard_sub <tool> <file_path-or-empty> <command-or-empty> <cwd>
+# Same, but shaped like a subagent-originated call. Verified 2026-09-17: a
+# subagent carries a populated agent_id/agent_type, while session_id and
+# transcript_path are IDENTICAL to the parent's -- so agent_id is the only
+# reliable discriminator.
+run_guard_sub() {
+  GUARD_OUT=$(jq -n --arg t "$1" --arg f "$2" --arg c "$3" --arg d "$4" \
+     '{tool_name:$t, cwd:$d, agent_id:"a445e9a59c7959b42", agent_type:"general-purpose",
+       tool_input:({} + (if $f=="" then {} else {file_path:$f} end)
+                      + (if $c=="" then {} else {command:$c} end))}' \
+  | "$GUARD" 2>/dev/null)
+  GUARD_RC=$?
+}
+
 # expect <description> <expected: allow|ask|deny>
 # Reads GUARD_OUT/GUARD_RC set by the preceding run_guard call.
 expect() {
@@ -129,6 +143,21 @@ run_guard Bash "" "git checkout --quiet main" "$FIXTURE/primary"
 expect "git checkout with flags before default branch is allowed" allow
 run_guard Bash "" "git switch main && git add *.md" "$FIXTURE/primary"
 expect "glob in command does not break parsing" allow
+
+echo ""
+echo "subagent policy:"
+run_guard_sub Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "subagent write to primary is denied" deny
+run_guard_sub Write "$FIXTURE/primary/.worktrees/feat/x/seed.txt" "" "$FIXTURE/primary/.worktrees/feat/x"
+expect "subagent write to worktree is allowed" allow
+run_guard_sub Bash "" "git commit -m 'x'" "$FIXTURE/primary"
+expect "subagent git commit in primary is denied" deny
+run_guard_sub Bash "" "git status --short" "$FIXTURE/primary"
+expect "subagent read-only bash is allowed" allow
+run_guard Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "main-session write to primary still asks" ask
+CLAUDE_ALLOW_MAIN_EDITS=1 run_guard_sub Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "escape hatch also frees subagents" allow
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]

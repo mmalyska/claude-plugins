@@ -132,4 +132,12 @@ TARGET_DIR=$(nearest_dir "$TARGET")
 BRANCH=$(git -C "$TARGET_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null)
 REPO=$(basename "$(git -C "$TARGET_DIR" rev-parse --show-toplevel 2>/dev/null)")
 
+# Verified 2026-09-17: agent_id/agent_type are null for a main-session call and
+# populated for a subagent call. session_id and transcript_path are identical
+# between the two, so they cannot be used to tell them apart.
+AGENT_ID=$(field '.agent_id')
+if [ -n "$AGENT_ID" ]; then
+  decide deny "Subagents may not write to the primary checkout of '$REPO'. Re-dispatch this agent with isolation: \"worktree\", or have it write inside the parent's existing worktree."
+fi
+
 decide ask "The primary checkout of '$REPO' is not a workspace (currently on '$BRANCH'). Create a worktree instead: git worktree add .worktrees/<type>/<slug> -b <type>/<slug>. To work in the primary checkout for this whole session, restart with CLAUDE_ALLOW_MAIN_EDITS=1."
