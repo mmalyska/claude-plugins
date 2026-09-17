@@ -95,22 +95,48 @@ unreliable, and false positives would drive constant use of the escape hatch
 until the guard stopped meaning anything. The `worktree-workflow.md` rule carries
 this weight instead by stating the invariant to Claude directly.
 
-### Behavioral checks to run before writing the scripts
+### Behavioral checks (verified 2026-09-17, Claude Code 2.1.274)
 
-These are assumptions, not established facts. Verify against a live session and
-record the answers here.
+Captured by registering a probe hook that logged raw stdin, then driving it with
+a headless session that made one main-session write and dispatched one subagent.
 
-1. **Is a subagent-originated call identifiable from hook input?** If an explicit
-   flag exists, step 7 uses it. If not, infer from `session_id` /
-   `transcript_path` diverging from the parent. If neither is reliable, step 7
-   is unimplementable as specified and the design needs revisiting — say so
-   rather than shipping a step that silently never fires.
-2. **How does `ask` degrade with no human to answer** (headless runs, subagent
-   calls)? It must fall back to denying. If it silently allows, the subagent
-   half of this design has a hole.
-3. **Does the permission prompt offer a persistent "don't ask again"?** If each
-   edit re-prompts, the env var goes from convenience to necessity, and the
-   guard's reason text should say so on the first ask.
+1. **Is a subagent-originated call identifiable from hook input? Yes —
+   `agent_id` and `agent_type`.** Both are `null` for a main-session call and
+   populated for a subagent call (`agent_id: "a445e9a59c7959b42"`,
+   `agent_type: "general-purpose"`). Step 7 tests `agent_id` for non-emptiness.
+
+   **The planned fallback would have been wrong.** `session_id` and
+   `transcript_path` are *identical* between parent and subagent — a subagent
+   shares its parent's session. Inferring from their divergence would have
+   produced a branch that silently never fires.
+
+   Full key set on `PreToolUse` input: `agent_id`, `agent_type`, `cwd`,
+   `effort`, `hook_event_name`, `permission_mode`, `prompt_id`,
+   `scratchpad_dir`, `session_id`, `tool_input`, `tool_name`, `tool_use_id`,
+   `transcript_path`.
+
+2. **How does `ask` degrade with no human? It denies.** A headless run against a
+   probe returning `ask` was blocked and the target file was never created. The
+   required behavior holds.
+
+3. **Does the permission prompt offer a persistent "don't ask again"?** Pending —
+   this is a UI behavior that cannot be observed headlessly and needs a human at
+   an interactive prompt. It affects only the wording of the guard's reason text,
+   not its logic, so implementation proceeded. If each edit re-prompts, the
+   reason text should surface `CLAUDE_ALLOW_MAIN_EDITS=1` on the first ask rather
+   than as a trailing note.
+
+**Consequence for the deferred session marker.** Because a subagent shares its
+parent's `session_id`, a marker keyed on `session_id` would be armed by the
+parent and then honored for every subagent — silently defeating the
+subagent-deny rule. If that design is ever revisited, it must key on something
+that distinguishes them, or refuse to read the marker whenever `agent_id` is
+set.
+
+**One incidental finding.** `tool_input.file_path` arrives unnormalized: the
+main-session write reported `/private/tmp/...` while the subagent reported
+`/tmp/...` for the same directory. Path classification must resolve symlinks
+(`cd ... && pwd -P`) rather than compare strings.
 
 ### Testing
 
