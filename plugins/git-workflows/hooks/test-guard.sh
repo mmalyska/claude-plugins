@@ -81,6 +81,29 @@ run_guard_sub() {
   GUARD_RC=$?
 }
 
+# run_guard_mode <permission_mode> <tool> <file_path-or-empty> <command-or-empty> <cwd>
+# Same as run_guard but stamps a permission_mode. The guard escalates ask->deny
+# in the modes that answer their own prompts, so these two cannot share a helper.
+run_guard_mode() {
+  GUARD_OUT=$(jq -n --arg m "$1" --arg t "$2" --arg f "$3" --arg c "$4" --arg d "$5" \
+     '{tool_name:$t, cwd:$d, permission_mode:$m,
+       tool_input:({} + (if $f=="" then {} else {file_path:$f} end)
+                      + (if $c=="" then {} else {command:$c} end))}' \
+  | "$GUARD" 2>/dev/null)
+  GUARD_RC=$?
+}
+
+# reason_has <description> <substring>
+# Some assertions are about what the model is told, not just the verdict.
+reason_has() {
+  desc=$1; want=$2
+  got=$(printf '%s' "$GUARD_OUT" | jq -r '.hookSpecificOutput.permissionDecisionReason // ""' 2>/dev/null)
+  case "$got" in
+    *"$want"*) PASS=$((PASS+1)); printf '  ok   %s\n' "$desc" ;;
+    *) FAIL=$((FAIL+1)); printf '  FAIL %s (reason lacks %s)\n' "$desc" "$want" ;;
+  esac
+}
+
 # expect <description> <expected: allow|ask|deny>
 # Reads GUARD_OUT/GUARD_RC set by the preceding run_guard call.
 expect() {
@@ -170,6 +193,74 @@ run_guard Write "$FIXTURE/plain/it's \$HOME \`x\` here/a.txt" "" "$FIXTURE/plain
 expect "path with quote, \$var and backticks is allowed and inert" allow
 run_guard Bash "" "git commit -m \"it's \$USER \`whoami\`\"" "$FIXTURE/primary"
 expect "command with quotes and backticks is flagged, not executed" ask
+
+echo ""
+echo "permission_mode escalation (ask is only a fence where a human answers):"
+run_guard_mode default Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "default mode asks" ask
+run_guard_mode plan Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "plan mode asks" ask
+run_guard_mode auto Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "auto mode denies (its classifier would swallow an ask)" deny
+reason_has "auto-mode denial still names the worktree convention" ".worktrees/"
+run_guard_mode acceptEdits Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "acceptEdits denies" deny
+run_guard_mode bypassPermissions Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "bypassPermissions denies" deny
+run_guard_mode dontAsk Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "dontAsk denies" deny
+run_guard_mode wharrgarbl Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "unknown mode falls back to ask, never to deny" ask
+run_guard_mode auto Write "$FIXTURE/primary/.worktrees/feat/x/seed.txt" "" "$FIXTURE/primary/.worktrees/feat/x"
+expect "auto mode does not over-trigger inside a worktree" allow
+CLAUDE_ALLOW_MAIN_EDITS=1 run_guard_mode auto Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
+expect "escape hatch still wins over auto mode" allow
+
+echo ""
+echo "shell writes (the path Edit/Write never sees):"
+run_guard Bash "" "echo hi > notes.md" "$FIXTURE/primary"
+expect "redirect into primary is flagged" ask
+run_guard Bash "" "echo hi >> notes.md" "$FIXTURE/primary"
+expect "append into primary is flagged" ask
+run_guard Bash "" "cat seed.txt | tee notes.md" "$FIXTURE/primary"
+expect "tee into primary is flagged" ask
+run_guard Bash "" "sed -i '' s/a/b/ seed.txt" "$FIXTURE/primary"
+expect "sed -i in primary is flagged" ask
+run_guard Bash "" "cat <<'EOF' > notes.md" "$FIXTURE/primary"
+expect "heredoc redirect into primary is flagged" ask
+run_guard Bash "" "rm -rf build" "$FIXTURE/primary"
+expect "rm in primary is flagged" ask
+run_guard Bash "" "cp seed.txt copy.txt" "$FIXTURE/primary"
+expect "cp in primary is flagged" ask
+run_guard Bash "" "mkdir -p generated/deep" "$FIXTURE/primary"
+expect "mkdir in primary is flagged" ask
+run_guard_sub Bash "" "echo hi > notes.md" "$FIXTURE/primary"
+expect "subagent shell write to primary is denied" deny
+run_guard_mode auto Bash "" "echo hi > notes.md" "$FIXTURE/primary"
+expect "shell write under auto mode denies" deny
+
+echo ""
+echo "shell writes that must stay out of the way:"
+run_guard Bash "" "sed -n '1,5p' seed.txt" "$FIXTURE/primary"
+expect "read-only sed is allowed" allow
+run_guard Bash "" "ls -la > /dev/null" "$FIXTURE/primary"
+expect "redirect to /dev/null is allowed" allow
+run_guard Bash "" "npm test > /dev/null 2>&1" "$FIXTURE/primary"
+expect "fd duplication is not read as a file target" allow
+run_guard Bash "" "echo hi > /tmp/scratch-guard-test.txt" "$FIXTURE/primary"
+expect "redirect to an absolute path outside the repo is allowed" allow
+run_guard Bash "" "cd /tmp && echo hi > scratch-guard-test.txt" "$FIXTURE/primary"
+expect "cd out of the repo rebases relative targets" allow
+run_guard Bash "" "echo hi > w.txt" "$FIXTURE/primary/.worktrees/feat/x"
+expect "redirect inside a worktree is allowed" allow
+run_guard Bash "" 'echo "a>b"' "$FIXTURE/primary"
+expect "a > inside a quoted argument is not a redirect" allow
+run_guard Bash "" "grep -rn todo ." "$FIXTURE/primary"
+expect "read-only search is allowed" allow
+# The cross-direction case: correct cwd, wrong target. Classifying the target
+# rather than the cwd is the whole reason this one is catchable.
+run_guard Bash "" "echo hi > $FIXTURE/primary/notes.md" "$FIXTURE/primary/.worktrees/feat/x"
+expect "absolute write from a worktree into the primary is flagged" ask
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]

@@ -28,14 +28,21 @@ Once the parent is in a worktree the blast radius is already off the default bra
 
 ## The guard
 
-A `PreToolUse` hook in this plugin enforces the invariant. It asks before any write to the primary checkout, and denies subagent writes outright.
+A `PreToolUse` hook in this plugin enforces the invariant. A subagent writing to the primary checkout is always denied. For the main session the verdict depends on whether anyone is there to answer it:
 
-**It does not see shell writes** — `sed -i`, heredocs, `>` redirection. Those reach the filesystem without the hook ever being consulted. Do not treat silence from the guard as permission. The invariant above is the rule; the hook is a backstop for the cases it can see, not a fence around the ones it can't.
+| Permission mode | Verdict | Why |
+|---|---|---|
+| `default`, `plan` | `ask` | A prompt actually reaches a human |
+| `auto`, `acceptEdits`, `dontAsk`, `bypassPermissions` | `deny` | These answer their own prompts, so an `ask` is granted silently and enforces nothing |
+
+It sees the edit tools and the common shell writes — `>`, `>>`, `tee`, `sed -i`, heredoc redirects, `cp`, `mv`, `rm`, `mkdir`. It classifies the *target*, not the working directory, so a write from a worktree to an absolute path inside the primary checkout is caught too, and a write to `/tmp` from a primary-checkout cwd is not.
+
+**It still cannot see every write.** `python -c "open('f','w')"`, an editor invocation, anything that writes from inside a program it would have to run to understand. Do not treat silence from the guard as permission. The invariant above is the rule; the hook is a backstop for the cases it can see, not a fence around the ones it can't.
 
 To work in the primary checkout deliberately for a whole session, start it with `CLAUDE_ALLOW_MAIN_EDITS=1`.
 
-## When the guard asks
+## When the guard stops you
 
-It is telling you the target is the primary checkout. The fix is almost never to approve — it is to create a worktree and redo the write there. Approve only when you actually intend to change the primary checkout, such as pulling the default branch or fixing something in `.git/`.
+It is telling you the target is the primary checkout. The fix is almost never to get past it — it is to create a worktree and redo the write there. Approve (or set the escape hatch) only when you actually intend to change the primary checkout, such as pulling the default branch or fixing something in `.git/`.
 
 When the guard denies a subagent, do not work around it by having the parent perform the write. Either re-dispatch with `isolation: "worktree"`, or point the subagent at the parent's existing worktree. Routing around the denial defeats the isolation it exists to provide.

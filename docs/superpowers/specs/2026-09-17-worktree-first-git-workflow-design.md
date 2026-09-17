@@ -115,9 +115,30 @@ a headless session that made one main-session write and dispatched one subagent.
    `scratchpad_dir`, `session_id`, `tool_input`, `tool_name`, `tool_use_id`,
    `transcript_path`.
 
-2. **How does `ask` degrade with no human? It denies.** A headless run against a
-   probe returning `ask` was blocked and the target file was never created. The
-   required behavior holds.
+2. **How does `ask` degrade with no human? It depends on the mode, and the
+   original answer here was wrong.**
+
+   As first recorded: a headless run (`claude -p`) against a probe returning
+   `ask` was blocked and the target file was never created. That observation is
+   correct — print mode has nobody to answer, so it degrades to deny.
+
+   **Generalizing from it was the error.** Re-audited 2026-09-17 in an
+   *interactive* session running permission mode `auto`: the same `ask` was
+   routed to the auto-approval classifier and granted **silently**. No prompt,
+   no reason text, nothing reached the model at all; the write landed. Confirmed
+   by reproducing twice, and by cross-checking that a `deny` from the same guard
+   in the same session was delivered verbatim — so the hook was demonstrably
+   registered and firing.
+
+   Interactive `auto` degrades to *allow*; headless degrades to *deny*. The two
+   fail in opposite directions, and the guard was tested only in the direction
+   that flattered it.
+
+   **Consequence.** `ask` is a fence only in `default` and `plan`. The guard now
+   reads `permission_mode` from hook input and escalates to `deny` in `auto`,
+   `acceptEdits`, `dontAsk` and `bypassPermissions`. An unknown or absent mode
+   keeps `ask`, so an older host that omits the field degrades to the old
+   behavior rather than to a hard block.
 
 3. **Does the permission prompt offer a persistent "don't ask again"?** Pending —
    this is a UI behavior that cannot be observed headlessly and needs a human at
@@ -171,7 +192,29 @@ Worktrees stop being opt-in.
 Global; no `paths:` frontmatter.
 
 Contents: the invariant in one line; worktree location and branch naming; the
-subagent policy; what to do when the guard asks.
+subagent policy; what to do when the guard stops you.
+
+**Delivery (revised 2026-09-17).** The original spec assumed writing the file
+was enough. It is not: **Claude Code has no plugin-rules loader.** The manifest
+schema in 2.1.274 accepts `commands`, `agents`, `skills`, `hooks`, `workflows`,
+`themes`, `outputStyles`, `monitors` and `mcpServers`; there is no `rules` key
+and no `rules/` auto-scan. Nothing in the binary resolves a `pluginRules`
+symbol, while `pluginCommands`, `pluginSkills` and `pluginHooks` all appear.
+
+The measured consequence: a live session with the plugin enabled could not state
+the `.worktrees/<type>/<slug>` convention, and did not know the guard existed.
+The guard was therefore naming a convention to a model that had never been told
+it — a correction arriving only after the mistake.
+
+The rule is now injected by a `SessionStart` hook
+(`hooks/inject-worktree-rule.sh`) emitting
+`hookSpecificOutput.additionalContext`, the same mechanism the `superpowers`
+plugin uses to deliver `using-superpowers`. The hook is silent outside a git
+repo, so sessions where the rule cannot apply pay nothing.
+
+`git-workflow.md` and `development-workflow.md` remain un-injected reference
+documents, reachable only when a command or skill reads them. That is a
+deliberate token trade, not an oversight.
 
 **Branch naming:** `<type>/<slug>` reusing the conventional-commit types already
 in `git-workflow.md` — `feat/worktree-guard`, `fix/hook-submodule-detection`.
