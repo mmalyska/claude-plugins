@@ -103,5 +103,32 @@ expect "nonexistent file in worktree is allowed" allow
 run_guard Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
 expect "CANARY: primary checkout write produces a decision" ask
 
+echo ""
+echo "bash mutation list:"
+run_guard Bash "" "git status --short" "$FIXTURE/primary"
+expect "git status in primary is allowed" allow
+run_guard Bash "" "npm test -- --watch=false" "$FIXTURE/primary"
+expect "npm test in primary is allowed" allow
+run_guard Bash "" "git worktree add .worktrees/feat/y -b feat/y" "$FIXTURE/primary"
+expect "git worktree add in primary is allowed" allow
+run_guard Bash "" "git pull --ff-only" "$FIXTURE/primary"
+expect "git pull in primary is allowed" allow
+run_guard Bash "" "git switch main" "$FIXTURE/primary"
+expect "git switch to default branch is allowed" allow
+run_guard Bash "" "git commit -m 'x'" "$FIXTURE/primary"
+expect "git commit in primary is flagged" ask
+run_guard Bash "" "git rebase origin/main" "$FIXTURE/primary"
+expect "git rebase in primary is flagged" ask
+run_guard Bash "" "git switch feat/x" "$FIXTURE/primary"
+expect "git switch to feature branch is flagged" ask
+run_guard Bash "" "git commit -m 'x'" "$FIXTURE/primary/.worktrees/feat/x"
+expect "git commit in worktree is allowed" allow
+run_guard Bash "" "git switch -c feat/z" "$FIXTURE/primary"
+expect "git switch -c to new branch is flagged" ask
+run_guard Bash "" "git checkout --quiet main" "$FIXTURE/primary"
+expect "git checkout with flags before default branch is allowed" allow
+run_guard Bash "" "git switch main && git add *.md" "$FIXTURE/primary"
+expect "glob in command does not break parsing" allow
+
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]
