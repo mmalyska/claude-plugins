@@ -36,13 +36,9 @@ Report with branch state:
 - On a branch: "Already in isolated workspace at `<path>` on branch `<name>`."
 - Detached HEAD: "Already in isolated workspace at `<path>` (detached HEAD, externally managed). Branch creation needed at finish time."
 
-**If `GIT_DIR == GIT_COMMON` (or in a submodule):** You are in a normal repo checkout.
+**If `GIT_DIR == GIT_COMMON` (or in a submodule):** You are in the primary checkout. The primary checkout is never a workspace — create a worktree. Do not ask permission; this is the default, not an option. The only path that works in place is a sandbox permission failure (Step 1b), which is a can't, not a won't.
 
-Has the user already indicated their worktree preference in your instructions? If not, ask for consent before creating a worktree:
-
-> "Would you like me to set up an isolated worktree? It protects your current branch from changes."
-
-Honor any existing declared preference without asking. If the user declines consent, work in place and skip to Step 3.
+See [worktree-workflow.md](../../rules/worktree-workflow.md) for the invariant and the guard hook that enforces it.
 
 ## Step 1: Create Isolated Workspace
 
@@ -50,11 +46,16 @@ Honor any existing declared preference without asking. If the user declines cons
 
 ### 1a. Native Worktree Tools (preferred)
 
-The user has asked for an isolated workspace (Step 0 consent). Do you already have a way to create a worktree? It might be a tool with a name like `EnterWorktree`, `WorktreeCreate`, a `/worktree` command, or a `--worktree` flag. If you do, use it and skip to Step 3.
+Do you already have a way to create a worktree? It might be a tool with a name like `EnterWorktree`, `WorktreeCreate`, a `/worktree` command, or a `--worktree` flag. If you do, use it and skip to Step 3.
 
 Native tools handle directory placement, branch creation, and cleanup automatically. Using `git worktree add` when you have a native tool creates phantom state your harness can't see or manage.
 
-Only proceed to Step 1b if you have no native worktree tool available.
+**Two checks before you use one:**
+
+1. **Where does it put the worktree, and is that path ignored?** Some native tools use `.claude/worktrees/`. If that directory is not ignored, the worktree shows up as untracked files in the primary checkout's `git status` — dirtying the very checkout you are isolating from. Verify with `git check-ignore -q <its path>`; if it is not ignored, either add it to `.git/info/exclude` first or fall back to Step 1b and use `.worktrees/`.
+2. **What does it branch from?** A tool that branches from `origin/<default>` will silently omit commits you have locally but have not pushed. If the work depends on unpushed local commits, use Step 1b so you branch from local `HEAD`.
+
+Only proceed to Step 1b if you have no native worktree tool available, or if either check above fails.
 
 ### 1b. Git Worktree Fallback
 
@@ -77,21 +78,37 @@ Follow this priority order. Explicit user preference always beats observed files
 
 #### Safety Verification (project-local directories only)
 
-**MUST verify directory is ignored before creating worktree:**
+**MUST verify the directory is ignored before creating the worktree:**
 
 ```bash
-git check-ignore -q .worktrees 2>/dev/null || git check-ignore -q worktrees 2>/dev/null
+git check-ignore -q .worktrees 2>/dev/null || \
+  echo '.worktrees/' >> "$(git rev-parse --git-common-dir)/info/exclude"
 ```
 
-**If NOT ignored:** Add to .gitignore, commit the change, then proceed.
+Use `.git/info/exclude`, never `.gitignore`. Editing `.gitignore` is a write to the primary checkout — exactly what the guard hook blocks — and it would need a commit on the default branch. `.git/info/exclude` needs no working-tree change and no commit, and `.worktrees/` is a personal workflow artifact rather than a team convention. One entry covers every nesting depth, so `feat/foo` at `.worktrees/feat/foo` is covered.
+
+#### Verify the Base
+
+The worktree branches from the primary checkout's HEAD, so confirm it is on the default branch and current first:
+
+```bash
+MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
+DEFAULT=$(git -C "$MAIN_ROOT" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
+DEFAULT=${DEFAULT#origin/}
+DEFAULT=${DEFAULT:-main}
+git -C "$MAIN_ROOT" switch "$DEFAULT"
+git -C "$MAIN_ROOT" pull --ff-only
+```
+
+If the pull fails, report it and ask — do not branch from a stale base.
 
 #### Create the Worktree
 
+`BRANCH_NAME` is `<type>/<slug>`, reusing the conventional-commit types from [git-workflow.md](../../rules/git-workflow.md): `feat/worktree-guard`, `fix/hook-submodule-detection`. The slash nests on disk, so the branch lands at `.worktrees/feat/worktree-guard`. Worktree directory, branch name, and commit prefix all agree.
+
 ```bash
-project=$(basename "$(git rev-parse --show-toplevel)")
-# For project-local: path=".worktrees/$BRANCH_NAME"
-git worktree add "$path" -b "$BRANCH_NAME"
-cd "$path"
+git worktree add ".worktrees/$BRANCH_NAME" -b "$BRANCH_NAME"
+cd ".worktrees/$BRANCH_NAME"
 ```
 
 **Sandbox fallback:** If `git worktree add` fails with a permission error, tell the user the sandbox blocked worktree creation and you're working in the current directory instead. Then run setup and baseline tests in place.
@@ -133,27 +150,34 @@ Ready to implement <feature-name>
 |-----------|--------|
 | Already in linked worktree | Skip creation (Step 0) |
 | In a submodule | Treat as normal repo (Step 0 guard) |
-| Native worktree tool available | Use it (Step 1a) |
+| In the primary checkout | Create a worktree — do not ask |
+| Native worktree tool available | Use it, after both Step 1a checks pass |
+| Native tool's path not ignored | Exclude it first, or fall back to Step 1b |
+| Work depends on unpushed local commits | Step 1b, branching from local `HEAD` |
 | No native tool | Git worktree fallback (Step 1b) |
 | `.worktrees/` exists | Use it (verify ignored) |
 | `worktrees/` exists | Use it (verify ignored) |
 | Both exist | Use `.worktrees/` |
 | Neither exists | Default `.worktrees/` |
-| Directory not ignored | Add to .gitignore + commit |
+| Directory not ignored | Append to `.git/info/exclude` |
+| Primary checkout not on default branch | Switch and pull before branching |
 | Permission error on create | Work in place |
 | Tests fail during baseline | Report failures + ask |
 
 ## Red Flags
 
 **Never:**
+- Ask permission to create a worktree — it is the default, not an option
+- Add `.worktrees/` to `.gitignore` — use `.git/info/exclude`
 - Create a worktree when Step 0 detects existing isolation
-- Use `git worktree add` when you have a native worktree tool (e.g., `EnterWorktree`)
+- Use `git worktree add` when you have a native worktree tool (e.g., `EnterWorktree`) that passes both Step 1a checks
 - Create worktree without verifying it's ignored (project-local)
+- Branch from a stale or non-default base
 - Skip baseline test verification
 - Proceed with failing tests without asking
 
 **Always:**
 - Run Step 0 detection first
-- Prefer native tools over git fallback
+- Prefer native tools over git fallback, once their path and base ref check out
 - Verify directory is ignored for project-local
 - Verify clean test baseline
