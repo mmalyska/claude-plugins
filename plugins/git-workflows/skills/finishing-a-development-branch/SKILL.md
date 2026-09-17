@@ -9,7 +9,9 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 Guide completion of development work by presenting clear options and handling chosen workflow.
 
-**Core principle:** Verify tests → Detect environment → Present options → Execute choice → Clean up.
+**Core principle:** Verify tests → Detect environment → Present options → Execute choice → Clean up → Restore the primary checkout.
+
+**Postcondition — every path through this skill:** the primary checkout ends on the default branch with a clean tree. Options 2 and 3 keep the worktree alive, but the primary checkout is still left on the default branch. See [worktree-workflow.md](../../rules/worktree-workflow.md).
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
@@ -168,14 +170,28 @@ git worktree prune
 
 **Otherwise:** The host environment owns this workspace. Do NOT remove it. Use a workspace-exit tool if available.
 
+### Step 7: Restore the Primary Checkout
+
+Runs for **all four options**, including the ones that keep the worktree.
+
+```bash
+MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
+DEFAULT=$(git -C "$MAIN_ROOT" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
+DEFAULT=${DEFAULT#origin/}
+git -C "$MAIN_ROOT" switch "${DEFAULT:-main}"
+git -C "$MAIN_ROOT" status --short
+```
+
+`git status --short` must print nothing. If it does not, report the dirty files and stop — do not clean them up unprompted.
+
 ## Quick Reference
 
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
-|--------|-------|------|---------------|----------------|
-| 1. Merge locally | yes | - | - | yes |
-| 2. Create PR | - | yes | yes | - |
-| 3. Keep as-is | - | - | yes | - |
-| 4. Discard | - | - | - | yes (force) |
+| Option | Merge | Push | Keep Worktree | Cleanup Branch | Restore primary |
+|--------|-------|------|---------------|----------------|-----------------|
+| 1. Merge locally | yes | - | - | yes | yes |
+| 2. Create PR | - | yes | yes | - | yes |
+| 3. Keep as-is | - | - | yes | - | yes |
+| 4. Discard | - | - | - | yes (force) | yes |
 
 ## Red Flags
 
@@ -196,3 +212,4 @@ git worktree prune
 - Clean up worktree for Options 1 & 4 only
 - `cd` to main repo root before worktree removal
 - Run `git worktree prune` after removal
+- Leave the primary checkout on the default branch, clean
