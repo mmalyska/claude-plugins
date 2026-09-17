@@ -22,3 +22,7 @@ When creating PRs:
 
 > For the full development process (planning, TDD, code review) before git operations,
 > see [development-workflow.md](./development-workflow.md).
+>
+> Work never happens in the primary checkout. See
+> [worktree-workflow.md](./worktree-workflow.md) for the invariant, branch naming,
+> and the guard hook.

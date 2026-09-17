@@ -13,7 +13,7 @@ claude plugin install personal-essentials@mmalyska/claude-plugins
 
 | Plugin | Description |
 |---|---|
-| `git-workflows` | Git discipline, PR creation, commit conventions |
+| `git-workflows` | Worktree-first enforcement (ships a hook), PR creation, commit conventions |
 | `development-lifecycle` | Spec→Plan→Build→Test→Review→Simplify→Ship workflow |
 | `dotnet` | .NET/C# agents and coding rules |
 | `frontend` | React/Next.js and TypeScript rules |
