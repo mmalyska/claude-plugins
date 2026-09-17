@@ -49,6 +49,9 @@ git -C "$FIXTURE/primary" -c protocol.file.allow=always -c user.email=t@t -c use
 git -C "$FIXTURE/primary" -c user.email=t@t -c user.name=t commit -qm sub
 # plain directory, no repo
 mkdir -p "$FIXTURE/plain"
+# awkward paths: the guard eval's jq @sh output, so these must not break it
+mkdir -p "$FIXTURE/primary/dir with space"
+mkdir -p "$FIXTURE/plain/it's \$HOME \`x\` here"
 
 # --- helpers --------------------------------------------------------------
 # run_guard <tool> <file_path-or-empty> <command-or-empty> <cwd>
@@ -158,6 +161,15 @@ run_guard Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
 expect "main-session write to primary still asks" ask
 CLAUDE_ALLOW_MAIN_EDITS=1 run_guard_sub Write "$FIXTURE/primary/seed.txt" "" "$FIXTURE/primary"
 expect "escape hatch also frees subagents" allow
+
+echo ""
+echo "hostile paths (guard eval's jq @sh output):"
+run_guard Write "$FIXTURE/primary/dir with space/a.txt" "" "$FIXTURE/primary"
+expect "path with spaces still classifies as primary" ask
+run_guard Write "$FIXTURE/plain/it's \$HOME \`x\` here/a.txt" "" "$FIXTURE/plain"
+expect "path with quote, \$var and backticks is allowed and inert" allow
+run_guard Bash "" "git commit -m \"it's \$USER \`whoami\`\"" "$FIXTURE/primary"
+expect "command with quotes and backticks is flagged, not executed" ask
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]

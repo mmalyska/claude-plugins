@@ -13,7 +13,17 @@ HOOK_INPUT=$(cat 2>/dev/null) || exit 0
 command -v jq >/dev/null 2>&1 || exit 0
 command -v git >/dev/null 2>&1 || exit 0
 
-field() { printf '%s' "$HOOK_INPUT" | jq -r "$1 // \"\"" 2>/dev/null; }
+# Every field in one jq call. This runs before every tool call, so spawning a
+# separate jq per field is a cost paid on the hot path for no reason.
+# @sh quotes the values so the eval is safe against paths with spaces or quotes.
+TOOL='' CWD='' FILE_PATH='' COMMAND='' AGENT_ID=''
+eval "$(printf '%s' "$HOOK_INPUT" | jq -r '@sh "
+  TOOL=\(.tool_name // "")
+  CWD=\(.cwd // "")
+  FILE_PATH=\(.tool_input.file_path // "")
+  COMMAND=\(.tool_input.command // "")
+  AGENT_ID=\(.agent_id // "")
+"' 2>/dev/null)" 2>/dev/null || exit 0
 
 decide() {
   jq -n --arg d "$1" --arg r "$2" \
@@ -107,14 +117,9 @@ is_mutating_command() {
 
 [ "${CLAUDE_ALLOW_MAIN_EDITS:-}" = "1" ] && exit 0
 
-TOOL=$(field '.tool_name')
-CWD=$(field '.cwd')
-FILE_PATH=$(field '.tool_input.file_path')
-
 case "$TOOL" in
   Edit|Write|NotebookEdit) TARGET=$FILE_PATH ;;
   Bash)
-    COMMAND=$(field '.tool_input.command')
     BASH_DIR=$(nearest_dir "$CWD")
     is_mutating_command "$COMMAND" "$BASH_DIR" || exit 0
     TARGET=$CWD ;;
@@ -135,7 +140,6 @@ REPO=$(basename "$(git -C "$TARGET_DIR" rev-parse --show-toplevel 2>/dev/null)")
 # Verified 2026-09-17: agent_id/agent_type are null for a main-session call and
 # populated for a subagent call. session_id and transcript_path are identical
 # between the two, so they cannot be used to tell them apart.
-AGENT_ID=$(field '.agent_id')
 if [ -n "$AGENT_ID" ]; then
   decide deny "Subagents may not write to the primary checkout of '$REPO'. Re-dispatch this agent with isolation: \"worktree\", or have it write inside the parent's existing worktree."
 fi
