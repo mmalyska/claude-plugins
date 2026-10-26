@@ -1,0 +1,7 @@
+{
+  "name": "development-lifecycle",
+  "version": "1.1.0",
+  "description": "Extension to superpowers — agents, quality commands, skills, and rules for Spec→Ship lifecycle",
+  "hooks": [],
+  "skills": "./codex-skills/"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "agent-toolkit",
+  "version": "1.0.0",
+  "description": "AI agent patterns and meta-skills — autonomous loops, eval harnesses, context management, safety guards, and Claude Code workspace tooling",
+  "hooks": [],
+  "skills": "./codex-skills/"
+}
