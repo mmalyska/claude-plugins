@@ -1,45 +1,36 @@
 ---
 name: continuous-agent-loop
-description: Patterns for continuous autonomous agent loops with quality gates, evals, and recovery controls.
-origin: ECC
+description: "Execute bounded agent iterations with verification, persistent progress, and recovery in Claude Code or Codex."
+metadata:
+  origin: "ECC"
 ---
 
 # Continuous Agent Loop
 
-This is the v1.8+ canonical loop skill name. It supersedes `autonomous-loops` while keeping compatibility for one release.
+Use for a task that needs repeated implement/check iterations. Establish the
+objective, acceptance checks, allowed actions, and attempt/runtime limit first.
+Use the project's current tracking location, or
+`.reports/agent-workflows/loop.md` for a new progress record.
 
-## Loop Selection Flow
+## Iteration
 
-```text
-Start
-  |
-  +-- Need strict CI/PR control? -- yes --> continuous-pr
-  |
-  +-- Need RFC decomposition? -- yes --> rfc-dag
-  |
-  +-- Need exploratory parallel generation? -- yes --> infinite
-  |
-  +-- default --> sequential
-```
+1. Read progress and current repository state. Choose the smallest ready task.
+2. Implement within scope. Delegate only through available authorized tools;
+   otherwise execute sequentially in the current session.
+3. Run the relevant checks and compare their result with acceptance criteria.
+4. Record changes, evidence, attempts consumed, blocker, and next action.
+5. Continue only while there is measurable progress and budget remains.
 
-## Combined Pattern
+Stop on completion, cancellation, a permission block, an unmet external
+prerequisite, or the configured limit. On a repeated failure without new evidence,
+reduce the problem to a reproducer and report the blocker. Do not increase
+privileges, install a loop framework, or invent an unavailable audit command.
 
-Recommended production stack:
-1. RFC decomposition (`ralphinho-rfc-pipeline`)
-2. quality gates (`plankton-code-quality` + `/quality-gate`)
-3. eval loop (`eval-harness`)
-4. session persistence (`nanoclaw-repl`)
+For parallel tasks use a dependency graph and isolated worktrees for writers.
+For CI/PR workflows inspect actual checks; keep merge, push, and deployment
+within explicit task authorization. Use the available `eval-harness` skill or
+write concrete pass/fail checks directly.
 
-## Failure Modes
-
-- loop churn without measurable progress
-- repeated retries with same root cause
-- merge queue stalls
-- cost drift from unbounded escalation
-
-## Recovery
-
-- freeze loop
-- run `/harness-audit`
-- reduce scope to failing unit
-- replay with explicit acceptance criteria
+This loop runs in the current session. For recurring/background execution use
+`autonomous-agent-harness` to establish and verify a supported external runner;
+do not claim that Markdown instructions keep running after the session ends.

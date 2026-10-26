@@ -1,16 +1,8 @@
 ---
 name: blueprint
-description: >-
-  Turn a one-line objective into a step-by-step construction plan for
-  multi-session, multi-agent engineering projects. Each step has a
-  self-contained context brief so a fresh agent can execute it cold.
-  Includes adversarial review gate, dependency graph, parallel step
-  detection, anti-pattern catalog, and plan mutation protocol.
-  TRIGGER when: user requests a plan, blueprint, or roadmap for a
-  complex multi-PR task, or describes work that needs multiple sessions.
-  DO NOT TRIGGER when: task is completable in a single PR or fewer
-  than 3 tool calls, or user says "just do it".
-origin: community
+description: "Turn a one-line objective into a step-by-step construction plan for multi-session, multi-agent engineering projects. Each step has a self-contained context brief so a fresh agent can execute it cold. Includes adversarial review gate, dependency graph, parallel step detection, anti-pattern catalog, and plan mutation protocol. TRIGGER when: user requests a plan, blueprint, or roadmap for a complex multi-PR task, or describes work that needs multiple sessions. DO NOT TRIGGER when: task is completable in a single PR or fewer than 3 tool calls, or user says \"just do it\"."
+metadata:
+  origin: "community"
 ---
 
 # Blueprint — Construction Plan Generator
@@ -31,9 +23,9 @@ Turn a one-line objective into a step-by-step construction plan that any coding 
 Blueprint runs a 5-phase pipeline:
 
 1. **Research** — Pre-flight checks (git, gh auth, remote, default branch), then reads project structure, existing plans, and memory files to gather context.
-2. **Design** — Breaks the objective into one-PR-sized steps (3–12 typical). Assigns dependency edges, parallel/serial ordering, model tier (strongest vs default), and rollback strategy per step.
+2. **Design** — Breaks the objective into one-PR-sized steps (3–12 typical). Assigns dependency edges, parallel/serial ordering, task complexity and any authorized model selection, and rollback strategy per step.
 3. **Draft** — Writes a self-contained Markdown plan file to `plans/`. Every step includes a context brief, task list, verification commands, and exit criteria — so a fresh agent can execute any step without reading prior steps.
-4. **Review** — Delegates adversarial review to a strongest-model sub-agent (e.g., Opus) against a checklist and anti-pattern catalog. Fixes all critical findings before finalizing.
+4. **Review** — Runs adversarial review through an available authorized sub-agent or a separate local review pass against a checklist and anti-pattern catalog. Fixes all critical findings before finalizing.
 5. **Register** — Saves the plan, updates memory index, and presents the step count and parallelism summary to the user.
 
 Blueprint detects git/gh availability automatically. With git + GitHub CLI, it generates full branch/PR/CI workflow plans. Without them, it switches to direct mode (edit-in-place, no branches).
@@ -59,47 +51,30 @@ Produces `plans/myapp-migrate-database-to-postgresql.md` with steps like:
 /blueprint chatbot "extract LLM providers into a plugin system"
 ```
 
-Produces a plan with parallel steps where possible (e.g., "implement Anthropic plugin" and "implement OpenAI plugin" run in parallel after the plugin interface step is done), model tier assignments (strongest for the interface design step, default for implementation), and invariants verified after every step (e.g., "all existing tests pass", "no provider imports in core").
+Produces a plan with parallel steps where possible (e.g., "implement Anthropic plugin" and "implement OpenAI plugin" run in parallel after the plugin interface step is done), complexity notes for interface design and implementation, and invariants verified after every step (e.g., "all existing tests pass", "no provider imports in core").
 
 ## Key Features
 
 - **Cold-start execution** — Every step includes a self-contained context brief. No prior context needed.
-- **Adversarial review gate** — Every plan is reviewed by a strongest-model sub-agent against a checklist covering completeness, dependency correctness, and anti-pattern detection.
+- **Adversarial review gate** — Every plan receives an adversarial review pass against a checklist covering completeness, dependency correctness, and anti-pattern detection.
 - **Branch/PR/CI workflow** — Built into every step. Degrades gracefully to direct mode when git/gh is absent.
 - **Parallel step detection** — Dependency graph identifies steps with no shared files or output dependencies.
 - **Plan mutation protocol** — Steps can be split, inserted, skipped, reordered, or abandoned with formal protocols and audit trail.
-- **Zero runtime risk** — Pure Markdown skill. The entire repository contains only `.md` files — no hooks, no shell scripts, no executable code, no `package.json`, no build step. Nothing runs on install or invocation beyond Claude Code's native Markdown skill loader.
+- **Instruction-only workflow** — This skill requires no executable helper or build step.
 
-## Installation
+## Availability and execution
 
-This skill ships with Everything Claude Code. No separate installation is needed when ECC is installed.
+This is a shared skill in this plugin collection. Invoke `blueprint` through the
+active host's skill interface (`$blueprint` in Codex). Git and GitHub CLI are
+optional; plan local work when they are unavailable. Installing this collection
+requires no build step. Do not assume that other plugins contain only Markdown.
 
-### Full ECC install
-
-If you are working from the ECC repository checkout, verify the skill is present with:
-
-```bash
-test -f skills/blueprint/SKILL.md
-```
-
-To update later, review the ECC diff before updating:
-
-```bash
-cd /path/to/everything-claude-code
-git fetch origin main
-git log --oneline HEAD..origin/main       # review new commits before updating
-git checkout <reviewed-full-sha>          # pin to a specific reviewed commit
-```
-
-### Vendored standalone install
-
-If you are vendoring only this skill outside the full ECC install, copy the reviewed file from the ECC repository into `~/.claude/skills/blueprint/SKILL.md`. Vendored copies do not have a git remote, so update them by re-copying the file from a reviewed ECC commit rather than running `git pull`.
-
-## Requirements
-
-- Claude Code (for `/blueprint` slash command)
-- Git + GitHub CLI (optional — enables full branch/PR/CI workflow; Blueprint detects absence and auto-switches to direct mode)
+For adversarial review, use an available authorized subagent; otherwise perform
+a distinct review pass in the current session and disclose its lack of
+independence. Keep the configured model unless a model change is authorized.
+Write a resume brief alongside the plan; update an existing memory index only
+if that facility is configured, not an invented automatic memory location.
 
 ## Source
 
-Inspired by antbotlab/blueprint — upstream project and reference design.
+Inspired by antbotlab/blueprint and the Everything Claude Code collection.

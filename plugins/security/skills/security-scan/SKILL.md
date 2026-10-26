@@ -1,165 +1,58 @@
 ---
 name: security-scan
-description: Scan your Claude Code configuration (.claude/ directory) for security vulnerabilities, misconfigurations, and injection risks using AgentShield. Checks CLAUDE.md, settings.json, MCP servers, hooks, and agent definitions.
-origin: ECC
+description: "Audit Claude Code or Codex configuration for exposed secrets, risky permissions, unsafe tools, and instruction injection."
+metadata:
+  origin: "ECC"
 ---
 
-# Security Scan Skill
+# Agent Configuration Security Scan
 
-Audit your Claude Code configuration for security issues using [AgentShield](https://github.com/affaan-m/agentshield).
+Audit the configuration the user named. The host running this skill and the
+configuration being inspected may differ. If unspecified, inspect project
+configuration for the active host; include user-level files only when relevant
+and permitted. This is an audit, not automatic remediation.
 
-## When to Activate
+## Inventory by target
 
-- Setting up a new Claude Code project
-- After modifying `.claude/settings.json`, `CLAUDE.md`, or MCP configs
-- Before committing configuration changes
-- When onboarding to a new repository with existing Claude Code configs
-- Periodic security hygiene checks
+| Target | Relevant surfaces |
+| --- | --- |
+| Claude Code | `CLAUDE.md`, `.claude/settings*.json`, `.mcp.json`, `.claude/agents/`, `.claude/skills/`, installed plugin manifests and hooks |
+| Codex | `AGENTS.md`, project `.codex/config.toml`, configured user Codex directory (`CODEX_HOME` when set), `.agents/skills/`, agent configuration, installed plugin manifests, configured MCP servers |
 
-## What It Scans
+Read only existing applicable files. Distinguish local defaults from active
+configuration and managed settings; do not assume one file shows effective policy.
+Redact secret values in every finding, excerpt, command output, and report.
 
-| File | Checks |
-|------|--------|
-| `CLAUDE.md` | Hardcoded secrets, auto-run instructions, prompt injection patterns |
-| `settings.json` | Overly permissive allow lists, missing deny lists, dangerous bypass flags |
-| `mcp.json` | Risky MCP servers, hardcoded env secrets, npx supply chain risks |
-| `hooks/` | Command injection via interpolation, data exfiltration, silent error suppression |
-| `agents/*.md` | Unrestricted tool access, prompt injection surface, missing model specs |
+## Manual review (available in either host)
 
-## Prerequisites
+1. **Credentials:** identify literal secrets and environment handling. Report key
+   names and file locations, never values. Check whether sensitive files are tracked.
+2. **Permissions:** review wildcard command grants, privileged execution, disabled
+   sandboxing, approval bypasses, and excessive writable roots against the task.
+   The absence of a deny list or hook alone is not a vulnerability.
+3. **Tools and MCP:** inspect transport, endpoint trust, executable/package pinning,
+   credential forwarding, and least privilege. Flag unreviewed package execution
+   and unexpected network destinations with concrete evidence.
+4. **Hooks and scripts:** inspect quoting, untrusted interpolation, path handling,
+   exfiltration, and failure behavior. Separate scripts present on disk from hooks
+   actually enabled and trusted by the host.
+5. **Instructions and agents:** examine auto-run instructions, untrusted content
+   treated as authority, broad tool access, and unnecessary privileges. A missing
+   model selection is not itself a security issue.
+6. **Report:** severity, redacted evidence/location, impact, suggested fix, and
+   whether effective configuration was verified. Mark unreadable surfaces as
+   unassessed rather than safe. Default a saved report to
+   `.reports/agent-workflows/security-scan.md`, preserving existing locations.
 
-AgentShield must be installed. Check and install if needed:
+## Optional external scanner
 
-```bash
-# Check if installed
-npx ecc-agentshield --version
+[AgentShield](https://github.com/affaan-m/agentshield) is an optional dependency.
+If an installed scanner is available, inspect its local help and documentation
+for the installed version and confirm it supports the target format before
+using it. Do not assume a Claude configuration scanner understands Codex TOML,
+AGENTS.md semantics, or effective Codex policy. If support is absent or unclear,
+perform the manual review above and report that automated coverage is unavailable.
 
-# Install globally (recommended)
-npm install -g ecc-agentshield
-
-# Or run directly via npx (no install needed)
-npx ecc-agentshield scan .
-```
-
-## Usage
-
-### Basic Scan
-
-Run against the current project's `.claude/` directory:
-
-```bash
-# Scan current project
-npx ecc-agentshield scan
-
-# Scan a specific path
-npx ecc-agentshield scan --path /path/to/.claude
-
-# Scan with minimum severity filter
-npx ecc-agentshield scan --min-severity medium
-```
-
-### Output Formats
-
-```bash
-# Terminal output (default) — colored report with grade
-npx ecc-agentshield scan
-
-# JSON — for CI/CD integration
-npx ecc-agentshield scan --format json
-
-# Markdown — for documentation
-npx ecc-agentshield scan --format markdown
-
-# HTML — self-contained dark-theme report
-npx ecc-agentshield scan --format html > security-report.html
-```
-
-### Auto-Fix
-
-Apply safe fixes automatically (only fixes marked as auto-fixable):
-
-```bash
-npx ecc-agentshield scan --fix
-```
-
-This will:
-- Replace hardcoded secrets with environment variable references
-- Tighten wildcard permissions to scoped alternatives
-- Never modify manual-only suggestions
-
-### Opus 4.6 Deep Analysis
-
-Run the adversarial three-agent pipeline for deeper analysis:
-
-```bash
-# Requires ANTHROPIC_API_KEY
-export ANTHROPIC_API_KEY=your-key
-npx ecc-agentshield scan --opus --stream
-```
-
-This runs:
-1. **Attacker (Red Team)** — finds attack vectors
-2. **Defender (Blue Team)** — recommends hardening
-3. **Auditor (Final Verdict)** — synthesizes both perspectives
-
-### Initialize Secure Config
-
-Scaffold a new secure `.claude/` configuration from scratch:
-
-```bash
-npx ecc-agentshield init
-```
-
-Creates:
-- `settings.json` with scoped permissions and deny list
-- `CLAUDE.md` with security best practices
-- `mcp.json` placeholder
-
-### GitHub Action
-
-Add to your CI pipeline:
-
-```yaml
-- uses: affaan-m/agentshield@v1
-  with:
-    path: '.'
-    min-severity: 'medium'
-    fail-on-findings: true
-```
-
-## Severity Levels
-
-| Grade | Score | Meaning |
-|-------|-------|---------|
-| A | 90-100 | Secure configuration |
-| B | 75-89 | Minor issues |
-| C | 60-74 | Needs attention |
-| D | 40-59 | Significant risks |
-| F | 0-39 | Critical vulnerabilities |
-
-## Interpreting Results
-
-### Critical Findings (fix immediately)
-- Hardcoded API keys or tokens in config files
-- `Bash(*)` in the allow list (unrestricted shell access)
-- Command injection in hooks via `${file}` interpolation
-- Shell-running MCP servers
-
-### High Findings (fix before production)
-- Auto-run instructions in CLAUDE.md (prompt injection vector)
-- Missing deny lists in permissions
-- Agents with unnecessary Bash access
-
-### Medium Findings (recommended)
-- Silent error suppression in hooks (`2>/dev/null`, `|| true`)
-- Missing PreToolUse security hooks
-- `npx -y` auto-install in MCP server configs
-
-### Info Findings (awareness)
-- Missing descriptions on MCP servers
-- Prohibitive instructions correctly flagged as good practice
-
-## Links
-
-- **GitHub**: [github.com/affaan-m/agentshield](https://github.com/affaan-m/agentshield)
-- **npm**: [npmjs.com/package/ecc-agentshield](https://www.npmjs.com/package/ecc-agentshield)
+Do not run `npx` to fetch a scanner, install global packages, enable paid model
+analysis, scaffold configuration, or apply fixes as an implicit part of a scan.
+Prepare requested remediation separately and preserve the user's existing scope.

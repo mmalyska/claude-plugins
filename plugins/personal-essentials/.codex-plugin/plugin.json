@@ -1,7 +1,7 @@
 {
   "name": "personal-essentials",
-  "version": "1.0.0",
-  "description": "Install the shared development plugins in Codex with the personal-setup skill.",
+  "version": "1.0.1",
+  "description": "Install the development plugin collection through the shared personal-setup workflow.",
   "hooks": [],
-  "skills": "./codex-skills/"
+  "skills": "./skills/"
 }

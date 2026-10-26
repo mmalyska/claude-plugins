@@ -9,7 +9,8 @@
 
 Types: feat, fix, refactor, docs, test, chore, perf, ci
 
-Note: Attribution disabled globally via ~/.claude/settings.json.
+Follow the user's attribution settings in the active host; do not assume a
+global Claude configuration exists or applies to Codex.
 
 ## Pull Request Workflow
 

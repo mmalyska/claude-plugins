@@ -1,70 +1,48 @@
 # development-lifecycle
 
-Extension to [superpowers](https://github.com/obra/superpowers) — agents, commands, and rules for Claude Code. Relies on superpowers for the core workflow; adds project-specific agents, quality commands, and coding standards.
+Shared specification, implementation, testing, review, and delivery workflows
+for Claude Code and Codex. External workflow plugins are optional.
 
 ## Lifecycle
 
-Skill-driven (superpowers handles the flow; these commands are entry points and quality gates):
+`spec` → implementation and `test` → `review` → `simplify` → `ship`
 
-```text
-/spec → superpowers execution → /ship
-```
+Claude's existing command entrypoints link to the shared skill procedures. In
+Codex invoke the same skill names, for example `$development-lifecycle:spec`, `$development-lifecycle:test fix: login bug`,
+`$development-lifecycle:review`, or `$development-lifecycle:ship`. Commands are skill inputs, not executable shell syntax.
 
-| Command       | Stage                   | Delegates to                                                               |
-|---------------|-------------------------|----------------------------------------------------------------------------|
-| `/spec`       | Define the problem      | `superpowers:brainstorming` → `superpowers:writing-plans`                  |
-| _(execution)_ | Implement task-by-task  | `superpowers:subagent-driven-development` or `superpowers:executing-plans` |
-| `/ship`       | Quality gate + delivery | `superpowers:finishing-a-development-branch`                               |
+| Skill | Purpose |
+| --- | --- |
+| `spec` | Repository-grounded requirements and design with acceptance criteria |
+| `test` | RED-GREEN-REFACTOR for features and reproducing tests for bug fixes |
+| `review` | Correctness, readability, architecture, security, performance |
+| `code-review` | Local changes or a GitHub PR; external review actions follow user authorization |
+| `ship` | Verify checks, review delivery readiness, and execute the authorized delivery action |
+| `aside` | Answer a side question while preserving the active task |
+| `learn-eval` | Extract and evaluate reusable session knowledge |
+| `skill-create` | Extract patterns from git history into shared skills |
+| `update-docs` / `update-codemaps` | Maintain documentation and architecture maps |
 
-## Quality Commands
+Role skills include `architect`, `build-error-resolver`, `code-reviewer`,
+`doc-updater`, `docs-lookup`, and `tdd-guide`. Claude also retains native agent
+entrypoints. Codex uses available authorized delegation or applies the role in
+the current session. Delegation is not required to complete a workflow.
 
-Standalone commands that add value on top of the superpowers flow:
+Domain skills include `ai-regression-testing`, `architecture-decision-records`,
+`e2e-testing`, and `simplify`. `claude-devfleet` is an optional external service
+integration: either host can call it, but the service runs Claude workers.
 
-| Command            | Description                                                                           |
-|--------------------|---------------------------------------------------------------------------------------|
-| `/review`          | Five-axis code review — correctness, readability, architecture, security, performance |
-| `/test fix: {bug}` | Bug fix TDD — Prove-It pattern (write reproducing test, fix, coverage check)          |
-| `/code-review`     | GitHub PR review via `gh` — posts inline comments and approve/request-changes         |
-| `/aside`           | Answer a quick side question without losing current task context                      |
-
-## Utility Commands
-
-| Command            | Description                                                   |
-|--------------------|---------------------------------------------------------------|
-| `/learn-eval`      | Extract reusable patterns from the session and save as skills |
-| `/skill-create`    | Analyze git history to generate SKILL.md files                |
-| `/update-docs`     | Sync documentation with codebase                              |
-| `/update-codemaps` | Generate token-lean architecture docs in `docs/CODEMAPS/`     |
-
-## Agents
-
-Specialized subagents invoked by commands and skills:
-
-| Agent                  | Description                                  |
-|------------------------|----------------------------------------------|
-| `architect`            | System design and architectural decisions    |
-| `build-error-resolver` | Fix build/type errors with minimal diffs     |
-| `code-reviewer`        | Code quality, security, maintainability      |
-| `doc-updater`          | Update codemaps and documentation            |
-| `docs-lookup`          | Fetch current library docs via Context7      |
-| `tdd-guide`            | Test-driven development enforcement          |
-
-## Skills
-
-| Skill                           | Description                                                                   |
-|---------------------------------|-------------------------------------------------------------------------------|
-| `ai-regression-testing`         | AI-specific regression test patterns                                          |
-| `architecture-decision-records` | Write and maintain ADRs                                                       |
-| `claude-devfleet`               | Multi-agent fleet coordination                                                |
-| `e2e-testing`                   | End-to-end testing patterns                                                   |
-| `simplify`                      | Auto-applied after review or before ship — guard clauses, helpers, constants  |
-
-## Rules
-
-Common coding standards loaded into every session: coding style, testing, security, performance, hooks, patterns, code review, agent orchestration.
+Use `development-lifecycle-rules` to read relevant common standards on demand;
+plugin rule files are not automatically loaded. New workflow reports default to
+`.reports/agent-workflows/`, preserving established locations for existing work.
 
 ## Install
 
+After registering the repository marketplace, select one host:
+
 ```sh
-claude plugin install development-lifecycle@mmalyska/claude-plugins
+# Claude Code
+claude plugin install development-lifecycle@mmalyska-claude-plugins
+# Codex
+codex plugin add development-lifecycle@mmalyska-claude-plugins
 ```

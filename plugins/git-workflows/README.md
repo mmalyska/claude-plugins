@@ -1,10 +1,17 @@
 # git-workflows
 
-Git discipline and automation for Claude Code.
+Git discipline and automation for Claude Code and Codex.
 
-## What installing this does
+## Host behavior
 
-**This plugin installs a hook that runs before every file write and every git mutation, in every repo you use Claude Code in.** Nothing else in this marketplace ships executable code; this does.
+Both hosts load the same workflow skills. Codex explicitly disables the bundled
+hooks: worktree rules are procedural guidance there. The hook behavior below
+applies to Claude Code only. Rules are also available on demand through the
+`git-workflows-rules` skill.
+
+## What installing this does in Claude Code
+
+**This plugin installs a hook that runs before every file write and every git mutation, in every repo you use Claude Code in.** The agent-toolkit plugin also includes optional inventory scripts.
 
 The hook enforces one rule: **the primary checkout is never a workspace.** It stays on the default branch with a clean tree, and work happens in `.worktrees/<branch>`.
 
@@ -67,5 +74,17 @@ So `worktree-workflow.md` is injected deliberately, by a `SessionStart` hook. Th
 ## Install
 
 ```sh
-claude plugin install git-workflows@mmalyska/claude-plugins
+claude plugin install git-workflows@mmalyska-claude-plugins
 ```
+
+## Codex
+
+After registering this repository marketplace:
+
+```sh
+codex plugin add git-workflows@mmalyska-claude-plugins
+```
+
+Codex loads the same `skills/` files. Invoke them with `$<plugin>:<skill-name>`. Native
+Claude agent entrypoints remain Claude-specific; their role skills work in either
+host. Rules are on demand, and bundled Claude hooks are disabled in Codex.

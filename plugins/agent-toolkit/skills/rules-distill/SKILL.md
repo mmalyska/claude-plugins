@@ -1,7 +1,8 @@
 ---
 name: rules-distill
 description: "Scan skills to extract cross-cutting principles and distill them into rules — append, revise, or create new rule files"
-origin: ECC
+metadata:
+  origin: "ECC"
 ---
 
 # Rules Distill
@@ -22,16 +23,37 @@ The rules distillation process follows three phases:
 
 ### Phase 1: Inventory (Deterministic Collection)
 
+Resolve the bundled script directory from this skill's installed path, not an
+assumed user installation. Set explicit inputs before running the examples:
+
+| Input | Claude Code | Codex |
+| --- | --- | --- |
+| `PROJECT_SKILLS_DIR` | Project `.claude/skills/` | Project `.agents/skills/` |
+| `GLOBAL_SKILLS_DIR` | User `.claude/skills/` | Verified user skill directory from host configuration |
+| `RULES_SOURCE` | Relevant `.claude/rules/` directory or instruction file | Applicable `AGENTS.md` or a chosen Markdown rules directory |
+
+Include installed plugin skill directories when they are in scope, scanning each
+explicit source and merging by source path. Do not assume project/user skill
+folders include plugin caches. The skill scanner accepts project then global
+paths; its no-argument defaults are retained for legacy Claude callers. The
+rules scanner accepts a directory or one Markdown file. Both require Bash and
+jq. Missing skill directories produce empty inventories; a missing rules source
+is an error. Do not manufacture a rules file to make an audit pass.
+
+Codex executable `.rules` files use a separate policy format; do not append
+Markdown principles to them. Target an existing instruction document or propose
+a project `AGENTS.md` change for user review instead.
+
 #### 1a. Collect skill inventory
 
 ```bash
-bash ~/.claude/skills/rules-distill/scripts/scan-skills.sh
+bash /absolute/path/to/this-skill/scripts/scan-skills.sh "$PROJECT_SKILLS_DIR" "$GLOBAL_SKILLS_DIR"
 ```
 
 #### 1b. Collect rules index
 
 ```bash
-bash ~/.claude/skills/rules-distill/scripts/scan-rules.sh
+bash /absolute/path/to/this-skill/scripts/scan-rules.sh "$RULES_SOURCE"
 ```
 
 #### 1c. Present to user
@@ -51,7 +73,8 @@ Extraction and matching are unified in a single pass. Rules files are small enou
 
 #### Batching
 
-Group skills into **thematic clusters** based on their descriptions. Analyze each cluster in a subagent with the full rules text.
+Group skills into **thematic clusters** based on their descriptions. Analyze each cluster with the full relevant rules text. Use available authorized
+subagents, or perform the same passes sequentially in the current session.
 
 #### Cross-batch Merge
 
@@ -61,7 +84,8 @@ After all batches complete, merge candidates across batches:
 
 #### Subagent Prompt
 
-Launch a general-purpose Agent with the following prompt:
+Use the following analysis brief with the available delegation tool, or apply it
+in the current session when delegation is unavailable:
 
 ````
 You are an analyst who cross-reads skills to extract principles that should be promoted to rules.
@@ -173,7 +197,9 @@ User responds with numbers to:
 
 #### Save Results
 
-Store results in the skill directory (`results.json`):
+Preserve an existing report location; otherwise store results at
+`.reports/agent-workflows/rules-distill/results.json`. Do not write results into
+the installed plugin/skill directory:
 
 - **Timestamp format**: `date -u +%Y-%m-%dT%H:%M:%SZ` (UTC, second precision)
 - **Candidate ID format**: kebab-case derived from the principle (e.g., `llm-output-trust-boundary`)

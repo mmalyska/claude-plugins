@@ -1,7 +1,8 @@
 ---
 name: search-first
-description: Research-before-coding workflow. Search for existing tools, libraries, and patterns before writing custom code. Invokes the researcher agent.
-origin: ECC
+description: "Research-before-coding workflow. Search for existing tools, libraries, and patterns before writing custom code. Uses available research tools or an authorized researcher."
+metadata:
+  origin: "ECC"
 ---
 
 # /search-first — Research Before You Code
@@ -63,23 +64,24 @@ Before writing a utility or adding functionality, mentally run through:
 
 0. Does this already exist in the repo? → `rg` through relevant modules/tests first
 1. Is this a common problem? → Search npm/PyPI
-2. Is there an MCP for this? → Check `~/.claude/settings.json` and search
-3. Is there a skill for this? → Check `~/.claude/skills/`
+2. Is there an MCP for this? → Inspect exposed MCP tools and the active host configuration
+3. Is there a skill for this? → Inspect the active skill catalog and project skills
 4. Is there a GitHub implementation/template? → Run GitHub code search for maintained OSS before writing net-new code
 
 ### Full Mode (agent)
 
-For non-trivial functionality, launch the researcher agent:
+For non-trivial functionality, delegate to an available researcher only when
+authorized. Otherwise perform the same research in the current session. The
+following is a prompt template, not a literal host tool call:
 
 ```
-Task(subagent_type="general-purpose", prompt="
+Research brief:
   Research existing tools for: [DESCRIPTION]
   Language/framework: [LANG]
   Constraints: [ANY]
 
-  Search: npm/PyPI, MCP servers, Claude Code skills, GitHub
+  Search: npm/PyPI, MCP servers, installed skills, GitHub
   Return: Structured comparison with recommendation
-")
 ```
 
 ## Search Shortcuts by Category
@@ -91,7 +93,7 @@ Task(subagent_type="general-purpose", prompt="
 - Pre-commit → `husky`, `lint-staged`, `pre-commit`
 
 ### AI/LLM Integration
-- Claude SDK → Context7 for latest docs
+- Provider SDKs → official documentation; use Context7 if connected
 - Prompt management → Check MCP servers
 - Document processing → `unstructured`, `pdfplumber`, `mammoth`
 
@@ -107,7 +109,7 @@ Task(subagent_type="general-purpose", prompt="
 ## Integration Points
 
 ### With planner agent
-The planner should invoke researcher before Phase 1 (Architecture Review):
+The planner should perform or delegate research before architecture review:
 - Researcher identifies available tools
 - Planner incorporates them into the implementation plan
 - Avoids "reinventing the wheel" in the plan

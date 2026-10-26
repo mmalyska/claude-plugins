@@ -1,7 +1,7 @@
 {
   "name": "devops",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DevOps and infrastructure — CI/CD pipelines, Docker, deployment workflows, and production readiness",
   "hooks": [],
-  "skills": "./codex-skills/"
+  "skills": "./skills/"
 }

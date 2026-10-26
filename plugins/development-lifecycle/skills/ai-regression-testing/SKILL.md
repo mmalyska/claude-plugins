@@ -1,7 +1,8 @@
 ---
 name: ai-regression-testing
-description: Regression testing strategies for AI-assisted development. Sandbox-mode API testing without database dependencies, automated bug-check workflows, and patterns to catch AI blind spots where the same model writes and reviews code.
-origin: ECC
+description: "Regression testing strategies for AI-assisted development. Sandbox-mode API testing without database dependencies, automated bug-check workflows, and patterns to catch AI blind spots where the same model writes and reviews code."
+metadata:
+  origin: "ECC"
 ---
 
 # AI Regression Testing
@@ -194,10 +195,18 @@ describe("GET /api/user/messages (conversation list)", () => {
 
 ## Integrating Tests into Bug-Check Workflow
 
-### Custom Command Definition
+### Shared Bug-Check Skill
+
+Store this as `skills/bug-check/SKILL.md` inside a shared plugin, or in the
+target host's project skill directory. Invoke through the host's skill interface;
+`/bug-check` below is a Claude example. Use the project's actual installed test
+and build commands rather than assuming npm.
 
 ```markdown
-<!-- .claude/commands/bug-check.md -->
+---
+name: bug-check
+description: Verify regression tests and review changed API behavior.
+---
 # Bug Check
 
 ## Step 1: Automated Tests (mandatory, cannot skip)

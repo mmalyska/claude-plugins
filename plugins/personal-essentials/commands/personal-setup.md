@@ -1,19 +1,5 @@
-Install all mmalyska/claude-plugins on this machine.
+---
+description: Install this collection's development plugins in the requested Claude Code or Codex environment.
+---
 
-Run the following commands in sequence:
-
-```bash
-claude plugin install git-workflows@mmalyska/claude-plugins
-claude plugin install development-lifecycle@mmalyska/claude-plugins
-claude plugin install dotnet@mmalyska/claude-plugins
-claude plugin install frontend@mmalyska/claude-plugins
-claude plugin install backend@mmalyska/claude-plugins
-claude plugin install devops@mmalyska/claude-plugins
-claude plugin install security@mmalyska/claude-plugins
-claude plugin install agent-toolkit@mmalyska/claude-plugins
-claude plugin install renovate@mmalyska/claude-plugins
-claude plugin install devcontainer@mmalyska/claude-plugins
-claude plugin install android@mmalyska/claude-plugins
-```
-
-After installation, restart Claude Code for all agents, commands, rules, and skills to take effect.
+Read [the shared personal-setup workflow](../skills/personal-setup/SKILL.md) and follow it for the requested host.

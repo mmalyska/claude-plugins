@@ -1,50 +1,27 @@
 # Agent Orchestration
 
-## Available Agents
+Discover the active host's available agent types and shared role skills. Do not
+assume an agent exists because another collection or a user-level directory
+contains a similarly named file.
 
-Located in `~/.claude/agents/`:
+- **Claude Code:** use exposed native agents; `claude agents` can inventory the
+  installation when CLI access is available. Native definitions remain under
+  `agents/` and link to shared role instructions.
+- **Codex:** use available configured agent types through the exposed delegation
+  tool, or apply the shared role skill in the current session. Markdown agent
+  files do not automatically register native Codex agents.
 
-| Agent | Purpose | When to Use |
-|-------|---------|-------------|
-| planner | Implementation planning | Complex features, refactoring |
-| architect | System design | Architectural decisions |
-| tdd-guide | Test-driven development | New features, bug fixes |
-| code-reviewer | Code review | After writing code |
-| security-reviewer | Security analysis | Before commits |
-| build-error-resolver | Fix build errors | When build fails |
-| e2e-runner | E2E testing | Critical user flows |
-| refactor-cleaner | Dead code cleanup | Code maintenance |
-| doc-updater | Documentation | Updating docs |
-| rust-reviewer | Rust code review | Rust projects |
+Delegate only when authorized by the current session. Otherwise perform focused
+role passes sequentially and disclose the lack of independent review. Do not
+start a second CLI to circumvent a delegation restriction.
 
-## Immediate Agent Usage
+Choose roles for the actual task: architecture for design tradeoffs, TDD guidance
+for test design, code review for correctness/maintainability, or build resolution
+for compiler failures. Give each role the objective, relevant context, constraints,
+and expected evidence. Use the session's configured model unless a change is
+authorized.
 
-No user prompt needed:
-1. Complex feature requests - Use **planner** agent
-2. Code just written/modified - Use **code-reviewer** agent
-3. Bug fix or new feature - Use **tdd-guide** agent
-4. Architectural decision - Use **architect** agent
-
-## Parallel Task Execution
-
-ALWAYS use parallel Task execution for independent operations:
-
-```markdown
-# GOOD: Parallel execution
-Launch 3 agents in parallel:
-1. Agent 1: Security analysis of auth module
-2. Agent 2: Performance review of cache system
-3. Agent 3: Type checking of utilities
-
-# BAD: Sequential when unnecessary
-First agent 1, then agent 2, then agent 3
-```
-
-## Multi-Perspective Analysis
-
-For complex problems, use split role sub-agents:
-- Factual reviewer
-- Senior engineer
-- Security expert
-- Consistency reviewer
-- Redundancy checker
+Parallelize independent read-only work when supported. Concurrent writers need
+separate worktrees; sequential work can share the current isolated checkout.
+Collect findings before changing dependent work and resolve conflicting advice
+against requirements and verification evidence.

@@ -1,18 +1,18 @@
 ---
 name: eval-harness
-description: Formal evaluation framework for Claude Code sessions implementing eval-driven development (EDD) principles
-origin: ECC
-tools: Read, Write, Edit, Bash, Grep, Glob
+description: "Formal evaluation framework for Claude Code or Codex sessions implementing eval-driven development (EDD) principles"
+metadata:
+  origin: "ECC"
 ---
 
 # Eval Harness Skill
 
-A formal evaluation framework for Claude Code sessions, implementing eval-driven development (EDD) principles.
+A formal evaluation framework for Claude Code or Codex sessions, implementing eval-driven development (EDD) principles.
 
 ## When to Activate
 
 - Setting up eval-driven development (EDD) for AI-assisted workflows
-- Defining pass/fail criteria for Claude Code task completion
+- Defining pass/fail criteria for agent task completion
 - Measuring agent reliability with pass@k metrics
 - Creating regression test suites for prompt or agent changes
 - Benchmarking agent performance across model versions
@@ -28,10 +28,10 @@ Eval-Driven Development treats evals as the "unit tests of AI development":
 ## Eval Types
 
 ### Capability Evals
-Test if Claude can do something it couldn't before:
+Test if the agent can do something it couldn't before:
 ```markdown
 [CAPABILITY EVAL: feature-name]
-Task: Description of what Claude should accomplish
+Task: Description of what the agent should accomplish
 Success Criteria:
   - [ ] Criterion 1
   - [ ] Criterion 2
@@ -67,7 +67,7 @@ npm run build && echo "PASS" || echo "FAIL"
 ```
 
 ### 2. Model-Based Grader
-Use Claude to evaluate open-ended outputs:
+Use an available model to evaluate open-ended outputs:
 ```markdown
 [MODEL GRADER PROMPT]
 Evaluate the following code change:
@@ -162,23 +162,33 @@ Metrics:
 Status: READY FOR REVIEW
 ```
 
+## Invocation and storage
+
+Use `eval-harness` with a `define`, `check`, or `report` request (for example,
+`$eval-harness check login` in Codex). These are workflow modes, not installed
+`/eval` commands. Discover the project's real test commands before execution.
+Preserve an existing eval directory when resuming; the paths below are defaults
+for new artifacts. Report trial counts and observed successes, not reliability
+percentages inferred from one run. Use a model grader only when available and
+within the user's authorized evaluation scope.
+
 ## Integration Patterns
 
 ### Pre-Implementation
 ```
-/eval define feature-name
+eval-harness define feature-name
 ```
-Creates eval definition file at `.claude/evals/feature-name.md`
+Creates eval definition file at `.reports/agent-workflows/evals/feature-name.md`
 
 ### During Implementation
 ```
-/eval check feature-name
+eval-harness check feature-name
 ```
 Runs current evals and reports status
 
 ### Post-Implementation
 ```
-/eval report feature-name
+eval-harness report feature-name
 ```
 Generates full eval report
 
@@ -186,7 +196,7 @@ Generates full eval report
 
 Store evals in project:
 ```
-.claude/
+.reports/agent-workflows/
   evals/
     feature-xyz.md      # Eval definition
     feature-xyz.log     # Eval run history
@@ -225,7 +235,7 @@ Regression Evals:
 [Write code]
 
 ### Phase 3: Evaluate
-Run: /eval check add-authentication
+Run: eval-harness check add-authentication
 
 ### Phase 4: Report
 EVAL REPORT: add-authentication
@@ -265,6 +275,6 @@ Recommended thresholds:
 
 ### Minimal Eval Artifact Layout
 
-- `.claude/evals/<feature>.md` definition
-- `.claude/evals/<feature>.log` run history
+- `.reports/agent-workflows/evals/<feature>.md` definition
+- `.reports/agent-workflows/evals/<feature>.log` run history
 - `docs/releases/<version>/eval-summary.md` release snapshot
