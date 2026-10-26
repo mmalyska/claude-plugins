@@ -1,7 +1,7 @@
 {
   "name": "personal-essentials",
-  "description": "Meta-plugin — installs all mmalyska/claude-plugins at once via /personal-setup",
-  "version": "1.0.0",
+  "description": "Install the development plugin collection through the shared personal-setup workflow.",
+  "version": "1.0.1",
   "author": {
     "name": "Michał Małyska"
   },

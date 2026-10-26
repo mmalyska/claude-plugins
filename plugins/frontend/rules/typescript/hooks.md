@@ -5,18 +5,14 @@ paths:
   - "**/*.js"
   - "**/*.jsx"
 ---
-# TypeScript/JavaScript Hooks
 
-> This file extends [common/hooks.md](../common/hooks.md) with TypeScript/JavaScript specific content.
+# TypeScript/JavaScript Verification
 
-## PostToolUse Hooks
+Use the project's installed formatter and lint scripts after relevant edits,
+and its type-check command for TypeScript changes. Check changed code for
+accidental debug logging before finishing.
 
-Configure in `~/.claude/settings.json`:
-
-- **Prettier**: Auto-format JS/TS files after edit
-- **TypeScript check**: Run `tsc` after editing `.ts`/`.tsx` files
-- **console.log warning**: Warn about `console.log` in edited files
-
-## Stop Hooks
-
-- **console.log audit**: Check all modified files for `console.log` before session ends
+Claude Code may run these through configured PostToolUse/Stop hooks when the
+installed version supports them. Codex's bundled hooks are explicitly disabled
+in this collection; execute the same checks directly. Do not copy Claude hook
+matchers or settings into Codex. No hook is installed by reading this document.

@@ -1,75 +1,43 @@
 ---
 name: safety-guard
-description: Use this skill to prevent destructive operations when working on production systems or running agents autonomously.
-origin: ECC
+description: "Apply a requested cautious-operation or directory-scoped workflow in Claude Code or Codex, distinguishing guidance from enforcement."
+metadata:
+  origin: "ECC"
 ---
 
-# Safety Guard — Prevent Destructive Operations
+# Safety Guard
 
-## When to Use
+Use when the user asks for a cautious workflow or a restricted editing scope.
+This Markdown skill provides procedural checks. It does not install a hook,
+change the sandbox, intercept commands, or produce an automatic audit log.
 
-- When working on production systems
-- When agents are running autonomously (full-auto mode)
-- When you want to restrict edits to a specific directory
-- During sensitive operations (migrations, deploys, data changes)
+## Modes
 
-## How It Works
+- **Careful:** before a destructive operation, identify the target, inspect the
+  current state, and choose a reversible alternative when practical. Confirm
+  destructive operations that the current request has not authorized.
+- **Freeze:** record the allowed directory and check every proposed write target
+  against it, including shell redirection, rename destinations, and symlinks.
+  Read access follows the host's existing permissions. If a required write is
+  outside scope, explain it and ask for an expanded scope.
+- **Guard:** combine careful operation and freeze scope.
+- **Off:** stop applying this skill's extra workflow constraints. This cannot
+  disable host permissions, sandbox policy, or installed hooks.
 
-Three modes of protection:
+Treat `freeze src/api/` or `guard --dir src/api/` as user intent accompanying the
+skill, not a claim that these are installed CLI subcommands.
 
-### Mode 1: Careful Mode
+## Host controls
 
-Intercepts destructive commands before execution and warns:
+- **Claude Code:** inspect applicable permissions and installed hooks if the task
+  includes enforcement setup. This repository's git-workflows hook protects
+  worktree discipline; it is not a general safety-guard implementation.
+- **Codex:** follow active sandbox and approval settings. A setting that suppresses
+  approval prompts does not by itself restrict writes or destructive operations.
+  Codex hook support depends on the installed host and is disabled in this
+  collection's Codex manifests.
 
-```
-Watched patterns:
-- rm -rf (especially /, ~, or project root)
-- git push --force
-- git reset --hard
-- git checkout . (discard all changes)
-- DROP TABLE / DROP DATABASE
-- docker system prune
-- kubectl delete
-- chmod 777
-- sudo rm
-- npm publish (accidental publishes)
-- Any command with --no-verify
-```
-
-When detected: shows what the command does, asks for confirmation, suggests safer alternative.
-
-### Mode 2: Freeze Mode
-
-Locks file edits to a specific directory tree:
-
-```
-/safety-guard freeze src/components/
-```
-
-Any Write/Edit outside `src/components/` is blocked with an explanation. Useful when you want an agent to focus on one area without touching unrelated code.
-
-### Mode 3: Guard Mode (Careful + Freeze combined)
-
-Both protections active. Maximum safety for autonomous agents.
-
-```
-/safety-guard guard --dir src/api/ --allow-read-all
-```
-
-Agents can read anything but only write to `src/api/`. Destructive commands are blocked everywhere.
-
-### Unlock
-
-```
-/safety-guard off
-```
-
-## Implementation
-
-Uses PreToolUse hooks to intercept Bash, Write, Edit, and MultiEdit tool calls. Checks the command/path against the active rules before allowing execution.
-
-## Integration
-
-- Enable by default for `codex -a never` sessions
-- Pair with observability risk scoring in ECC 2.0
-- Logs all blocked actions to `~/.claude/safety-guard.log`
+If the user needs enforced restrictions, identify a verified host mechanism and
+prepare the concrete configuration separately. Do not claim enforcement or
+logging until that mechanism has been configured and checked. Report any
+remaining gaps, including writes performed inside arbitrary programs.

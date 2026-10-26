@@ -22,13 +22,16 @@ Create worktrees with the `using-git-worktrees` skill; finish with `finishing-a-
 |---|---|
 | Reviewer, explorer, anything read-only | The parent's worktree |
 | A single sequential implementer | The parent's worktree |
-| Two or more agents writing concurrently | One worktree each, via `isolation: "worktree"` |
+| Two or more agents writing concurrently | One worktree each, using supported native isolation or explicit git worktrees |
 
 Once the parent is in a worktree the blast radius is already off the default branch, so sharing it is fine and avoids merging branches for a one-file fix. Isolation exists to prevent one specific failure: two agents writing the same tree at once, each overwriting work it never saw. When agents fan out, the parent merges their branches afterward.
 
 ## The guard
 
-A `PreToolUse` hook in this plugin enforces the invariant. A subagent writing to the primary checkout is always denied. For the main session the verdict depends on whether anyone is there to answer it:
+In Claude Code, a configured `PreToolUse` hook in this plugin enforces the invariant.
+Codex manifests explicitly disable that hook; in Codex these are procedural
+worktree rules, not enforced interception. The permission-mode table below is
+Claude-specific. A subagent writing to the primary checkout is always denied. For the main session the verdict depends on whether anyone is there to answer it:
 
 | Permission mode | Verdict | Why |
 |---|---|---|
@@ -45,4 +48,5 @@ To work in the primary checkout deliberately for a whole session, start it with 
 
 It is telling you the target is the primary checkout. The fix is almost never to get past it — it is to create a worktree and redo the write there. Approve (or set the escape hatch) only when you actually intend to change the primary checkout, such as pulling the default branch or fixing something in `.git/`.
 
-When the guard denies a subagent, do not work around it by having the parent perform the write. Either re-dispatch with `isolation: "worktree"`, or point the subagent at the parent's existing worktree. Routing around the denial defeats the isolation it exists to provide.
+When the guard denies a subagent, do not work around it by having the parent perform the write. Either use the active host's supported worktree isolation, or point the subagent
+at the parent's existing worktree. Routing around the denial defeats the isolation it exists to provide.

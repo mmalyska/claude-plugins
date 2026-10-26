@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback
+description: "Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback"
 ---
 
 # Using Git Worktrees
@@ -38,7 +38,8 @@ Report with branch state:
 
 **If `GIT_DIR == GIT_COMMON` (or in a submodule):** You are in the primary checkout. The primary checkout is never a workspace — create a worktree. Do not ask permission; this is the default, not an option. The only path that works in place is a sandbox permission failure (Step 1b), which is a can't, not a won't.
 
-See [worktree-workflow.md](../../rules/worktree-workflow.md) for the invariant and the guard hook that enforces it.
+See [worktree-workflow.md](../../rules/worktree-workflow.md) for the invariant and Claude-specific guard behavior. Codex follows the same
+procedure with bundled hooks disabled.
 
 ## Step 1: Create Isolated Workspace
 
@@ -48,7 +49,12 @@ See [worktree-workflow.md](../../rules/worktree-workflow.md) for the invariant a
 
 Do you already have a way to create a worktree? It might be a tool with a name like `EnterWorktree`, `WorktreeCreate`, a `/worktree` command, or a `--worktree` flag. If you do, use it and skip to Step 3.
 
-Native tools handle directory placement, branch creation, and cleanup automatically. Using `git worktree add` when you have a native tool creates phantom state your harness can't see or manage.
+Use only native tools actually exposed by the host. Claude may expose
+`EnterWorktree`; Codex CLI supports managed `--worktree` sessions, but do not
+start another session merely to imitate an in-session tool. If an existing
+session has no native transition tool, use the git fallback.
+
+Native tools can handle directory placement, branch creation, and cleanup. Using `git worktree add` when you have a native tool creates phantom state your harness can't see or manage.
 
 **Two checks before you use one:**
 

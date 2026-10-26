@@ -1,7 +1,7 @@
 {
   "name": "git-workflows",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Git workflow skills — worktree guidance, PR creation, and commit conventions. Claude hooks are disabled in Codex.",
   "hooks": [],
-  "skills": "./codex-skills/"
+  "skills": "./skills/"
 }

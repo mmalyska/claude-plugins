@@ -1,25 +1,14 @@
 #!/usr/bin/env bash
 # scan-skills.sh — enumerate skill files, extract frontmatter and UTC mtime
-# Usage: scan-skills.sh [CWD_SKILLS_DIR]
-# Output: JSON to stdout
-#
-# When CWD_SKILLS_DIR is omitted, defaults to $PWD/.claude/skills so the
-# script always picks up project-level skills without relying on the caller.
-#
-# Environment:
-#   RULES_DISTILL_GLOBAL_DIR   Override ~/.claude/skills (for testing only;
-#                              do not set in production — intended for bats tests)
-#   RULES_DISTILL_PROJECT_DIR  Override project dir detection (for testing only)
+# Usage: scan-skills.sh [PROJECT_SKILLS_DIR] [GLOBAL_SKILLS_DIR]
+# Output: JSON to stdout. Explicit directories may belong to either host.
+# Legacy no-argument defaults remain ~/.claude/skills and $PWD/.claude/skills.
+# RULES_DISTILL_GLOBAL_DIR and RULES_DISTILL_PROJECT_DIR override those defaults.
 
 set -euo pipefail
 
-GLOBAL_DIR="${RULES_DISTILL_GLOBAL_DIR:-$HOME/.claude/skills}"
+GLOBAL_DIR="${RULES_DISTILL_GLOBAL_DIR:-${2:-$HOME/.claude/skills}}"
 CWD_SKILLS_DIR="${RULES_DISTILL_PROJECT_DIR:-${1:-$PWD/.claude/skills}}"
-# Validate CWD_SKILLS_DIR looks like a .claude/skills path (defense-in-depth).
-# Only warn when the path exists — a nonexistent path poses no traversal risk.
-if [[ -n "$CWD_SKILLS_DIR" && -d "$CWD_SKILLS_DIR" && "$CWD_SKILLS_DIR" != */.claude/skills* ]]; then
-  echo "Warning: CWD_SKILLS_DIR does not look like a .claude/skills path: $CWD_SKILLS_DIR" >&2
-fi
 
 # Extract a frontmatter field (handles both quoted and unquoted single-line values).
 # Does NOT support multi-line YAML blocks (| or >) or nested YAML keys.
@@ -32,14 +21,12 @@ extract_field() {
       n = length(f) + 2
       if (substr($0, 1, n) == f ": ") {
         val = substr($0, n+1)
-        gsub(/^"/, "", val)
-        gsub(/"$/, "", val)
         print val
         exit
       }
     }
     fm>=2 { exit }
-  ' "$file"
+  ' "$file" | jq -Rr 'if startswith("\"") then fromjson else . end'
 }
 
 # Get file mtime in UTC ISO8601 (portable: GNU and BSD)

@@ -1,6 +1,6 @@
 ---
 name: subagent-driven-development
-description: Use when executing implementation plans with independent tasks in the current session
+description: "Use when executing implementation plans with independent tasks in the current session"
 ---
 
 # Subagent-Driven Development
@@ -12,6 +12,16 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 **Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
 
 **Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are: BLOCKED status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
+
+## Host execution
+
+Check whether delegation is exposed and authorized. In Claude use the available
+Agent tool; in Codex use the delegation tool actually exposed in this session.
+Supply a focused context brief rather than requiring a specific context-inheritance
+flag. If delegation is unavailable, execute each implementation, spec-review,
+and quality-review pass sequentially yourself and disclose that review was not
+independent. Do not invoke a second CLI to bypass delegation restrictions.
+Keep commits and other side effects within the user's authorization.
 
 ## When to Use
 
@@ -51,15 +61,15 @@ digraph process {
         "Dispatch code quality reviewer subagent" [shape=box];
         "Code quality reviewer approves?" [shape=diamond];
         "Implementer fixes quality issues" [shape=box];
-        "Mark task complete in TodoWrite" [shape=box];
+        "Mark task complete in task checklist" [shape=box];
     }
 
-    "Read plan, extract all tasks, create TodoWrite" [shape=box];
+    "Read plan, extract all tasks, create task checklist" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer for entire implementation" [shape=box];
     "Use finishing-a-development-branch skill" [shape=box style=filled fillcolor=lightgreen];
 
-    "Read plan, extract all tasks, create TodoWrite" -> "Dispatch implementer subagent";
+    "Read plan, extract all tasks, create task checklist" -> "Dispatch implementer subagent";
     "Dispatch implementer subagent" -> "Implementer asks questions?";
     "Implementer asks questions?" -> "Answer questions" [label="yes"];
     "Answer questions" -> "Dispatch implementer subagent";
@@ -72,8 +82,8 @@ digraph process {
     "Dispatch code quality reviewer subagent" -> "Code quality reviewer approves?";
     "Code quality reviewer approves?" -> "Implementer fixes quality issues" [label="no"];
     "Implementer fixes quality issues" -> "Dispatch code quality reviewer subagent" [label="re-review"];
-    "Code quality reviewer approves?" -> "Mark task complete in TodoWrite" [label="yes"];
-    "Mark task complete in TodoWrite" -> "More tasks remain?";
+    "Code quality reviewer approves?" -> "Mark task complete in task checklist" [label="yes"];
+    "Mark task complete in task checklist" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent" [label="yes"];
     "More tasks remain?" -> "Dispatch final code reviewer for entire implementation" [label="no"];
     "Dispatch final code reviewer for entire implementation" -> "Use finishing-a-development-branch skill";
@@ -82,7 +92,9 @@ digraph process {
 
 ## Model Selection
 
-Use the least powerful model that can handle each role:
+Use the session's configured model by default. Only select another model when
+the user or active host instructions authorize it. When authorized, match
+capacity to each role:
 
 - **Mechanical tasks** (isolated functions, clear specs, 1-2 files): cheap/fast model
 - **Integration tasks** (multi-file coordination, pattern matching): standard model
@@ -115,7 +127,7 @@ Brief the implementer subagent with:
 
 **Spec reviewer:** Given the task spec and git diff, does the implementation cover everything in the spec with nothing extra? Report: ✅ compliant or ❌ with specific gaps/extras.
 
-**Code quality reviewer:** Review code quality against standards. Use `requesting-code-review` skill's template for full checklist. Report: ✅ approved or issues (Critical / Important / Minor).
+**Code quality reviewer:** Review code quality against standards. Use an available review skill, or inspect correctness, maintainability, security, and tests directly. Report: ✅ approved or issues (Critical / Important / Minor).
 
 ## Red Flags
 
@@ -133,6 +145,6 @@ Brief the implementer subagent with:
 ## Integration
 
 - **using-git-worktrees** — ensures isolated workspace
-- **writing-plans** — creates the plan this skill executes
-- **requesting-code-review** — code review template for reviewer subagents
+- Create an implementation plan with task dependencies and acceptance criteria; use a planning skill when available.
+- Use available review guidance, or the reviewer checklist above.
 - **finishing-a-development-branch** — complete development after all tasks

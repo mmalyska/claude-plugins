@@ -1,55 +1,19 @@
-# Performance Optimization
+# Performance and Context Management
 
-## Model Selection Strategy
+Use the active host's configured model and reasoning settings. Change them only
+when the user or session instructions authorize it; model names, context limits,
+prices, and reasoning controls vary by host and version. Do not assume Claude
+model tiers or thinking flags apply to Codex.
 
-**Haiku 4.5** (90% of Sonnet capability, 3x cost savings):
-- Lightweight agents with frequent invocation
-- Pair programming and code generation
-- Worker agents in multi-agent systems
+For complex changes, create a concrete plan and review task dependencies. Use
+available authorized role delegation where helpful, otherwise run focused review
+passes in the current session.
 
-**Sonnet 4.6** (Best coding model):
-- Main development work
-- Orchestrating multi-agent workflows
-- Complex coding tasks
+Keep context focused: read relevant files, move conditional detail into references,
+record accepted decisions and verification evidence, and create a resume brief
+before a session boundary. Use host-reported context limits when available; do
+not infer a fixed percentage remaining from file sizes or a model family name.
 
-**Opus 4.5** (Deepest reasoning):
-- Complex architectural decisions
-- Maximum reasoning requirements
-- Research and analysis tasks
-
-## Context Window Management
-
-Avoid last 20% of context window for:
-- Large-scale refactoring
-- Feature implementation spanning multiple files
-- Debugging complex interactions
-
-Lower context sensitivity tasks:
-- Single-file edits
-- Independent utility creation
-- Documentation updates
-- Simple bug fixes
-
-## Extended Thinking + Plan Mode
-
-Extended thinking is enabled by default, reserving up to 31,999 tokens for internal reasoning.
-
-Control extended thinking via:
-- **Toggle**: Option+T (macOS) / Alt+T (Windows/Linux)
-- **Config**: Set `alwaysThinkingEnabled` in `~/.claude/settings.json`
-- **Budget cap**: `export MAX_THINKING_TOKENS=10000`
-- **Verbose mode**: Ctrl+O to see thinking output
-
-For complex tasks requiring deep reasoning:
-1. Ensure extended thinking is enabled (on by default)
-2. Enable **Plan Mode** for structured approach
-3. Use multiple critique rounds for thorough analysis
-4. Use split role sub-agents for diverse perspectives
-
-## Build Troubleshooting
-
-If build fails:
-1. Use **build-error-resolver** agent
-2. Analyze error messages
-3. Fix incrementally
-4. Verify after each fix
+If a build fails, capture the real exit status and error, isolate the smallest
+failing change, fix it, and rerun the relevant check. Use a build-error-resolver
+role if available; it is not a required dependency.

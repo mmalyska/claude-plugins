@@ -1,19 +1,38 @@
 ---
 name: claude-devfleet
-description: Orchestrate multi-agent coding tasks via Claude DevFleet — plan projects, dispatch parallel agents in isolated worktrees, monitor progress, and read structured reports.
-origin: community
+description: "Orchestrate multi-agent coding tasks via Claude DevFleet — plan projects, dispatch parallel agents in isolated worktrees, monitor progress, and read structured reports."
+metadata:
+  origin: "community"
 ---
 
 # Claude DevFleet Multi-Agent Orchestration
+
+## Calling host and dependency
+
+This skill can run in Claude Code or Codex. DevFleet is an external service that
+runs Claude workers; it does not turn those workers into Codex agents. Check for
+the connected DevFleet MCP tools and their actual schemas before any call. If
+they are absent, report the dependency and offer local planning or sequential
+execution; do not claim a mission was dispatched. Creating the connection is a
+separate setup action. When requested, the CLI forms are:
+
+```sh
+# Claude Code caller
+claude mcp add devfleet --transport http http://localhost:18801/mcp
+# Codex caller
+codex mcp add devfleet --url http://localhost:18801/mcp
+```
+
+Verify the service URL with the user; localhost is an example. Inspect mission
+settings for auto-dispatch/auto-merge and ensure the requested scope authorizes
+those side effects before launching the chain. Poll with short nonblocking status
+calls rather than blocking the conversation for long waits.
 
 ## When to Use
 
 Use this skill when you need to dispatch multiple Claude Code agents to work on coding tasks in parallel. Each agent runs in an isolated git worktree with full tooling.
 
-Requires a running Claude DevFleet instance connected via MCP:
-```bash
-claude mcp add devfleet --transport http http://localhost:18801/mcp
-```
+Requires a running Claude DevFleet instance connected to the calling host via MCP.
 
 ## How It Works
 

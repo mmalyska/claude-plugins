@@ -4,6 +4,11 @@
 
 The Feature Implementation Workflow describes the development pipeline: research, planning, TDD, code review, and then committing to git.
 
+Use available connected tools for research; if GitHub CLI, Context7, or Exa is
+absent, use local code search and accessible primary documentation. Do not
+install external tools implicitly. Keep commit, push, and review-request actions
+within the user's explicit delivery scope.
+
 ## Feature Implementation Workflow
 
 0. **Research & Reuse** _(mandatory before any new implementation)_
@@ -20,20 +25,20 @@ The Feature Implementation Workflow describes the development pipeline: research
    - Branch as `<type>/<slug>`; the worktree lands at `.worktrees/<type>/<slug>`.
 
 2. **Plan First**
-   - Use **planner** agent to create implementation plan
+   - Create an implementation plan; use an available authorized planner role when helpful
    - Generate planning docs before coding: PRD, architecture, system_design, tech_doc, task_list
    - Identify dependencies and risks
    - Break down into phases
 
 3. **TDD Approach**
-   - Use **tdd-guide** agent
+   - Use available TDD guidance or perform RED-GREEN-REFACTOR directly
    - Write tests first (RED)
    - Implement to pass tests (GREEN)
    - Refactor (IMPROVE)
-   - Verify 80%+ coverage
+   - Verify the project's established coverage target and relevant changed behavior
 
 4. **Code Review**
-   - Use **code-reviewer** agent immediately after writing code
+   - Use an available authorized code-reviewer role or perform a separate local review pass
    - Address CRITICAL and HIGH issues
    - Fix MEDIUM issues when possible
 

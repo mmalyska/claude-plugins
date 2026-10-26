@@ -1,12 +1,13 @@
 ---
 name: verification-loop
-description: "A comprehensive verification system for Claude Code sessions."
-origin: ECC
+description: "A comprehensive verification system for Claude Code or Codex sessions."
+metadata:
+  origin: "ECC"
 ---
 
 # Verification Loop Skill
 
-A comprehensive verification system for Claude Code sessions.
+A comprehensive verification system for Claude Code or Codex sessions.
 
 ## When to Use
 
@@ -15,6 +16,14 @@ Invoke this skill:
 - Before creating a PR
 - When you want to ensure quality gates pass
 - After refactoring
+
+## Execution
+
+Discover commands from the project's own configuration; examples below apply
+only when those tools are already installed. Do not use package runners that
+fetch missing tools implicitly. Capture actual exit status (use `pipefail` if
+piping output), redact credentials, and mark unavailable checks as NOT RUN.
+Use the project's coverage target rather than imposing a new global threshold.
 
 ## Verification Phases
 
@@ -117,10 +126,11 @@ Set a mental checkpoint:
 - After finishing a component
 - Before moving to next task
 
-Run: /verify
+Invoke the verification-loop skill
 ```
 
 ## Integration with Hooks
 
-This skill complements PostToolUse hooks but provides deeper verification.
-Hooks catch issues immediately; this skill provides comprehensive review.
+In Claude this can complement installed PostToolUse hooks. In Codex the
+collection's bundled hooks are disabled; run verification explicitly. Never
+report a hook, background checkpoint, or test run that did not actually execute.

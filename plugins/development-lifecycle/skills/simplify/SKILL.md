@@ -1,6 +1,6 @@
 ---
 name: simplify
-description: Reduce complexity in recently changed code — guard clauses, extract helpers, deduplicate, name constants and conditions. Apply after code review or before shipping. Never changes behavior; reverts any change that breaks tests.
+description: "Reduce complexity in recently changed code — guard clauses, extract helpers, deduplicate, name constants and conditions. Apply after code review or before shipping. Never changes behavior; reverts any change that breaks tests."
 ---
 
 # Simplify
@@ -172,7 +172,7 @@ If nothing was simplified: `Code is already clean — no simplifications applied
 ## Lifecycle Position
 
 ```text
-/spec → /plan → superpowers execution → [simplify activates here] → /ship
+/spec → /plan → implementation → [simplify activates here] → /ship
 ```
 
 Simplify runs after implementation and review, before the `/ship` quality gate.

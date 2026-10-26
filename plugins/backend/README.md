@@ -17,6 +17,18 @@ Backend engineering skills for API design, Node.js/NestJS, PostgreSQL, database 
 ## Install
 
 ```sh
-claude plugin add marketplace github:mmalyska/claude-plugins
-claude plugin install backend@mmalyska/claude-plugins
+claude plugin marketplace add mmalyska/claude-plugins
+claude plugin install backend@mmalyska-claude-plugins
 ```
+
+## Codex
+
+After registering this repository marketplace:
+
+```sh
+codex plugin add backend@mmalyska-claude-plugins
+```
+
+Codex loads the same `skills/` files. Invoke them with `$<plugin>:<skill-name>`. Native
+Claude agent entrypoints remain Claude-specific; their role skills work in either
+host. Rules are on demand, and bundled Claude hooks are disabled in Codex.
