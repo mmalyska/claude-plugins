@@ -1,0 +1,7 @@
+{
+  "name": "security",
+  "version": "1.0.0",
+  "description": "Security skills — comprehensive security review checklists and Claude Code configuration security scanning",
+  "hooks": [],
+  "skills": "./codex-skills/"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "renovate",
+  "version": "0.1.0",
+  "description": "Renovate config authoring — extend mmalyska/renovate-config presets, custom regex managers, datasource-specific automerge",
+  "hooks": [],
+  "skills": "./codex-skills/"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "devcontainer",
+  "version": "0.1.0",
+  "description": "Dev container setup — custom GHCR image pipelines, secrets injection, Renovate integration for digest pinning",
+  "hooks": [],
+  "skills": "./codex-skills/"
+}
