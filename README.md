@@ -1,13 +1,34 @@
 # mmalyska/claude-plugins
 
-Personal Claude Code plugin marketplace.
+Personal plugin collection for Claude Code and Codex. Shared workflows live in
+`plugins/`; Codex packages are generated from those same sources.
 
-## Install
+## Install in Claude Code
 
 ```sh
 claude plugin add marketplace github:mmalyska/claude-plugins
 claude plugin install personal-essentials@mmalyska/claude-plugins
 ```
+
+## Install in Codex
+
+Requires Python 3.10+ and a Codex version with plugin support. From this checkout:
+
+```sh
+python3 scripts/build_codex.py
+codex plugin marketplace add ./build/codex
+codex plugin add personal-essentials@mmalyska-codex-plugins
+```
+
+Start a new Codex session after installation. You can install individual plugins
+instead, for example `codex plugin add frontend@mmalyska-codex-plugins`.
+Install either the bundle or individual plugins to avoid duplicate skills.
+
+Invoke workflows as skills, for example `$git-workflows-commit`,
+`$development-lifecycle-spec`, or `$frontend-frontend-patterns`. Agent roles are
+also exposed as skills, such as `$development-lifecycle-architect`.
+
+See [Codex compatibility and maintenance](docs/codex.md) for differences and updates.
 
 ## Plugins
 
