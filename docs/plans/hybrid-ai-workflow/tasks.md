@@ -1,6 +1,6 @@
 # Implementation tasks — Hybrid AI Engineering Workflow
 
-Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01 COMPLETE at `2194b9ad587963dd75a8d6b4fa320b963ee88f9a`; T02–T11 NOT STARTED. The user authorized T01 and subsequently its commit/push/PR; later product changes and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
+Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01 COMPLETE at `2194b9ad587963dd75a8d6b4fa320b963ee88f9a`; T02 COMPLETE on local branch `feat/hybrid-ai-workflow-contract`; T03–T11 NOT STARTED. The user authorized T01 and its commit/push/PR, then T02 implementation. The latest user instruction authorizes T02 commit/push/PR; T03+ and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
 
 All file paths are repository-relative. A task's listed files are its allowed proposed scope; do not add unrelated cleanup. Every task must record changed paths, exact commands, exit status, results/limitations, unresolved findings, and next action before checking its box. Native discovery/behavioral trials below are future maintainer gates and require a session in which launching the target CLI is permitted. Static instruction review is not a live model trial.
 
@@ -52,7 +52,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T02 — Establish the single lifecycle/profile/topology contract
 
-- [ ] Complete T02.
+- [x] Complete T02.
 
 **PR:** 1. **Dependencies:** T01.
 
@@ -69,6 +69,8 @@ The full suite validates all marketplace plugins through the existing discovery 
 **Tests/expected:** new contract tests and existing manifest/reference checks pass; tests fail against a fixture missing a stage, default or auth boundary. Manual read of QUICK/STANDARD/DEEP confirms same ordered lifecycle; DEEP + SOLO does not request workers. All new rule links resolve within the installed plugin.
 
 **Done:** one discoverable contract owns policy; all seven stages and four topology/fallback rules are clear; no blanket claim that installation intercepts arbitrary prompts. Remaining consumers of competing policy are explicitly queued for T03–T08.
+
+**Evidence:** [T02 completion evidence](audit.md#t02-contract-implementation-evidence). Five workflow-contract tests pass, including twelve invalid document samples and nine missing-section samples; three existing manifest/reference tests pass. Local scenario walkthroughs and Markdown checks passed; native/model trials were not run. The five implementation files listed above changed plus plan status/evidence; no manifest, adapter, old skill body or hook changed. Next action: stop before T03; the subsequent user instruction authorizes T02 commit/push/PR only.
 
 **Rollback:** revert contract, its index references, README summary and tests together.
 
@@ -334,4 +336,4 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## Completion record for this Plan stage
 
-The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. T01 is now complete; the next task is T02, which requires a subsequent instruction. No functional policy edit has been made.
+The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. T01 and T02 are complete. The contract and its existing rule index are now updated; remaining consumers are unchanged. The next task is T03, which requires a subsequent instruction. The subsequent user instruction authorizes publishing T02 as a PR. T01 PR #9 is merged; PR #10 now targets main with only the T02 increment.

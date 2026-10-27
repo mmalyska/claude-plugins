@@ -3,7 +3,13 @@ name: development-lifecycle-rules
 description: "Consult development-lifecycle coding and workflow conventions when working in this domain."
 ---
 
-Read only rules relevant to the current task.
+# Development Lifecycle Rules
+
+Read [the workflow contract](../../rules/common/workflow.md) first for lifecycle,
+profile/topology selection, defaults and authorization boundaries. Then read only
+the additional rules relevant to the task. This is on-demand guidance, not
+automatic session injection. Where a generic technique below conflicts with
+the contract, apply the contract while preserving mandatory project policy.
 
 - [agents](../../rules/common/agents.md)
 - [code-review](../../rules/common/code-review.md)
