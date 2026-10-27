@@ -1,6 +1,6 @@
 ---
 name: tdd-guide
-description: Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.
+description: "Guide selected test-first feature work and bug reproducers with project-specific coverage and relevant verification. Apply locally by default; separate-agent execution requires explicit user authorization."
 tools: ["Read", "Write", "Edit", "Bash", "Grep"]
 model: sonnet
 ---

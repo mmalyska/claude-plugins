@@ -1,6 +1,6 @@
 # Implementation tasks — Hybrid AI Engineering Workflow
 
-Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01 and T02 merged; T03 COMPLETE locally on `feat/hybrid-ai-workflow-profiles` at baseline `775372df4c65a397bc74687a20052ebb6c9c0852`; T04–T11 NOT STARTED. The latest PR instruction authorizes T03 commit/push/PR and planned paired manifest version increments; later tasks and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
+Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01–T03 merged; T04 COMPLETE locally on `feat/hybrid-ai-workflow-role-authorization` at `a6b54c40f7e1189fcfb4b36378edcfccaddf580d`; T05–T11 NOT STARTED. The latest PR instruction authorizes T04 commit/push/PR and planned paired version increments only; later tasks and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
 
 All file paths are repository-relative. A task's listed files are its allowed proposed scope; do not add unrelated cleanup. Every task must record changed paths, exact commands, exit status, results/limitations, unresolved findings, and next action before checking its box. Native discovery/behavioral trials below are future maintainer gates and require a session in which launching the target CLI is permitted. Static instruction review is not a live model trial.
 
@@ -110,7 +110,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T04 — Gate metadata and direct role/agent entrypoints
 
-- [ ] Complete T04.
+- [x] Complete T04.
 
 **PR:** 2. **Dependencies:** T03.
 
@@ -145,6 +145,8 @@ The full suite validates all marketplace plugins through the existing discovery 
 **Tests/expected:** entrypoint mapping and names unchanged; thin wrappers remain thin. Direct role in S01/S04 creates no worker. Native metadata no longer instructs unconditional spawning/TDD; security issue fixture cannot pass because a reviewer is absent. Conflicting host project-policy fixture is surfaced.
 
 **Done:** descriptions and bodies agree on authority; a native agent's availability is not permission to launch it, and naming a role need not change topology.
+
+**Evidence:** [T04 role authorization](audit.md#t04-role-authorization-evidence). 19 workflow tests (7 new), 3 manifest/reference tests and 2 scanner tests PASS. Ten paired descriptions agree; native non-description metadata and wrappers preserved, domain checklist hashes unchanged. Negative authority/security/conflict samples are static checks, not live model trials. No added Markdown file/rule diagnostics versus baseline; existing findings retained. No hook changes; T05+ unchecked. The subsequent PR instruction authorizes T04 delivery and paired version increments only.
 
 **Rollback:** revert paired description/body and tests together; retain actor authorization in downstream tasks until full dependent rollback.
 
@@ -338,4 +340,4 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## Completion record for this Plan stage
 
-The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. T01 and T02 are merged; T03 is locally complete and uncommitted. The sixteen T03 procedures/rules are updated; other consumers remain pending. The next implementation task is T04, which requires a subsequent instruction. T03 delivery is now authorized; T04 requires a subsequent instruction.
+The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. T01–T03 are merged; T04 is locally complete and uncommitted. The next implementation task is T05 and requires a subsequent instruction. T04 commit/push/PR is now authorized; T05 requires a subsequent instruction.

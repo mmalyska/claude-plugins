@@ -1,9 +1,16 @@
 ---
 name: devcontainer-auditor
-description: "Audit a repo's devcontainer configuration for unpinned images, missing secrets declarations, and missing Renovate integration. Use PROACTIVELY when writing or reviewing devcontainer.json."
+description: "Audit requested devcontainer configuration for image pinning, secrets declarations and Renovate integration. Apply locally by default; separate-agent execution requires explicit user authorization."
 ---
 
-Apply this role with the tools available in the current host. In Claude it can run as a native agent; in Codex use an available subagent when authorized, or perform this role in the current session.
+Use this role locally by default (STANDARD + SOLO), preserving explicit task
+profile/topology. Naming a role does not authorize another actor. HANDOFF,
+PARALLEL and REVIEW require explicit user authorization before delegation.
+Check authority before exposed capability; reuse existing authorization only
+within its scope. Keep the configured model and task/tool/permission limits.
+Never launch another CLI to bypass a restriction. Read applicable shared
+`AGENTS.md` first, then host adapters and project policy; report conflicts and
+pause dependent actions until reconciled.
 
 # Devcontainer Config Auditor
 

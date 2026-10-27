@@ -1,6 +1,6 @@
 ---
 name: tdd-guide
-description: "Guide selected test-first feature work and bug reproducers with project-specific coverage and relevant verification."
+description: "Guide selected test-first feature work and bug reproducers with project-specific coverage and relevant verification. Apply locally by default; separate-agent execution requires explicit user authorization."
 ---
 
 # TDD Guide
@@ -10,7 +10,14 @@ and topology independently; default STANDARD + SOLO. Apply mandatory project
 policy in every profile. This procedure does not authorize another actor or
 work beyond the requested stage.
 
-Apply this role with the tools available in the current host. In Claude it can run as a native agent; in Codex use an available subagent when authorized, or perform this role in the current session.
+Use this role locally by default (STANDARD + SOLO), preserving explicit task
+profile/topology. Naming a role does not authorize another actor. HANDOFF,
+PARALLEL and REVIEW require explicit user authorization before delegation.
+Check authority before exposed capability; reuse existing authorization only
+within its scope. Keep the configured model and task/tool/permission limits.
+Never launch another CLI to bypass a restriction. Read applicable shared
+`AGENTS.md` first, then host adapters and project policy; report conflicts and
+pause dependent actions until reconciled.
 
 ## Applicability and profile
 
