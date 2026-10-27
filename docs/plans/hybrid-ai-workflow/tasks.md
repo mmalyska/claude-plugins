@@ -1,6 +1,6 @@
 # Implementation tasks — Hybrid AI Engineering Workflow
 
-Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: all tasks NOT STARTED. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
+Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01 COMPLETE at `2194b9ad587963dd75a8d6b4fa320b963ee88f9a`; T02–T11 NOT STARTED. The user authorized T01 and subsequently its commit/push/PR; later product changes and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
 
 All file paths are repository-relative. A task's listed files are its allowed proposed scope; do not add unrelated cleanup. Every task must record changed paths, exact commands, exit status, results/limitations, unresolved findings, and next action before checking its box. Native discovery/behavioral trials below are future maintainer gates and require a session in which launching the target CLI is permitted. Static instruction review is not a live model trial.
 
@@ -34,7 +34,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T01 — Revalidate baseline and freeze compatibility inventory
 
-- [ ] Complete T01.
+- [x] Complete T01.
 
 **PR:** 1. **Dependencies:** implementation instruction; none of the later tasks.
 
@@ -45,6 +45,8 @@ The full suite validates all marketplace plugins through the existing discovery 
 **Tests/expected:** 3 manifest tests, 2 scanner tests, 58 guard assertions pass at the audited base; changes since then require explanation. No model calls or real repository commits from fixture tests. Missing native capabilities remain NOT RUN.
 
 **Done:** inventory and reproducible baseline recorded; failures classified as fixture/environment or regression with evidence; affected task scopes refreshed before continuing. Do not proceed past a genuine unexplained baseline failure. Preserve the planning worktree; use a separately authorized implementation branch/worktree for future production edits.
+
+**Evidence:** [T01 baseline and frozen inventory](audit.md#t01-baseline-refresh-and-frozen-compatibility-inventory). Execution branch `feat/hybrid-ai-workflow`; manifest tests 3/3, scanner tests 2/2, guard 58/58 with per-process signing override. Initial guard failure was reproduced and classified as fixture signing, not a product regression. No source drift beyond merged plan documents; T02–T11 scopes unchanged. Only plan.md, tasks.md and audit.md updated; no unresolved baseline regression. Next action: await T02 instruction; the subsequent user instruction authorizes commit/push/PR of T01 evidence only.
 
 **Rollback:** no product change; retain evidence and remove no user data.
 
@@ -332,4 +334,4 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## Completion record for this Plan stage
 
-The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. The recommended next implementation task is T01; the first functional policy edit after that is T02.
+The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. T01 is now complete; the next task is T02, which requires a subsequent instruction. No functional policy edit has been made.
