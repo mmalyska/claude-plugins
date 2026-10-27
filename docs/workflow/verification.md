@@ -10,9 +10,38 @@ packaging, manual OpenCode and deferred consumers. There is no new execution
 engine, evaluator service, model runner, scheduler or orchestrator.
 
 Local implementation and static preparation are complete. **Release acceptance
-is BLOCKED by required NOT RUN gates.** No full workflow conformance is claimed.
+is BLOCKED by required failed/unrun gates.** No full workflow conformance is claimed.
 A successful static suite, local walkthrough or copied filesystem is not proof of
 native installation, model obedience, independent review or runtime safety.
+
+## Post-merge native metadata update
+
+The user subsequently authorized isolated Claude/Codex CLI installation and
+metadata discovery, without model turns or other actors. See the
+[native evidence](evidence/2026-10-27-native-metadata.md) for trials against merged
+T11 SHA `5d3703739ffff207cdc98f606a32c260794bc6f8` and the temporary-config fixture fix.
+Claude metadata validation/install checks passed. Both hosts completed actual
+fresh/remove/reinstall content checks; all 70 canonical skills were discovered
+in Codex. Strict Codex discovery remains FAIL due to extra host-generated aliases,
+whose relative source links fail containment/target validation. No gate is waived.
+Earlier NOT RUN entries below describe the original T11 session, not this later
+metadata authorization. All live scenario columns remain NOT RUN.
+
+The user then included locally installed OpenCode. The
+[OpenCode 2.2.0 evidence](evidence/2026-10-27-opencode-metadata.md) records PASS for
+70/70 shared-skill discovery/body/link checks through explicit temporary sources,
+including detach/reattach. Asynchronous metadata readiness is required. No
+production adapter or namespace parity is claimed; live behavior remains NOT RUN.
+
+### Codex alias fix and current metadata status
+
+A later explicit fix/PR instruction authorized Codex manifest command-import
+opt-outs and paired patch versions. See [post-fix evidence](evidence/2026-10-27-codex-alias-fix.md):
+all three native methods PASS; actual fresh/remove/reinstall checks PASS for both
+hosts; exact full-catalog Codex discovery is 70 canonical skills with zero aliases.
+Earlier FAIL and NOT RUN snapshots are retained below and in dated evidence.
+The observed alias blocker is resolved for Codex 0.164.0. Release remains blocked
+by required live/platform/prior-version rollback gates; no full conformance claim.
 
 ## Revision and environment of observed checks
 

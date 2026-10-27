@@ -278,6 +278,20 @@ class SharedPluginTest(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 check.assert_installed_content('development-lifecycle', lifecycle)
 
+    def test_codex_command_wrappers_do_not_generate_a_second_skill_catalog(self):
+        owners = {Path(path).parts[1] for path in FROZEN_T01_WRAPPERS if '/commands/' in path}
+        self.assertEqual(owners, {'development-lifecycle', 'git-workflows', 'personal-essentials'})
+        for owner in owners:
+            with self.subTest(plugin=owner):
+                plugin = ROOT / 'plugins' / owner
+                codex = json.loads((plugin / '.codex-plugin/plugin.json').read_text())
+                claude = json.loads((plugin / '.claude-plugin/plugin.json').read_text())
+                self.assertEqual(codex.get('commands'), [])
+                self.assertNotIn('commands', claude)  # Retain Claude's default entrypoint scan.
+                self.assertTrue(list(plugin.glob('commands/*.md')))
+                self.assertEqual(codex['skills'], './skills/')
+                self.assertEqual(codex['hooks'], [])
+
     def test_personal_setup_contains_both_host_installations(self):
         catalog = json.loads((ROOT / '.claude-plugin/marketplace.json').read_text())
         setup = (ROOT / 'plugins/personal-essentials/skills/personal-setup/SKILL.md').read_text()

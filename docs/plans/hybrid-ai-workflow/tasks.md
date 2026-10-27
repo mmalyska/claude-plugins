@@ -346,14 +346,13 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## Completion and current execution record
 
-The original Plan stage created only plan/tasks/audit documents in SOLO.
-T01–T10 are merged; T11 local implementation/preparation is complete and uncommitted.
-Primary is clean on main. All local implementation tasks have evidence, but final
-release acceptance is BLOCKED: native installation/discovery/actual reinstall,
-Bash 3.2, live S01–S16 and actual prior-version rollback smoke remain NOT RUN.
-Consumer-only AC12/AC14/AC18 and native OpenCode remain deferred, not completed.
-No subsequent implementation task or release is implicit. The subsequent PR
-instruction authorizes T11 commit/push/PR; host/actor/platform evidence collection
-requires separate authority. Prior worktrees
-and user state remain preserved; no other harness, actor, service or scheduler
-was started. See [verification](../../workflow/verification.md) and [audit](audit.md).
+T01–T11 are merged. User-authorized native metadata verification found a temporary
+CODEX_HOME fixture issue and legacy Codex command alias generation; the subsequent
+fix/PR instruction authorizes the correction and publication. All three native
+methods now PASS and exact Codex discovery returns 70 canonical skills with zero
+aliases. Fresh/remove/reinstall checks PASS for both hosts. Static checks: 68 PASS.
+Prior OpenCode explicit-source metadata passed 70/70, with no production adapter.
+Primary remains clean on main. Release is still blocked by live/model/actor trials,
+Bash 3.2 and actual previous-revision rollback; consumer acceptance stays deferred.
+Publish the requested PR; merge/release/model/actor/runtime scope is not inferred.
+See [post-fix evidence](../../workflow/evidence/2026-10-27-codex-alias-fix.md).

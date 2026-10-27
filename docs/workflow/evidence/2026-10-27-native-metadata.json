@@ -1,0 +1,656 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "implementation_sha": "5d3703739ffff207cdc98f606a32c260794bc6f8",
+  "host_versions": {
+    "claude": "2.1.312",
+    "codex": "0.164.0"
+  },
+  "scope": "CLI plugin metadata and install/remove/reinstall only; no model turns or actors",
+  "strict_native_result": {
+    "claude": "PASS",
+    "codex": "FAIL"
+  },
+  "runs": [
+    {
+      "host": "claude",
+      "plugins": [
+        "development-lifecycle"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 22,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "development-lifecycle"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 22,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "git-workflows"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 5,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "git-workflows"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 5,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "agent-toolkit"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 14,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "agent-toolkit"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 14,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "development-lifecycle",
+        "git-workflows",
+        "agent-toolkit"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 41,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "development-lifecycle",
+        "git-workflows",
+        "agent-toolkit"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 41,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "agent-toolkit",
+        "android",
+        "backend",
+        "devcontainer",
+        "development-lifecycle",
+        "devops",
+        "dotnet",
+        "frontend",
+        "git-workflows",
+        "personal-essentials",
+        "renovate",
+        "security"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 70,
+      "content": "PASS"
+    },
+    {
+      "host": "claude",
+      "plugins": [
+        "agent-toolkit",
+        "android",
+        "backend",
+        "devcontainer",
+        "development-lifecycle",
+        "devops",
+        "dotnet",
+        "frontend",
+        "git-workflows",
+        "personal-essentials",
+        "renovate",
+        "security"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 70,
+      "content": "PASS"
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "development-lifecycle"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 22,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 10,
+      "alias_link_errors": {
+        "development-lifecycle:source-command-aside": [
+          [
+            "missing-target",
+            "../skills/aside/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-code-review": [
+          [
+            "missing-target",
+            "../skills/code-review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-learn-eval": [
+          [
+            "missing-target",
+            "../skills/learn-eval/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-review": [
+          [
+            "missing-target",
+            "../skills/review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-ship": [
+          [
+            "missing-target",
+            "../skills/ship/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-skill-create": [
+          [
+            "missing-target",
+            "../skills/skill-create/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-spec": [
+          [
+            "missing-target",
+            "../skills/spec/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-test": [
+          [
+            "missing-target",
+            "../skills/test/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-codemaps": [
+          [
+            "missing-target",
+            "../skills/update-codemaps/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-docs": [
+          [
+            "missing-target",
+            "../skills/update-docs/SKILL.md"
+          ]
+        ]
+      }
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "development-lifecycle"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 22,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 10,
+      "alias_link_errors": {
+        "development-lifecycle:source-command-aside": [
+          [
+            "missing-target",
+            "../skills/aside/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-code-review": [
+          [
+            "missing-target",
+            "../skills/code-review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-learn-eval": [
+          [
+            "missing-target",
+            "../skills/learn-eval/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-review": [
+          [
+            "missing-target",
+            "../skills/review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-ship": [
+          [
+            "missing-target",
+            "../skills/ship/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-skill-create": [
+          [
+            "missing-target",
+            "../skills/skill-create/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-spec": [
+          [
+            "missing-target",
+            "../skills/spec/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-test": [
+          [
+            "missing-target",
+            "../skills/test/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-codemaps": [
+          [
+            "missing-target",
+            "../skills/update-codemaps/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-docs": [
+          [
+            "missing-target",
+            "../skills/update-docs/SKILL.md"
+          ]
+        ]
+      }
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "git-workflows"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 5,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 0,
+      "alias_link_errors": {}
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "git-workflows"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 5,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 0,
+      "alias_link_errors": {}
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "agent-toolkit"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 14,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 0,
+      "alias_link_errors": {}
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "agent-toolkit"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 14,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 0,
+      "alias_link_errors": {}
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "development-lifecycle",
+        "git-workflows",
+        "agent-toolkit"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 41,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 10,
+      "alias_link_errors": {
+        "development-lifecycle:source-command-aside": [
+          [
+            "missing-target",
+            "../skills/aside/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-code-review": [
+          [
+            "missing-target",
+            "../skills/code-review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-learn-eval": [
+          [
+            "missing-target",
+            "../skills/learn-eval/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-review": [
+          [
+            "missing-target",
+            "../skills/review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-ship": [
+          [
+            "missing-target",
+            "../skills/ship/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-skill-create": [
+          [
+            "missing-target",
+            "../skills/skill-create/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-spec": [
+          [
+            "missing-target",
+            "../skills/spec/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-test": [
+          [
+            "missing-target",
+            "../skills/test/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-codemaps": [
+          [
+            "missing-target",
+            "../skills/update-codemaps/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-docs": [
+          [
+            "missing-target",
+            "../skills/update-docs/SKILL.md"
+          ]
+        ]
+      }
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "development-lifecycle",
+        "git-workflows",
+        "agent-toolkit"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 41,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 10,
+      "alias_link_errors": {
+        "development-lifecycle:source-command-aside": [
+          [
+            "missing-target",
+            "../skills/aside/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-code-review": [
+          [
+            "missing-target",
+            "../skills/code-review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-learn-eval": [
+          [
+            "missing-target",
+            "../skills/learn-eval/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-review": [
+          [
+            "missing-target",
+            "../skills/review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-ship": [
+          [
+            "missing-target",
+            "../skills/ship/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-skill-create": [
+          [
+            "missing-target",
+            "../skills/skill-create/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-spec": [
+          [
+            "missing-target",
+            "../skills/spec/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-test": [
+          [
+            "missing-target",
+            "../skills/test/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-codemaps": [
+          [
+            "missing-target",
+            "../skills/update-codemaps/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-docs": [
+          [
+            "missing-target",
+            "../skills/update-docs/SKILL.md"
+          ]
+        ]
+      }
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "agent-toolkit",
+        "android",
+        "backend",
+        "devcontainer",
+        "development-lifecycle",
+        "devops",
+        "dotnet",
+        "frontend",
+        "git-workflows",
+        "personal-essentials",
+        "renovate",
+        "security"
+      ],
+      "phase": "fresh",
+      "canonical_skills": 70,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 11,
+      "alias_link_errors": {
+        "development-lifecycle:source-command-aside": [
+          [
+            "missing-target",
+            "../skills/aside/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-code-review": [
+          [
+            "missing-target",
+            "../skills/code-review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-learn-eval": [
+          [
+            "missing-target",
+            "../skills/learn-eval/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-review": [
+          [
+            "missing-target",
+            "../skills/review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-ship": [
+          [
+            "missing-target",
+            "../skills/ship/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-skill-create": [
+          [
+            "missing-target",
+            "../skills/skill-create/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-spec": [
+          [
+            "missing-target",
+            "../skills/spec/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-test": [
+          [
+            "missing-target",
+            "../skills/test/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-codemaps": [
+          [
+            "missing-target",
+            "../skills/update-codemaps/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-docs": [
+          [
+            "missing-target",
+            "../skills/update-docs/SKILL.md"
+          ]
+        ],
+        "personal-essentials:source-command-personal-setup": [
+          [
+            "missing-target",
+            "../skills/personal-setup/SKILL.md"
+          ]
+        ]
+      }
+    },
+    {
+      "host": "codex",
+      "plugins": [
+        "agent-toolkit",
+        "android",
+        "backend",
+        "devcontainer",
+        "development-lifecycle",
+        "devops",
+        "dotnet",
+        "frontend",
+        "git-workflows",
+        "personal-essentials",
+        "renovate",
+        "security"
+      ],
+      "phase": "remove-reinstall",
+      "canonical_skills": 70,
+      "content": "PASS",
+      "canonical_discovery": "PASS",
+      "host_alias_count": 11,
+      "alias_link_errors": {
+        "development-lifecycle:source-command-aside": [
+          [
+            "missing-target",
+            "../skills/aside/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-code-review": [
+          [
+            "missing-target",
+            "../skills/code-review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-learn-eval": [
+          [
+            "missing-target",
+            "../skills/learn-eval/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-review": [
+          [
+            "missing-target",
+            "../skills/review/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-ship": [
+          [
+            "missing-target",
+            "../skills/ship/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-skill-create": [
+          [
+            "missing-target",
+            "../skills/skill-create/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-spec": [
+          [
+            "missing-target",
+            "../skills/spec/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-test": [
+          [
+            "missing-target",
+            "../skills/test/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-codemaps": [
+          [
+            "missing-target",
+            "../skills/update-codemaps/SKILL.md"
+          ]
+        ],
+        "development-lifecycle:source-command-update-docs": [
+          [
+            "missing-target",
+            "../skills/update-docs/SKILL.md"
+          ]
+        ],
+        "personal-essentials:source-command-personal-setup": [
+          [
+            "missing-target",
+            "../skills/personal-setup/SKILL.md"
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1551,3 +1551,127 @@ so no manifest/version increment is needed. Static verification is repeated for
 publishing the candidate; three native tests stay NOT RUN. Merge, release/tag,
 consumer migration, runtime and additional harness/actor trials remain outside
 this delivery instruction.
+
+## Post-T11 authorized native metadata evidence
+
+The user merged PR #19, then explicitly authorized isolated CLI Claude/Codex
+installation and discovery without model turns or additional actors. Primary was
+updated fast-forward to `5d3703739ffff207cdc98f606a32c260794bc6f8` and remains clean
+on main. Verification uses branch `test/hybrid-ai-workflow-native-verification`,
+linked worktree `/workspaces/claude-plugins/.worktrees/test/hybrid-ai-workflow-native-verification`.
+No model, worker, service, consumer migration, runtime, commit/push/PR or release
+is part of this narrower metadata authority.
+
+Installed versions are Claude 2.1.312 and Codex 0.164.0. The first native suite run
+passed both Claude methods; Codex failed before install because its temporary
+CODEX_HOME directory did not exist. The sole maintainer-code correction creates
+that directory before the CLI call. The fail-fast rerun reached actual discovery:
+Claude PASS, strict Codex identity equality FAIL due to extra generated command
+aliases. The assertion remains unchanged; no native failure is hidden as PASS.
+
+A separately recorded diagnostic completed actual fresh/remove/reinstall for
+both hosts, each owner alone, owners combined and all catalog plugins. It uses
+fully disposable marketplace copies because Claude local installs may load source
+in place. A diagnostic stopped before uninstall when source was outside its
+trial root, then resumed with that isolation corrected. All 20 content/registration
+phase records passed; all 70 canonical Codex skills match source paths and bytes.
+Observed extra aliases are zero for git/toolkit, ten for lifecycle/combined owners,
+and eleven for all plugins (including personal-setup). Generated alias relative
+links report missing-target when resolved from their files. No alias invocation
+or model behavior is claimed. Overall Codex native acceptance remains FAIL.
+
+Durable details, equivalent reproduction loop, local-help/official references,
+exact missing-link pattern and limitations are in
+[native metadata evidence](../../workflow/evidence/2026-10-27-native-metadata.md),
+with [structured observations](../../workflow/evidence/2026-10-27-native-metadata.json).
+Changed files: `tests/test_host_discovery.py` (one-line config mkdir), these three
+plan/evidence documents, `docs/workflow/verification.md` (dated metadata update),
+and the two native-evidence files above. No plugin, manifest, wrapper, source spec,
+historical artifact or sibling repository changed; no version bump is needed.
+
+Local review checks scope, source hashes/identities, temporary-config isolation,
+strict failure preservation, recorded native/behavior distinctions, Markdown/links
+and continued clean primary state. Static tests remain 67 PASS with native opt-in
+off; that skip-mode run is not the metadata result. The native suite's observed
+post-fix result is two methods PASS and Codex FAIL, supplemented by the narrower
+20-phase diagnostic. No second execution is claimed as a complete suite PASS.
+Live S01–S16, Bash 3.2, previous-revision rollback, Git-backed installs and consumer
+checks remain NOT RUN or deferred. Release/conformance remains blocked.
+
+Revert the fixture correction and this follow-up evidence together if needed;
+preserve user settings/providers/worktrees. Resolve supported generated-command
+behavior before any production packaging change or relaxed gate. Await explicit
+follow-up or delivery; no new topology, model call or release is authorized here.
+
+### User-requested OpenCode metadata extension
+
+The user explicitly suggested testing local OpenCode during the same metadata
+work. Installed version is 2.2.0. Read-only CLI help/version/path inspection and
+v2 official interfaces established different syntax from v1. Sandbox private
+startup failed; normal scoped escalation allowed a private loopback metadata
+server. Immediate one-shot skill-list responses were empty even with loaded
+config. A persistent authenticated server established asynchronous registration;
+bounded readiness now requires the expected source IDs and a harmless sentinel.
+A 401 without the transient server credential was a diagnostic precondition,
+not a skill-discovery result; credentials are not retained in published evidence.
+
+All 15 configured/detached/reattached source phases passed for owners alone,
+owners combined and all 12 plugin trees: 70/70 canonical directory IDs in the full
+catalog, matching bodies and plugin-local links. Metadata uses temporary XDG
+roots and copied source trees, terminated private servers, GET-only routes and
+zero sessions/model turns. Global compatibility metadata may be read; assertions
+filter by exact disposable source path and save no unrelated user metadata.
+No native packaging, hook, agent or namespace adapter is implemented; unqualified
+v2 IDs and explicit temporary skill roots are a manual-config route only.
+
+See [OpenCode evidence](../../workflow/evidence/2026-10-27-opencode-metadata.md) and
+[observations](../../workflow/evidence/2026-10-27-opencode-metadata.json). These two
+additional documents and small current-state references extend the already
+recorded native-evidence scope. Production files, manifests and sibling repos
+remain untouched. Strict Codex discovery still FAILS; OpenCode live policy,
+permission/worktree trials and packaging parity remain NOT RUN or deferred.
+No model/actor/runtime/delivery/release scope is added by this metadata success.
+
+## Codex alias fix and authorized PR preparation
+
+The user requested fixing the Codex aliases and creating a PR. Existing native
+metadata evidence is retained in this task worktree and included in the reviewable
+change; prior FAIL snapshots are not rewritten into successes. Upstream importer
+code supports an explicit commands path array before default legacy directory
+scanning. A disposable Codex 0.164.0 probe verified `commands: []` yields exactly
+22 canonical lifecycle skills; the full native suite then passed without relaxing
+its exact identity/path equality assertion.
+
+Production changes are restricted to six paired manifests: development-lifecycle
+1.2.7, git-workflows 1.3.5, personal-essentials 1.0.2. Their Codex manifests gain
+`commands: []`; Claude manifests change only version. All 23 native wrappers,
+all 70 shared skill bodies, hooks, marketplace, historical/source-spec artifacts
+and sibling repositories remain unchanged. Toolkit/domain packages do not bump.
+No new skill, generated catalog, namespace adapter or lifecycle is created.
+
+`tests/test_codex_manifests.py` adds one regression for all three command-owning
+plugins: opt out in Codex, retain Claude scan, keep canonical skills and empty
+hooks. `tests/test_host_discovery.py` retains the earlier one-line creation of
+temporary CODEX_HOME. `docs/codex.md` explains the supported opt-out and links the
+new post-fix evidence. The three plan/evidence files and verification overview
+now distinguish current PASS from historical FAIL/NOT RUN.
+
+Native command: `WORKFLOW_NATIVE_TESTS=1 python3 -B -m unittest discover -s tests
+-p test_host_discovery.py -v`: 3 tests PASS, no skips, 66.347 seconds. A separate
+static-only suite gives 68 PASS and three expected native skips. Actual disposable
+fresh/remove/reinstall was repeated for both hosts, each owner alone, owners
+combined and all 12 catalog plugins: all 20 records PASS; full Codex discovery
+is exactly 70 canonical skills, zero aliases/link failures after both installs.
+The native assertions are unchanged and no extra-name allowance is introduced.
+
+See [post-fix details](../../workflow/evidence/2026-10-27-codex-alias-fix.md) and
+[structured results](../../workflow/evidence/2026-10-27-codex-alias-fix.json) for
+candidate versions/hashes, actual output, source mechanism, phases and limits.
+New and changed Markdown lint/link/JSON/scope checks pass; primary stays clean on
+main. Separate local review checked paired versions, preserved names/bodies,
+source containment, strict equality and current versus historical evidence. No
+independent actor was launched. Remaining release gates are live S01–S16, Bash
+3.2 and actual prior-revision rollback; consumer/OpenCode production integration
+remains deferred. Commit/push/PR is authorized; merge/release/runtime/models/actors
+are not. Roll back paired manifests and regression/docs together, preserving
+user config/providers/worktrees; no runtime action is reversed by a guidance revert.

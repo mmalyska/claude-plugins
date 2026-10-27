@@ -164,6 +164,7 @@ class HostDiscoveryTest(unittest.TestCase):
                 root = Path(temporary)
                 workspace = root / 'workspace'
                 workspace.mkdir()
+                (root / 'config').mkdir()
                 environment = dict(os.environ, CODEX_HOME=str(root / 'config'))
                 self.cli('codex', ['plugin', 'marketplace', 'add', str(ROOT)], environment, workspace)
                 for phase in ('fresh', 'repeat-install-request'):
