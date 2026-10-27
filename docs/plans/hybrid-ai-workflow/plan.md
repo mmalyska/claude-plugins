@@ -8,12 +8,12 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: T01–T09 merged; T10 COMPLETE locally. T11 NOT STARTED; native/live checks remain NOT RUN and no complete workflow conformance claim is made.
-- Current authority: T10 compatibility, manual OpenCode/deferred-consumer strategy and local documentation verification in DEEP + SOLO. The subsequent user instruction authorizes T10 commit/push/PR and planned paired manifest increments; T11, merge, deployment, subagent, second harness, service, scheduler and orchestrator launch remain unauthorized.
-- T10 baseline: `8a0ef66605cf8c1de8dfada4489e3601781a7e4a` (`main` after merged T09 PR #17).
-- T10 branch/worktree: `docs/hybrid-ai-workflow-compatibility`, `/workspaces/claude-plugins/.worktrees/docs/hybrid-ai-workflow-compatibility`.
+- Status: T01–T10 merged; T11 local implementation/preparation COMPLETE. Native/platform/live/rollback acceptance remains incomplete; required NOT RUN gates block release and full workflow conformance.
+- Current authority: T11 data-only scenarios, maintainer tests, local verification and acceptance evidence in DEEP + SOLO. The subsequent user instruction authorizes T11 commit/push/PR; merge, release/tag, consumer migration, runtime, subagent, second harness, service, scheduler and orchestrator launch remain unauthorized.
+- T11 baseline: `9b53f84fc53aae20ee03ecfd2a4f22638d841cf6` (`main` after merged T10 PR #18).
+- T11 branch/worktree: `test/hybrid-ai-workflow-acceptance`, `/workspaces/claude-plugins/.worktrees/test/hybrid-ai-workflow-acceptance`.
 - Previous worktrees and historical evidence remain preserved. Primary stays clean on main.
-- Next action: publish T10 under the current PR instruction, then await explicit T11 instruction. Native installation/discovery, installed-resource consumption, platform/guard and behavioral acceptance evidence remain release gates; consumer migration and native OpenCode remain deferred.
+- Next action: publish T11 under the current PR instruction, retaining the [verification protocol](../../workflow/verification.md); further native/actor/platform trials require separate authority. No additional implementation task is implicit, and no release acceptance is granted by static success.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.
@@ -306,3 +306,47 @@ No service, worker, schedule or connection was created. Hooks, native adapters a
 At the authorized PR boundary, only version fields for agent-toolkit and
 development-lifecycle are incremented in both host manifests. Publish T07 only;
 stop before T08.
+
+## T11 current acceptance evidence
+
+This supersedes historical task-status snapshots above without changing their
+recorded baselines. See [verification](../../workflow/verification.md) for the
+candidate revision, commands, scenario trace table, limits and future trial protocol.
+T11's current tree has no plugin implementation or manifest changes. Local work
+is complete; final acceptance remains BLOCKED by required missing evidence.
+
+| Spec AC | Concrete evidence now | Missing / limited acceptance |
+| --- | --- | --- |
+| AC1 | Packaged STANDARD + SOLO, direct-entry/default checks; S01/unknown-value variants; manual OpenCode route documented | Claude/Codex live default behavior NOT RUN; OpenCode native parity deferred |
+| AC2 | One seven-stage contract and profile tables; source-deletion guards and S02–S04 trace | Host behavior for each profile NOT RUN |
+| AC3 | SOLO guards in roles/toolkit; S04/S05 no-actor and revocation cases | Actual no-dispatch behavior in live hosts NOT RUN |
+| AC4 | Explicit topology guards, S05–S08 authority/assignment cases | Authorized and unauthorized live actor trials NOT RUN |
+| AC5 | Project-gate, isolation and permission source guards; S02/S03/S12; Linux/Bash 5 guard 58/58 | Live QUICK behavior and Bash 3.2 target gate NOT RUN |
+| AC6 | Shared skill bodies, manifest parity and documented host capability matrix | Native consumption/enforcement and live behavior NOT RUN; OpenCode deferred |
+| AC7 | Frozen 12/70/23 inventory, contained resource links, S13 path/snapshot fixtures | Real installed discovery, archive/consumer compatibility trials NOT RUN |
+| AC8 | Standalone owner/manual-provider guidance and copy fixtures; S10/S11 traces | Native single-owner installs and live fallback behavior NOT RUN |
+| AC9 | Optional service/provider guards, inert planning boundaries, S14 cases | Real service/actor behavior NOT RUN; orchestrator pilot deferred |
+| AC10 | Handoff required fields, missing permissions, stale-base/unassigned tests, S06/S13 | Actual cross-harness cold resume NOT RUN |
+| AC11 | Separate writer-worktree and integrator instructions; S07/S08 partial-failure cases | Actual parallel actors/failed integration trials NOT RUN |
+| AC12 | T10 home-ops canonical AGENTS checklist only | Consumer-only; not fulfilled or edited here |
+| AC13 | Dependency regression, seven local-stage paths and S11 standalone cases | Real absent/disabled-provider host trials NOT RUN |
+| AC14 | Shared collection bodies/identities checked; consumer skill drift checklist | Consumer-only project-skill migration/discovery not fulfilled here |
+| AC15 | Codex empty hooks, on-demand limits, worktree/denied/missing-jq source tests | Host procedural preflight behavior NOT RUN; OpenCode native deferred |
+| AC16 | Fresh runtime/destructive-consent guards, S15 cases and authority limits | Live refusal/permission trials NOT RUN; no runtime mutation executed |
+| AC17 | GitOps/HCP-triggering merge classified as runtime in contract/Ship/git guidance | Live refusal/permission trial NOT RUN; no production merge tested |
+| AC18 | T10 fresh/repeated chezmoi consumer matrix checklist only | Consumer-only; real fresh/reapply idempotence not fulfilled here |
+| AC19 | Documented OpenCode manual route and pinned-version spike checklist | Documentation scope complete; OpenCode execution/native integration deferred |
+| AC20 | Per-task rollback procedures and current revert/reinstall evidence protocol reviewed locally | Actual disposable prior-revision reinstall/rollback discovery smoke NOT RUN; no broad rollback PASS |
+
+Observed final static suite: 67 PASS (58 workflow, 7 manifest/source-copy,
+2 scanner); three native methods SKIPPED / NOT RUN with explicit opt-in off.
+All 16 scenarios and 34 named cases have a source-guidance/static trace record;
+Claude and Codex live results remain NOT RUN separately. Actual Linux/Bash 5.3
+guard run: 58 passed, 0 failed, with child-only signing disabled. Bash 3.2 remains
+NOT RUN. A separate local review is self-review, not independent actor evidence.
+No required gate is waived by marking bounded local task preparation complete.
+
+Current rollback: revert T11 test/fixture/evidence changes together, preserving
+prior plugin behavior and all user artifacts. Re-run applicable static checks;
+reverting documentation cannot reverse runtime. Broader sequence rollback and
+actual prior-version native smoke remain subject to the protocol and new authority.

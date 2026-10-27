@@ -1079,5 +1079,188 @@ class PortableArtifactTest(unittest.TestCase):
             self.assertEqual(artifact_shape_errors('handoff', resumed), set())
 
 
+SCENARIO_FIXTURE = ROOT / 'tests/fixtures/workflow/scenarios.json'
+SCENARIO_CASES = {
+    'S01': {'default', 'unknown-profile', 'unknown-topology', 'policy-conflict'},
+    'S02': {'small-check'}, 'S03': {'reproducer'}, 'S04': {'plan-only'},
+    'S05': {'proposal', 'revoked'}, 'S06': {'cold-resume', 'stale-base', 'unassigned'},
+    'S07': {'isolated-writers', 'partial-failure'}, 'S08': {'read-only', 'sequential'},
+    'S09': {'readiness-only', 'commit-only', 'pr-only', 'gate-failed'},
+    'S10': {'missing-reviewer'}, 'S11': {'each-owner'},
+    'S12': {'manual-git', 'denied', 'missing-jq'},
+    'S13': {'existing-formats', 'new-convention'},
+    'S14': {'missing-tools', 'unsafe-service'}, 'S15': {'gitops-merge', 'destructive'},
+    'S16': {'dirty-primary', 'submodule', 'detached-external'},
+}
+
+
+def scenario_fixture_errors(data, read_document=None):
+    """Validate data and source references only; never interpret/execute actions."""
+    errors = set()
+    read_document = read_document or (lambda relative: (ROOT / relative).read_text())
+    if set(data) != {'schema_version', 'data_only', 'execution', 'description', 'scenarios'}:
+        errors.add('fixture-fields')
+    if data.get('schema_version') != 1 or data.get('data_only') is not True:
+        errors.add('data-only')
+    if data.get('execution') != 'manual-authorized-trials-only':
+        errors.add('execution-boundary')
+    scenarios = data.get('scenarios', [])
+    if not isinstance(scenarios, list):
+        return errors | {'scenarios'}
+    if {item.get('id') for item in scenarios} != set(SCENARIO_CASES) or len(scenarios) != 16:
+        errors.add('scenario-coverage')
+    def fields(value, keys):
+        return isinstance(value, dict) and set(value) == set(keys)
+    def strings(value, empty=False):
+        return isinstance(value, list) and (empty or bool(value)) and all(
+            isinstance(item, str) and item.strip() for item in value)
+    for scenario in scenarios:
+        sid = scenario.get('id')
+        if not fields(scenario, ('id', 'title', 'hosts', 'input', 'authority', 'capabilities', 'guidance', 'cases')):
+            errors.add(f'{sid}:fields')
+        if scenario.get('hosts') != ['claude', 'codex']:
+            errors.add(f'{sid}:hosts')
+        inp = scenario.get('input', {})
+        if not fields(inp, ('request', 'profile', 'topology')) or not inp.get('request'):
+            errors.add(f'{sid}:input')
+        if inp.get('profile') not in (None, 'quick', 'standard', 'deep') or inp.get('topology') not in (
+                None, 'solo', 'handoff', 'parallel', 'review'):
+            errors.add(f'{sid}:selection')
+        authority = scenario.get('authority', {})
+        if not fields(authority, ('source', 'actors', 'actions', 'exclusions')) or not authority.get('source'):
+            errors.add(f'{sid}:authority')
+        for name in ('actors', 'actions', 'exclusions'):
+            if not strings(authority.get(name)):
+                errors.add(f'{sid}:authority:{name}')
+        capability = scenario.get('capabilities', {})
+        if not fields(capability, ('available', 'missing')) or any(
+                not strings(capability.get(name), empty=True) for name in ('available', 'missing')):
+            errors.add(f'{sid}:capabilities')
+        refs = scenario.get('guidance', [])
+        if not isinstance(refs, list) or not refs:
+            errors.add(f'{sid}:guidance')
+            refs = []
+        for reference in refs:
+            if not fields(reference, ('path', 'fragment', 'required_text')) or not all(reference.values()):
+                errors.add(f'{sid}:reference-fields')
+                continue
+            path = (ROOT / reference['path']).resolve()
+            if not path.is_relative_to((ROOT / 'plugins').resolve()) or not path.is_file():
+                errors.add(f'{sid}:reference-path')
+                continue
+            document = read_document(reference['path'])
+            if reference['fragment'] not in markdown_anchors(document):
+                errors.add(f'{sid}:reference-fragment')
+            if ' '.join(reference['required_text'].split()) not in ' '.join(document.split()):
+                errors.add(f'{sid}:instruction')
+        cases = scenario.get('cases', [])
+        if not isinstance(cases, list):
+            errors.add(f'{sid}:cases')
+            continue
+        if {case.get('id') for case in cases} != SCENARIO_CASES.get(sid, set()) or len(cases) != len(SCENARIO_CASES.get(sid, set())):
+            errors.add(f'{sid}:case-coverage')
+        for case in cases:
+            if not fields(case, ('id', 'given', 'required_actions', 'forbidden_actions', 'artifact_expectations')):
+                errors.add(f'{sid}:case-fields')
+            for name in ('given', 'required_actions', 'forbidden_actions', 'artifact_expectations'):
+                if not strings(case.get(name)):
+                    errors.add(f'{sid}:case:{name}')
+            if set(case.get('required_actions', [])) & set(case.get('forbidden_actions', [])):
+                errors.add(f'{sid}:contradictory-actions')
+    return errors
+
+
+class WorkflowScenarioTest(unittest.TestCase):
+    def fixture(self):
+        return json.loads(SCENARIO_FIXTURE.read_text())
+
+    def test_all_scenarios_and_negative_variants_have_complete_data(self):
+        data = self.fixture()
+        self.assertEqual(scenario_fixture_errors(data), set())
+        self.assertEqual(sum(len(s['cases']) for s in data['scenarios']), 34)
+        self.assertEqual(data['scenarios'][0]['input'], {
+            'request': 'Fix a small validation defect.', 'profile': None, 'topology': None})
+
+    def test_removed_scenario_host_or_required_fields_are_rejected(self):
+        data = self.fixture()
+        data['scenarios'].pop()
+        self.assertIn('scenario-coverage', scenario_fixture_errors(data))
+        for field in ('input', 'authority', 'capabilities', 'guidance', 'cases'):
+            data = self.fixture()
+            del data['scenarios'][0][field]
+            self.assertTrue(scenario_fixture_errors(data), field)
+        data = self.fixture()
+        data['scenarios'][0]['hosts'] = ['claude']
+        self.assertIn('S01:hosts', scenario_fixture_errors(data))
+        for key in ('given', 'required_actions', 'forbidden_actions', 'artifact_expectations'):
+            data = self.fixture()
+            data['scenarios'][0]['cases'][0][key] = []
+            self.assertIn(f'S01:case:{key}', scenario_fixture_errors(data))
+
+    def test_action_conflict_case_loss_and_execution_fields_are_rejected(self):
+        data = self.fixture()
+        case = data['scenarios'][0]['cases'][0]
+        case['forbidden_actions'].append(case['required_actions'][0])
+        self.assertIn('S01:contradictory-actions', scenario_fixture_errors(data))
+        data = self.fixture()
+        data['scenarios'][0]['cases'].pop()
+        self.assertIn('S01:case-coverage', scenario_fixture_errors(data))
+        for mutation in ({'data_only': False}, {'execution': 'auto-run'}, {'command': 'do not execute'}):
+            self.assertTrue(scenario_fixture_errors({**self.fixture(), **mutation}))
+
+    def test_broken_or_escaping_guidance_and_fragments_are_rejected(self):
+        for change, error in (({'path': 'plugins/missing.md'}, 'reference-path'),
+                              ({'path': '../outside.md'}, 'reference-path'),
+                              ({'fragment': 'missing'}, 'reference-fragment')):
+            data = self.fixture()
+            data['scenarios'][0]['guidance'][0].update(change)
+            self.assertIn(f'S01:{error}', scenario_fixture_errors(data))
+
+    def test_every_source_guard_deletion_is_detected_without_running_actions(self):
+        for scenario in self.fixture()['scenarios']:
+            for reference in scenario['guidance']:
+                with self.subTest(scenario=scenario['id'], path=reference['path']):
+                    target = reference['path']
+                    def mutated_reader(relative):
+                        text = ' '.join((ROOT / relative).read_text().split())
+                        return text.replace(' '.join(reference['required_text'].split()),
+                                            'Guard removed.', 1) if relative == target else (ROOT / relative).read_text()
+                    self.assertIn(f"{scenario['id']}:instruction", scenario_fixture_errors(self.fixture(), mutated_reader))
+
+    def test_guidance_is_reachable_from_existing_installed_entrypoints(self):
+        referenced = {reference['path'] for scenario in self.fixture()['scenarios']
+                      for reference in scenario['guidance']}
+        for relative in referenced:
+            target = ROOT / relative
+            plugin = ROOT / '/'.join(Path(relative).parts[:2])
+            pending = list(plugin.glob('skills/*/SKILL.md'))
+            pending += list(plugin.glob('commands/*.md')) + list(plugin.glob('agents/*.md'))
+            visited = set()
+            while pending:
+                document = pending.pop().resolve()
+                if document in visited:
+                    continue
+                visited.add(document)
+                for link in links(document.read_text()):
+                    if '://' in link or link.startswith('mailto:'):
+                        continue
+                    linked = (document.parent / link.split('#')[0]).resolve()
+                    if linked.is_relative_to(plugin.resolve()) and linked.is_file() and linked.suffix == '.md':
+                        pending.append(linked)
+            self.assertIn(target.resolve(), visited, relative)
+
+    def test_missing_jq_and_denied_worktree_guards_have_direct_negative_checks(self):
+        path = ROOT / 'plugins/git-workflows/skills/using-git-worktrees/SKILL.md'
+        text = ' '.join(path.read_text().split())
+        for declaration in (
+                'If worktree creation fails, stop writes and report the permission prerequisite.',
+                'A missing jq or failed-open hook does not waive this procedural invariant;'):
+            self.assertIn(declaration, text)
+            def removed(relative):
+                content = ' '.join((ROOT / relative).read_text().split())
+                return content.replace(declaration, 'Continue in primary.', 1) if ROOT / relative == path else (ROOT / relative).read_text()
+            self.assertIn('S12:instruction', scenario_fixture_errors(self.fixture(), removed))
+
+
 if __name__ == '__main__':
     unittest.main()

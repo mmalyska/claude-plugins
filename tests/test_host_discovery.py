@@ -84,28 +84,30 @@ class HostDiscoveryTest(unittest.TestCase):
     def test_claude_installs_owners_without_external_workflow_provider(self):
         # CLI/config contracts: https://code.claude.com/docs/en/plugins/cli-reference
         # and https://code.claude.com/docs/en/settings (CLAUDE_CONFIG_DIR).
-        for selected in OWNER_CASES:
+        for selected in (*OWNER_CASES, tuple(FROZEN_T01_CATALOG)):
             with self.subTest(plugins=selected), tempfile.TemporaryDirectory(prefix='claude-owners-') as temporary:
                 root = Path(temporary)
                 workspace = root / 'workspace'
                 workspace.mkdir()
                 environment = dict(os.environ, CLAUDE_CONFIG_DIR=str(root / 'config'))
                 self.cli('claude', ['plugin', 'marketplace', 'add', str(ROOT)], environment, workspace)
-                for name in selected:
-                    self.cli('claude', ['plugin', 'install', f'{name}@{MARKETPLACE}', '--scope', 'user'],
-                             environment, workspace)
-                records = json.loads(self.cli('claude', ['plugin', 'list', '--json'], environment, workspace))
-                self.assertIsInstance(records, list)
-                self.assertEqual({item['id'] for item in records},
-                                 {f'{name}@{MARKETPLACE}' for name in selected})
-                for item in records:
-                    self.assertTrue(item['enabled'])
-                    self.assertFalse(item.get('errors'), item.get('errors'))
-                    name = item['id'].split('@', 1)[0]
-                    installed = Path(item.get('readFromFolder') or item['installPath'])
-                    self.assertTrue(installed.resolve().is_relative_to(root.resolve()) or
-                                    installed.resolve() == (ROOT / FROZEN_T01_CATALOG[name]).resolve())
-                    self.assert_installed_content(name, installed)
+                for phase in ('fresh', 'repeat-install-request'):
+                    with self.subTest(phase=phase):
+                        for name in selected:
+                            self.cli('claude', ['plugin', 'install', f'{name}@{MARKETPLACE}', '--scope', 'user'],
+                                     environment, workspace)
+                        records = json.loads(self.cli('claude', ['plugin', 'list', '--json'], environment, workspace))
+                        self.assertIsInstance(records, list)
+                        self.assertEqual({item['id'] for item in records},
+                                         {f'{name}@{MARKETPLACE}' for name in selected})
+                        for item in records:
+                            self.assertTrue(item['enabled'])
+                            self.assertFalse(item.get('errors'), item.get('errors'))
+                            name = item['id'].split('@', 1)[0]
+                            installed = Path(item.get('readFromFolder') or item['installPath'])
+                            self.assertTrue(installed.resolve().is_relative_to(root.resolve()) or
+                                            installed.resolve() == (ROOT / FROZEN_T01_CATALOG[name]).resolve())
+                            self.assert_installed_content(name, installed)
 
     def codex_skill_list(self, environment, workspace):
         """Use only metadata RPCs; never issue a turn/model/delegation request."""
@@ -164,24 +166,26 @@ class HostDiscoveryTest(unittest.TestCase):
                 workspace.mkdir()
                 environment = dict(os.environ, CODEX_HOME=str(root / 'config'))
                 self.cli('codex', ['plugin', 'marketplace', 'add', str(ROOT)], environment, workspace)
-                expected = {}
-                for name in selected:
-                    output = self.cli('codex', ['plugin', 'add', f'{name}@{MARKETPLACE}', '--json'],
-                                      environment, workspace)
-                    installed = Path(json.loads(output)['installedPath'])
-                    self.assertTrue(installed.resolve().is_relative_to(root.resolve()) or
-                                    installed.resolve() == (ROOT / FROZEN_T01_CATALOG[name]).resolve())
-                    expected.update(self.assert_installed_content(name, installed))
-                actual = {}
-                result = self.codex_skill_list(environment, workspace)
-                for item in result['data']:
-                    self.assertFalse(item.get('errors'), item.get('errors'))
-                    for skill in item['skills']:
-                        self.assertNotIn('superpowers:', skill['name'].lower())
-                        if any(skill['name'].startswith(f'{name}:') for name in selected):
-                            self.assertTrue(skill['enabled'])
-                            actual[skill['name']] = skill['path']
-                self.assertEqual(actual, expected)
+                for phase in ('fresh', 'repeat-install-request'):
+                    with self.subTest(phase=phase):
+                        expected = {}
+                        for name in selected:
+                            output = self.cli('codex', ['plugin', 'add', f'{name}@{MARKETPLACE}', '--json'],
+                                              environment, workspace)
+                            installed = Path(json.loads(output)['installedPath'])
+                            self.assertTrue(installed.resolve().is_relative_to(root.resolve()) or
+                                            installed.resolve() == (ROOT / FROZEN_T01_CATALOG[name]).resolve())
+                            expected.update(self.assert_installed_content(name, installed))
+                        actual = {}
+                        result = self.codex_skill_list(environment, workspace)
+                        for item in result['data']:
+                            self.assertFalse(item.get('errors'), item.get('errors'))
+                            for skill in item['skills']:
+                                self.assertNotIn('superpowers:', skill['name'].lower())
+                                if any(skill['name'].startswith(f'{name}:') for name in selected):
+                                    self.assertTrue(skill['enabled'])
+                                    actual[skill['name']] = skill['path']
+                        self.assertEqual(actual, expected)
 
 
 if __name__ == '__main__':

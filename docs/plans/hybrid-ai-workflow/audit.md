@@ -1455,3 +1455,99 @@ no-manifest/no-delivery statements describe the local implementation boundary.
 Static verification remains distinct from native evidence: three native tests
 stay NOT RUN. T11, merge, release, consumer migration and additional harness
 execution remain outside this instruction.
+
+## T11 scenario and final evidence preparation
+
+T10 PR #18 is merged. The clean primary advanced fast-forward only to
+`9b53f84fc53aae20ee03ecfd2a4f22638d841cf6`. T11 uses verified linked worktree
+`/workspaces/claude-plugins/.worktrees/test/hybrid-ai-workflow-acceptance`, branch
+`test/hybrid-ai-workflow-acceptance`. Owner/integrator is this session in DEEP +
+SOLO. No second harness, model turn, subagent, service or orchestrator was started.
+
+### Exact T11 files and static behavior
+
+- Created `tests/fixtures/workflow/scenarios.json`: 16 scenarios / 34 cases for
+  both hosts, input/selection, authority/actions/exclusions, capabilities, actual
+  source path/fragment/guard references, required/forbidden actions and artifacts.
+  Includes unknown enum/policy conflict, revoked authority, stale/unassigned
+  handoff, failed writer, unavailable reviewer, missing tools, denied isolation,
+  missing jq, unsafe service side effects, runtime consent and externally owned
+  checkout cases. This is data only, never commands or a policy execution engine.
+- Created `docs/workflow/verification.md`: base and fixture digest, actual local
+  results, per-scenario trace review with separate Claude/Codex NOT RUN columns,
+  evidence fields and separately authorized native/live/platform/rollback protocol.
+  Clearly distinguishes copied content, repeat-install request and actual reinstall.
+- Updated `tests/test_workflow_contract.py`: seven tests for exact S01–S16 and case
+  coverage/schema, both host targets, missing field/case/host and contradictory
+  action samples, no execution fields, missing/escaping references/fragments,
+  instruction reachability and deleting each actual guard. S12 has explicit
+  missing-jq and denied-worktree negative instruction samples. It validates source
+  and fixture data, not an English-policy implementation that chooses actions.
+- Updated `tests/test_codex_manifests.py`: disposable copies of all 12 catalog
+  plugins exercise the existing source/T01 identity, metadata, wrapper, resource
+  and containment assertions. Corrupted manifest/resource samples fail. This is
+  filesystem fixture evidence, not a host installer/discovery result.
+- Updated `tests/test_host_discovery.py`: prepared both-host all-catalog coverage
+  in addition to standalone/combined owners, fresh and repeat-install requests,
+  actual installed-content/link checks and Codex metadata discovery. Retains all
+  three explicit opt-in gates. No native process was run; repeat requests alone
+  cannot prove actual removal/reinstall, which remains a separate manual gate.
+- Updated `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: current authority,
+  local completion versus blocked final acceptance and AC1–AC20 evidence matrix.
+  Audit updates are companion evidence, not expansion into plugin implementation.
+
+No production plugin, README, manifest, hook, wrapper, source specification,
+historical Superpowers plan or sibling repository changed. All prior identity
+snapshots and guard hashes remain checked. There are no version increments.
+The verification record is reachable from the existing plan, without inventing a
+new runtime entrypoint or installing global host configuration.
+
+### T11 observed verification
+
+| Gate | Exit / observed result |
+| --- | --- |
+| Pre-edit `WORKFLOW_NATIVE_TESTS=0 python3 -B -m unittest discover -s tests` | 0; 59 PASS, 3 SKIPPED / NOT RUN |
+| Post-edit same static suite | 0; 67 PASS, 3 SKIPPED / NOT RUN |
+| Linux x86_64, GNU Bash 5.3.20 guard fixtures, child-only signing disabled | 0; 58 passed, 0 failed |
+| Native CLI/model/actor trials, actual reinstall and prior-version rollback smoke | NOT RUN; outside current authority |
+| Bash 3.2 target-platform guard execution | NOT RUN |
+| Changed Markdown lint (MD013 disabled), local/own-repository links, scope and whitespace | PASS |
+
+Actual tools: Python 3.15.0, git 2.56.0, jq 1.8.2. Guard invocation appends
+`commit.gpgsign=false` to inherited child Git config entries; no repository/global
+configuration is altered. The verification document includes a reproducible
+wrapper and actual summary. Ephemeral output is `/tmp/hybrid-t11-guard.log`; future
+release evidence must preserve redacted durable logs. Historical Bash evidence is
+not substituted for the new run, and Bash 5 success does not satisfy Bash 3.2.
+Existing third-party links remain unchanged, so no external network gate was added.
+
+### Local review, blocked acceptance and rollback
+
+A separate deliberate SOLO review traced all 34 case inputs and expected actions
+against current source references: default/role entry, unknown/conflicting state,
+profile depth, actor scope/revocation, missing capability, partial failure,
+isolation/ownership, exact delivery and runtime permission. Source deletion
+samples prove missing guards are detected; they do not prove model behavior.
+Review also checked no copied contract/skills, hidden execution, unrelated paths,
+primary mutation, history migration, implied worker or auto-delivery operation.
+It is self-review, not an independent reviewer or live actor trial.
+
+T11 bounded local preparation is complete, but required native/platform/live/
+rollback evidence remains NOT RUN and blocks release/full-conformance claims.
+AC12/AC14/AC18 are consumer-only and OpenCode native remains deferred. No gate is
+waived, and no model obedience, cross-harness resume or production rollback PASS
+is claimed. Roll back T11 fixture/test/evidence changes together and rerun static
+checks; preserve user plans, host config and prior worktrees. Broader rollback and
+runtime actions require their own accepted scope. Await explicit delivery or
+separately authorized evidence collection; no commit/push/PR, merge, release/tag,
+consumer migration or additional actor is authorized by this task completion.
+
+### T11 PR preparation update
+
+The subsequent user instruction authorizes T11 commit/push/PR to main. Earlier
+no-delivery statements describe initial local implementation. This task changes
+only maintainer tests, fixtures and evidence documents; no plugin package changed,
+so no manifest/version increment is needed. Static verification is repeated for
+publishing the candidate; three native tests stay NOT RUN. Merge, release/tag,
+consumer migration, runtime and additional harness/actor trials remain outside
+this delivery instruction.
