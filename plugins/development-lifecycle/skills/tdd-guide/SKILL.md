@@ -1,91 +1,64 @@
 ---
 name: tdd-guide
-description: "Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage."
+description: "Guide selected test-first feature work and bug reproducers with project-specific coverage and relevant verification."
 ---
+
+# TDD Guide
+
+Read [the workflow contract](../../rules/common/workflow.md) first. Select profile
+and topology independently; default STANDARD + SOLO. Apply mandatory project
+policy in every profile. This procedure does not authorize another actor or
+work beyond the requested stage.
 
 Apply this role with the tools available in the current host. In Claude it can run as a native agent; in Codex use an available subagent when authorized, or perform this role in the current session.
 
-You are a Test-Driven Development (TDD) specialist who ensures all code is developed test-first with comprehensive coverage.
+## Applicability and profile
 
-## Your Role
+Use this role when TDD is explicitly selected, useful for a behavior change or
+required by project policy. It does not require all code changes to be test-first.
+QUICK can use a documented check for a documentation-only edit; STANDARD uses
+focused behavioral regressions; DEEP adds relevant layered/negative evidence.
+Mandatory project gates remain binding in every profile. Apply this role locally
+in SOLO; selecting this role does not authorize delegation or another harness.
 
-- Enforce tests-before-code methodology
-- Guide through Red-Green-Refactor cycle
-- Ensure 80%+ test coverage
-- Write comprehensive test suites (unit, integration, E2E)
-- Catch edge cases before implementation
+## Selected TDD procedure
 
-## TDD Workflow
+1. Describe the expected behavior and choose the smallest meaningful test.
+2. Run it and confirm failure for the expected missing behavior (RED).
+3. Implement the smallest passing change only when Build is authorized (GREEN).
+4. Refactor within scope, keep checks green and run affected regressions.
+5. Evaluate relevant coverage against the project's established policy.
 
-### 1. Write Test First (RED)
-Write a failing test that describes the expected behavior.
+Discover installed commands from repository evidence, including an existing
+unittest suite; use [test](../test/SKILL.md) for command selection and reporting.
+Do not install tools implicitly or weaken correct tests to hide a defect.
 
-### 2. Run Test -- Verify it FAILS
-```bash
-npm test
-```
+## Select applicable test types and edge cases
 
-### 3. Write Minimal Implementation (GREEN)
-Only enough code to make the test pass.
+Choose unit tests for isolated behavior, integration checks for boundaries and
+E2E for relevant critical flows. Project-required types stay mandatory; other
+types depend on impact rather than being required for every edit.
 
-### 4. Run Test -- Verify it PASSES
+Consider relevant null/empty inputs, invalid types, boundaries, error paths,
+races, scale and special characters. Explain omitted high-risk cases; do not
+force unrelated test classes or costly scenarios into a small scoped change.
 
-### 5. Refactor (IMPROVE)
-Remove duplication, improve names, optimize -- tests must stay green.
+## Quality checklist
 
-### 6. Verify Coverage
-```bash
-npm run test:coverage
-# Required: 80%+ branches, functions, lines, statements
-```
+- Behavior and acceptance criteria drive assertions, not internal implementation.
+- Changed risk paths have meaningful coverage and failures are investigated.
+- Tests are isolated; external systems are mocked or explicitly authorized fixtures.
+- Existing project coverage targets and security gates are satisfied.
+- Commands/results and unavailable checks are recorded honestly.
 
-## Test Types Required
+A failed required security or coverage gate blocks readiness. QUICK cannot waive
+project policy. If a required check cannot run, record NOT RUN and the limitation.
+No universal coverage percentage is imposed by this role.
 
-| Type | What to Test | When |
-|------|-------------|------|
-| **Unit** | Individual functions in isolation | Always |
-| **Integration** | API endpoints, database operations | Always |
-| **E2E** | Critical user flows (Playwright) | Critical paths |
+## Optional deeper evaluation
 
-## Edge Cases You MUST Test
-
-1. **Null/Undefined** input
-2. **Empty** arrays/strings
-3. **Invalid types** passed
-4. **Boundary values** (min/max)
-5. **Error paths** (network failures, DB errors)
-6. **Race conditions** (concurrent operations)
-7. **Large data** (performance with 10k+ items)
-8. **Special characters** (Unicode, emojis, SQL chars)
-
-## Test Anti-Patterns to Avoid
-
-- Testing implementation details (internal state) instead of behavior
-- Tests depending on each other (shared state)
-- Asserting too little (passing tests that don't verify anything)
-- Not mocking external dependencies (Supabase, Redis, OpenAI, etc.)
-
-## Quality Checklist
-
-- [ ] All public functions have unit tests
-- [ ] All API endpoints have integration tests
-- [ ] Critical user flows have E2E tests
-- [ ] Edge cases covered (null, empty, invalid)
-- [ ] Error paths tested (not just happy path)
-- [ ] Mocks used for external dependencies
-- [ ] Tests are independent (no shared state)
-- [ ] Assertions are specific and meaningful
-- [ ] Coverage is 80%+
-
-For detailed mocking patterns and framework-specific examples, see `skill: tdd-workflow`.
-
-## v1.8 Eval-Driven TDD Addendum
-
-Integrate eval-driven development into TDD flow:
-
-1. Define capability + regression evals before implementation.
-2. Run baseline and capture failure signatures.
-3. Implement minimum passing change.
-4. Re-run tests and evals; report pass@1 and pass@3.
-
-Release-critical paths should target pass^3 stability before merge.
+For release-critical or stochastic behavior, use the available eval guidance or
+write concrete capability/regression checks directly. Multiple model trials and
+model graders require explicit scope and actual capability; report observed trial
+counts, not invented pass@k/pass^k stability. No `tdd-workflow` or external
+Superpowers provider is required; the procedure above is self-contained.

@@ -1,6 +1,6 @@
 # Implementation tasks — Hybrid AI Engineering Workflow
 
-Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01 COMPLETE at `2194b9ad587963dd75a8d6b4fa320b963ee88f9a`; T02 COMPLETE on local branch `feat/hybrid-ai-workflow-contract`; T03–T11 NOT STARTED. The user authorized T01 and its commit/push/PR, then T02 implementation. The latest user instruction authorizes T02 commit/push/PR; T03+ and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
+Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01 and T02 merged; T03 COMPLETE locally on `feat/hybrid-ai-workflow-profiles` at baseline `775372df4c65a397bc74687a20052ebb6c9c0852`; T04–T11 NOT STARTED. The latest PR instruction authorizes T03 commit/push/PR and planned paired manifest version increments; later tasks and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
 
 All file paths are repository-relative. A task's listed files are its allowed proposed scope; do not add unrelated cleanup. Every task must record changed paths, exact commands, exit status, results/limitations, unresolved findings, and next action before checking its box. Native discovery/behavioral trials below are future maintainer gates and require a session in which launching the target CLI is permitted. Static instruction review is not a live model trial.
 
@@ -76,7 +76,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T03 — Make planning, research, TDD and reviews proportional
 
-- [ ] Complete T03.
+- [x] Complete T03.
 
 **PR:** 1. **Dependencies:** T02.
 
@@ -103,6 +103,8 @@ The full suite validates all marketplace plugins through the existing discovery 
 **Tests/expected:** S02–S04 static/manual instruction traces: QUICK docs change can complete with Markdown checks; STANDARD bugfix still uses a meaningful reproducer; DEEP planning records decisions/gates without workers. Mandatory project coverage/security fixture still blocks when unmet. Manifest/link checks pass; no names deleted and no external tool installed. S09 external review publishing remains unauthorized until T06 aligns final delivery boundaries.
 
 **Done:** no live rule or changed skill forces the same full research/dossier/test process regardless of risk/profile. Stage references no longer contradict the seven-stage contract. Diff-based review includes current work.
+
+**Evidence:** [T03 procedure and regression evidence](audit.md#t03-profile-sized-procedure-evidence). 12 workflow tests (7 new), 3 manifest/reference tests and 2 scanner tests PASS; Markdown and links PASS. Source-based S02–S04 walkthroughs and negative required-project-gate samples completed, not live harness trials. Exact scope: the sixteen listed guidance documents, tests/test_workflow_contract.py and three plan evidence files. Native adapters/hooks untouched; T04–T11 remain pending. The subsequent PR instruction authorizes delivery and paired version increments only.
 
 **Rollback:** revert T03 with its regression tests; do not weaken repository-specific gates to satisfy tests. Before PR1 delivery, bump versions of changed lifecycle, toolkit and git plugins in both manifests as specified in T08's version procedure; this future PR bookkeeping does not authorize edits now.
 
@@ -336,4 +338,4 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## Completion record for this Plan stage
 
-The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. T01 and T02 are complete. The contract and its existing rule index are now updated; remaining consumers are unchanged. The next task is T03, which requires a subsequent instruction. The subsequent user instruction authorizes publishing T02 as a PR. T01 PR #9 is merged; PR #10 now targets main with only the T02 increment.
+The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. T01 and T02 are merged; T03 is locally complete and uncommitted. The sixteen T03 procedures/rules are updated; other consumers remain pending. The next implementation task is T04, which requires a subsequent instruction. T03 delivery is now authorized; T04 requires a subsequent instruction.

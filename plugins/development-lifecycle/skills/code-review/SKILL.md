@@ -3,11 +3,16 @@ name: code-review
 description: "Code review — local uncommitted changes or GitHub PR (pass PR number/URL for PR mode)"
 ---
 
+# Code Review
+
+Read [the workflow contract](../../rules/common/workflow.md) first. Select profile
+and topology independently; default STANDARD + SOLO. Apply mandatory project
+policy in every profile. This procedure does not authorize another actor or
+work beyond the requested stage.
+
 Use the current user request as input. In a Claude command invocation, `$ARGUMENTS` carries that input; in Codex, use the text accompanying the skill.
 Command-style examples below name workflows: in Codex select the corresponding
 installed skill (`$plugin:skill`); do not execute slash commands in a shell.
-
-# Code Review
 
 > PR review mode adapted from PRPs-agentic-eng by Wirasm. Part of the PRP workflow series.
 
@@ -27,21 +32,28 @@ Otherwise:
 
 ## Local Review Mode
 
-Comprehensive security and quality review of uncommitted changes.
+Use [review](../review/SKILL.md) for profile-sized scope selection and axes and
+[common review policy](../../rules/common/code-review.md) for project gates. This
+entrypoint adds local/PR transport and reports; it does not require another actor.
 
 ### Phase 1 — GATHER
 
 ```bash
-git diff --name-only HEAD
+git diff --name-only
+git diff --cached --name-only
+git ls-files --others --exclude-standard
 ```
 
-If no changed files, stop: "Nothing to review."
+Inspect task-relevant untracked files without staging them. For a clean working
+tree use the actual base comparison or explicit revision as described in
+[review](../review/SKILL.md); report no changes if no target matches.
 
 ### Phase 2 — REVIEW
 
 Read each changed file in full. Check for:
 
 **Security Issues (CRITICAL):**
+
 - Hardcoded credentials, API keys, tokens
 - SQL injection vulnerabilities
 - XSS vulnerabilities
@@ -50,6 +62,7 @@ Read each changed file in full. Check for:
 - Path traversal risks
 
 **Code Quality (HIGH):**
+
 - Functions > 50 lines
 - Files > 800 lines
 - Nesting depth > 4 levels
@@ -59,6 +72,7 @@ Read each changed file in full. Check for:
 - Missing JSDoc for public APIs
 
 **Best Practices (MEDIUM):**
+
 - Mutation patterns (use immutable instead)
 - Emoji usage in code/comments
 - Missing tests for new code
@@ -67,6 +81,7 @@ Read each changed file in full. Check for:
 ### Phase 3 — REPORT
 
 Generate report with:
+
 - Severity: CRITICAL, HIGH, MEDIUM, LOW
 - File location and line numbers
 - Issue description
@@ -79,14 +94,15 @@ Never approve code with security vulnerabilities.
 
 ## PR Review Mode
 
-Comprehensive GitHub PR review — fetches diff, reads full files, runs validation, posts review.
+PR review fetches diff, reads relevant full files, runs permitted validation and
+produces a local report. A PR number alone does not authorize publication.
 
 ### Phase 1 — FETCH
 
 Parse input to determine PR:
 
 | Input | Action |
-|---|---|
+| --- | --- |
 | Number (e.g. `42`) | Use as PR number |
 | URL (`github.com/.../pull/42`) | Extract PR number |
 | Branch name | Find PR via `gh pr list --head <branch>` |
@@ -102,7 +118,7 @@ If PR not found, stop with error. Store PR metadata for later phases.
 
 Build review context:
 
-1. **Project rules** — Read applicable `AGENTS.md` (Codex) or `CLAUDE.md` (Claude), project documentation, and contributing guidelines
+1. **Project rules** — Read applicable shared `AGENTS.md` first in either host, then host adapters, project documentation and contributing guidelines; surface conflicts
 2. **PRP artifacts** — Check existing `.reports/agent-workflows/` artifacts, `.claude/PRPs/reports/`, and `.claude/PRPs/plans/` for implementation context related to this PR
 3. **PR intent** — Parse PR description for goals, linked issues, test plans
 4. **Changed files** — List all modified files and categorize by type (source, test, config, docs)
@@ -112,6 +128,7 @@ Build review context:
 Read each changed file **in full** (not just the diff hunks — you need surrounding context).
 
 For PR reviews, fetch the full file contents at the PR head revision:
+
 ```bash
 gh pr diff <NUMBER> --name-only | while IFS= read -r file; do
   gh api "repos/{owner}/{repo}/contents/$file?ref=<head-branch>" --jq '.content' | base64 -d
@@ -121,7 +138,7 @@ done
 Apply the review checklist across 7 categories:
 
 | Category | What to Check |
-|---|---|
+| --- | --- |
 | **Correctness** | Logic errors, off-by-ones, null handling, edge cases, race conditions |
 | **Type Safety** | Type mismatches, unsafe casts, `any` usage, missing generics |
 | **Pattern Compliance** | Matches project conventions (naming, file structure, error handling, imports) |
@@ -133,7 +150,7 @@ Apply the review checklist across 7 categories:
 Assign severity to each finding:
 
 | Severity | Meaning | Action |
-|---|---|---|
+| --- | --- | --- |
 | **CRITICAL** | Security vulnerability or data loss risk | Must fix before merge |
 | **HIGH** | Bug or logic error likely to cause issues | Should fix before merge |
 | **MEDIUM** | Code quality issue or missing best practice | Fix recommended |
@@ -145,15 +162,17 @@ Run available validation commands:
 
 Detect the project type from config files (`package.json`, `Cargo.toml`, `go.mod`, `pyproject.toml`, etc.), then run the appropriate commands:
 
-**Node.js / TypeScript** (has `package.json`):
+**Node.js / TypeScript** (configured `package.json` scripts, run only those present):
+
 ```bash
-npm run typecheck 2>/dev/null || npx tsc --noEmit 2>/dev/null  # Type check
+npm run typecheck  # Existing configured script; no implicit package fetch
 npm run lint                                                    # Lint
 npm test                                                        # Tests
 npm run build                                                   # Build
 ```
 
 **Rust** (has `Cargo.toml`):
+
 ```bash
 cargo clippy -- -D warnings  # Lint
 cargo test                   # Tests
@@ -161,6 +180,7 @@ cargo build                  # Build
 ```
 
 **Go** (has `go.mod`):
+
 ```bash
 go vet ./...    # Lint
 go test ./...   # Tests
@@ -168,27 +188,35 @@ go build ./...  # Build
 ```
 
 **Python** (has `pyproject.toml` / `setup.py`):
+
 ```bash
 pytest  # Tests
 ```
 
-Run only the commands that apply to the detected project type. Record pass/fail for each.
+For a repository unittest suite, use its documented discovery command, such as
+`python3 -B -m unittest discover -s tests`. Inspect side effects and session scope
+first: some discovery tests start other harnesses. Run only installed/configured
+commands applicable to the changed behavior and project gates. Record real exit
+status; report unavailable checks as NOT RUN and unrelated ones NOT APPLICABLE.
+Never fetch tools implicitly or run a forbidden harness to validate a review.
 
 ### Phase 5 — DECIDE
 
 Form recommendation based on findings:
 
 | Condition | Decision |
-|---|---|
+| --- | --- |
 | Zero CRITICAL/HIGH issues, validation passes | **APPROVE** |
 | Only MEDIUM/LOW issues, validation passes | **APPROVE** with comments |
 | Any HIGH issues or validation failures | **REQUEST CHANGES** |
 | Any CRITICAL issues | **BLOCK** — must fix before merge |
 
 Special cases:
+
 - Draft PR → Always use **COMMENT** (not approve/block)
 - Only docs/config changes → Lighter review, focus on correctness
-- Explicit `--approve` or `--request-changes` flag → Override decision (but still report all findings)
+- Explicit `--approve` or `--request-changes` input selects report intent only;
+  report all findings, preserve mandatory project gates and check publication authority
 
 ### Phase 6 — REPORT
 
@@ -235,7 +263,10 @@ review artifact at `.reports/agent-workflows/reviews/pr-<NUMBER>-review.md`:
 
 ### Phase 7 — PUBLISH
 
-Post the review to GitHub:
+Only publish when the current user request explicitly authorizes external review
+publication. Otherwise stop with the local report. Prior authorization for the
+same publication scope is sufficient; a local recommendation grants no authority.
+The commands below are examples for that authorized action:
 
 ```bash
 # If APPROVE
@@ -249,6 +280,7 @@ gh pr review <NUMBER> --comment --body "<summary>"
 ```
 
 For inline comments on specific lines, use the GitHub review comments API:
+
 ```bash
 gh api "repos/{owner}/{repo}/pulls/<NUMBER>/comments" \
   -f body="<comment>" \
@@ -259,6 +291,7 @@ gh api "repos/{owner}/{repo}/pulls/<NUMBER>/comments" \
 ```
 
 Alternatively, post a single review with multiple inline comments at once:
+
 ```bash
 gh api "repos/{owner}/{repo}/pulls/<NUMBER>/reviews" \
   -f event="COMMENT" \
@@ -270,7 +303,7 @@ gh api "repos/{owner}/{repo}/pulls/<NUMBER>/reviews" \
 
 Report to user:
 
-```
+```text
 PR #<NUMBER>: <TITLE>
 Decision: <APPROVE|REQUEST_CHANGES|BLOCK>
 

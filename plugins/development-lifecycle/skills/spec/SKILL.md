@@ -3,11 +3,16 @@ name: spec
 description: "Define the problem before writing code — interactive spec with verification gate"
 ---
 
+# Spec Command
+
+Read [the workflow contract](../../rules/common/workflow.md) first. Select profile
+and topology independently; default STANDARD + SOLO. Apply mandatory project
+policy in every profile. This procedure does not authorize another actor or
+work beyond the requested stage.
+
 Use the current user request as input. In a Claude command invocation, `$ARGUMENTS` carries that input; in Codex, use the text accompanying the skill.
 Command-style examples below name workflows: in Codex select the corresponding
 installed skill (`$plugin:skill`); do not execute slash commands in a shell.
-
-# Spec Command
 
 **Input**: $ARGUMENTS
 
@@ -19,7 +24,19 @@ criteria. Ask only questions that materially affect the design. Use the template
 below to record decisions and unresolved issues. If a brainstorming skill is
 available it may assist, but it is not required.
 
-**Output:** Use the spec template below and review it with the user before implementation when the task requires a design decision.
+## Profile-sized output
+
+- QUICK: record goal, scope and success briefly in session; no mandatory file.
+- STANDARD: concise requirements, non-goals and acceptance; use the template's
+  relevant sections when the design is non-obvious.
+- DEEP: durable repository-grounded specification, alternatives, risks and
+  measurable acceptance. Record unresolved decisions instead of inventing them.
+
+The template is optional structure, not a required dossier for every task.
+Review material design decisions with the user before dependent implementation;
+reuse accepted decisions without asking again. When Plan is authorized, identify
+exact files, dependencies, checks and completion criteria using existing planning
+procedures. A Spec-only instruction stops here; it does not authorize Build.
 
 **Save path:** Preserve an existing project spec location. Otherwise use
 `.reports/agent-workflows/specs/YYYY-MM-DD-<kebab-case-topic>.md`.
@@ -72,6 +89,5 @@ If a brainstorming question has no answer, record it as `- [ ] Still unclear: �
 
 ## Lifecycle Position
 
-```text
-/spec → implementation → /ship
-```
+Follow the seven stages in [the workflow contract](../../rules/common/workflow.md).
+This skill supplies Spec and informs Plan; it does not define another lifecycle.

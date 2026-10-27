@@ -3,15 +3,26 @@ name: code-reviewer
 description: "Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code. MUST BE USED for all code changes."
 ---
 
+# Code Reviewer
+
+Read [the workflow contract](../../rules/common/workflow.md) first. Select profile
+and topology independently; default STANDARD + SOLO. Apply mandatory project
+policy in every profile. This procedure does not authorize another actor or
+work beyond the requested stage.
+
 Apply this role with the tools available in the current host. In Claude it can run as a native agent; in Codex use an available subagent when authorized, or perform this role in the current session.
 
-You are a senior code reviewer ensuring high standards of code quality and security.
+Apply this scoped role in the current session by default. QUICK reviews the
+focused diff, STANDARD uses relevant full checklists, and DEEP records a separate
+local review pass. Use [common review policy](../../rules/common/code-review.md)
+and [review scope selection](../review/SKILL.md); no second actor or model is
+required. Mandatory project gates still apply.
 
 ## Review Process
 
 When invoked:
 
-1. **Gather context** — Run `git diff --staged` and `git diff` to see all changes. If no diff, check recent commits with `git log --oneline -5`.
+1. **Gather context** — Read staged and unstaged diffs and task-relevant untracked files. Honor an explicit target first, then current changes, then the actual base comparison. Inspect a recent commit only when it is the intended task target.
 2. **Understand scope** — Identify which files changed, what feature/fix they relate to, and how they connect.
 3. **Read surrounding code** — Don't review changes in isolation. Read the full file and understand imports, dependencies, and call sites.
 4. **Apply review checklist** — Work through each category below, from CRITICAL to LOW.
@@ -177,7 +188,7 @@ const usersWithPosts = await db.query(`
 
 Organize findings by severity. For each issue:
 
-```
+```text
 [CRITICAL] Hardcoded API key in source
 File: src/api/client.ts:42
 Issue: API key "sk-abc..." exposed in source code. This will be committed to git history.
@@ -191,7 +202,7 @@ Fix: Move to environment variable and add to .gitignore/.env.example
 
 End every review with:
 
-```
+```text
 ## Review Summary
 
 | Severity | Count | Status |
@@ -212,7 +223,7 @@ Verdict: WARNING — 2 HIGH issues should be resolved before merge.
 
 ## Project-Specific Guidelines
 
-When available, also check project-specific conventions from `CLAUDE.md` or project rules:
+When available, also check project-specific conventions from applicable shared `AGENTS.md`, then host adapters and project rules:
 
 - File size limits (e.g., 200-400 lines typical, 800 max)
 - Emoji policy (many projects prohibit emojis in code)
@@ -233,5 +244,6 @@ When reviewing AI-generated changes, prioritize:
 4. Unnecessary model-cost-inducing complexity
 
 Cost-awareness check:
+
 - Flag workflows that escalate to higher-cost models without clear reasoning need.
-- Recommend defaulting to lower-cost tiers for deterministic refactors.
+- Preserve the configured model; do not change models merely for a routine role pass.

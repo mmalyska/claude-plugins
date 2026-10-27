@@ -1,5 +1,12 @@
 # Code Review Standards
 
+Read [the workflow contract](workflow.md) first. QUICK uses focused self-review,
+STANDARD full self-review or a separate local pass, and DEEP a distinct deliberate
+review pass with evidence. In SOLO apply roles locally; an independent actor
+requires explicit topology authorization. Mandatory project gates remain binding
+in every profile. Use the existing review/code-review/code-reviewer entrypoints
+for stage, transport and role respectively; they do not add lifecycle stages.
+
 ## Purpose
 
 Code review ensures quality, security, and maintainability before code is merged. This rule defines when and how to conduct code reviews.
@@ -18,7 +25,9 @@ Code review ensures quality, security, and maintainability before code is merged
 
 Before requesting review, ensure:
 
-- All automated checks (CI/CD) are passing
+- Required project checks are passing; record unavailable ones as NOT RUN,
+  never as a pass. Review may inspect incomplete work, but readiness is blocked
+  by failed required checks.
 - Merge conflicts are resolved
 - Branch is up to date with target branch
 
@@ -34,11 +43,11 @@ Before marking code complete:
 - [ ] No hardcoded secrets or credentials
 - [ ] No console.log or debug statements
 - [ ] Tests exist for new functionality
-- [ ] Test coverage meets 80% minimum
+- [ ] Applicable project coverage and security gates are satisfied
 
 ## Security Review Triggers
 
-**STOP and use security-reviewer agent when:**
+**Perform a focused security assessment when relevant, especially for:**
 
 - Authentication or authorization code
 - User input handling
@@ -51,35 +60,27 @@ Before marking code complete:
 ## Review Severity Levels
 
 | Level | Meaning | Action |
-|-------|---------|--------|
+| ------- | --------- | -------- |
 | CRITICAL | Security vulnerability or data loss risk | **BLOCK** - Must fix before merge |
 | HIGH | Bug or significant quality issue | **WARN** - Should fix before merge |
 | MEDIUM | Maintainability concern | **INFO** - Consider fixing |
 | LOW | Style or minor suggestion | **NOTE** - Optional |
 
-## Agent Usage
+## Role use and review procedure
 
-Use these agents for code review:
+1. Honor the requested scope; inspect unstaged/staged and task-relevant untracked
+   work before the actual base comparison. Select a recent commit only if intended.
+2. Read surrounding context and project policy: shared AGENTS.md first, then
+   applicable host adapters; surface conflicts.
+3. Apply security and relevant quality/domain checklists and report findings first.
+4. Run appropriate checks and mandatory project gates with actual results.
+5. Use an available authorized specialist only when needed; otherwise apply the
+   relevant security/domain checklist in this session. Do not require nonexistent
+   security-reviewer, language-reviewer or other agent registrations.
 
-| Agent | Purpose |
-|-------|---------|
-| **code-reviewer** | General code quality, patterns, best practices |
-| **security-reviewer** | Security vulnerabilities, OWASP Top 10 |
-| **typescript-reviewer** | TypeScript/JavaScript specific issues |
-| **python-reviewer** | Python specific issues |
-| **go-reviewer** | Go specific issues |
-| **rust-reviewer** | Rust specific issues |
-
-## Review Workflow
-
-```
-1. Run git diff to understand changes
-2. Check security checklist first
-3. Review code quality checklist
-4. Run relevant tests
-5. Verify coverage >= 80%
-6. Use appropriate agent for detailed review
-```
+A failed required security or coverage gate blocks readiness. Review-only does not
+authorize edits, publication, commit or merge. Keep existing explicit fix scope;
+request a missing decision before dependent changes, not approval already given.
 
 ## Common Issues to Catch
 

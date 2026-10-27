@@ -1,54 +1,50 @@
 # Development Workflow
 
-> This file extends [common/git-workflow.md](./git-workflow.md) with the full feature development process that happens before git operations.
+This file adds git responsibilities to the collection's shared engineering
+lifecycle. When development-lifecycle is installed, read its existing
+`development-lifecycle-rules` skill for the normative contract; no copied skill
+catalog or hard cross-plugin dependency is required.
 
-The Feature Implementation Workflow describes the development pipeline: research, planning, TDD, code review, and then committing to git.
+## Shared stages and local responsibilities
 
-Use available connected tools for research; if GitHub CLI, Context7, or Exa is
-absent, use local code search and accessible primary documentation. Do not
-install external tools implicitly. Keep commit, push, and review-request actions
-within the user's explicit delivery scope.
+The shared stages are Spec, Plan, Build, Test, Review, Simplify and Ship, with
+STANDARD + SOLO defaults. Profiles QUICK/STANDARD/DEEP change depth, not stage
+order. Use task instructions and accepted state first, then missing-field defaults.
+Other actor topologies require explicit user authorization; selecting a planning
+or review role alone does not authorize dispatch.
 
-## Feature Implementation Workflow
+- **Spec / Plan:** inspect relevant repository evidence, scope, acceptance and
+  project gates. QUICK can use a session checklist; STANDARD records affected
+  files, dependencies and checks; DEEP needs durable tasks, decisions, ownership,
+  impact and rollout/rollback. Preserve existing artifact paths. No mandatory
+  web/registry sweep or PRD/architecture/system_design/tech_doc/task_list dossier.
+- **Build:** before writes use the existing using-git-worktrees procedure and
+  [worktree policy](./worktree-workflow.md). Primary remains clean on the default
+  branch; branch/worktree names follow `<type>/<slug>`. If isolation is blocked,
+  stop writes rather than silently edit primary. Implement only authorized scope.
+- **Test:** choose meaningful verification by risk/profile and required project
+  policy; TDD is selected where useful or required, not universal. QUICK does not
+  waive mandatory project gates. Use installed tools and report unavailable
+  checks as NOT RUN; no implicit tool installation or forbidden harness launch.
+- **Review / Simplify:** inspect current work before base/recent-commit targets,
+  assess locally in SOLO, and simplify only within scope. Rerun affected checks
+  after edits. Independent review requires explicit authorization.
+- **Ship:** assess readiness and execute only explicitly authorized delivery.
+  Readiness is not commit/push/PR/merge/deployment permission. Apply
+  [git conventions](./git-workflow.md) only for an authorized git action.
 
-0. **Research & Reuse** _(mandatory before any new implementation)_
-   - **GitHub code search first:** Run `gh search repos` and `gh search code` to find existing implementations, templates, and patterns before writing anything new.
-   - **Library docs second:** Use Context7 or primary vendor docs to confirm API behavior, package usage, and version-specific details before implementing.
-   - **Exa only when the first two are insufficient:** Use Exa for broader web research or discovery after GitHub search and primary docs.
-   - **Check package registries:** Search npm, PyPI, crates.io, and other registries before writing utility code. Prefer battle-tested libraries over hand-rolled solutions.
-   - **Search for adaptable implementations:** Look for open-source projects that solve 80%+ of the problem and can be forked, ported, or wrapped.
-   - Prefer adopting or porting a proven approach over writing net-new code when it meets the requirement.
+## Research, safety and readiness
 
-1. **Create the Worktree** _(before any implementation)_
-   - Use the `using-git-worktrees` skill. The primary checkout is never a
-     workspace — see [worktree-workflow.md](./worktree-workflow.md).
-   - Branch as `<type>/<slug>`; the worktree lands at `.worktrees/<type>/<slug>`.
+Start from repository reuse patterns. Expand to available primary documentation
+when uncertainty warrants it; external research is not mandatory for every edit.
+Installing dependencies, cloning foundations or connecting services needs scope.
+Mandatory project security/coverage gates remain binding in every profile; failed
+required gates block readiness. Do not claim success for unrun checks. Merge that
+triggers GitOps/HCP auto-apply is runtime mutation with separate fresh permission,
+impact and rollback; a plan or parallel-work approval is not runtime consent.
 
-2. **Plan First**
-   - Create an implementation plan; use an available authorized planner role when helpful
-   - Generate planning docs before coding: PRD, architecture, system_design, tech_doc, task_list
-   - Identify dependencies and risks
-   - Break down into phases
-
-3. **TDD Approach**
-   - Use available TDD guidance or perform RED-GREEN-REFACTOR directly
-   - Write tests first (RED)
-   - Implement to pass tests (GREEN)
-   - Refactor (IMPROVE)
-   - Verify the project's established coverage target and relevant changed behavior
-
-4. **Code Review**
-   - Use an available authorized code-reviewer role or perform a separate local review pass
-   - Address CRITICAL and HIGH issues
-   - Fix MEDIUM issues when possible
-
-5. **Commit & Push**
-   - Detailed commit messages
-   - Follow conventional commits format
-   - See [git-workflow.md](./git-workflow.md) for commit message format and PR process
-
-6. **Pre-Review Checks**
-   - Verify all automated checks (CI/CD) are passing
-   - Resolve any merge conflicts
-   - Ensure branch is up to date with target branch
-   - Only request review after these checks pass
+This plugin supplies git procedures, not a competing lifecycle or automatic
+session policy injection. Its standalone guidance remains safe without another
+plugin. Existing hook enforcement is Claude-specific; Codex follows procedural
+preflight with bundled hooks disabled. Existing technique conflicts are resolved
+in favor of shared safety, user scope and mandatory project policy.
