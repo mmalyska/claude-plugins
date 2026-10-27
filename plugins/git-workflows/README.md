@@ -23,7 +23,10 @@ The hook enforces one rule: **the primary checkout is never a workspace.** It st
 - It still cannot see writes from inside a program — `python -c "open('f','w')"` and the like. The `worktree-workflow.md` rule covers those; the hook is a backstop, not a fence.
 - It **fails open**. If `jq` is missing or anything errors, the write proceeds. A broken guard must never brick every write on your machine — but it does mean no `jq` means no enforcement.
 
-To work in the primary checkout deliberately, start the session with `CLAUDE_ALLOW_MAIN_EDITS=1`.
+Explicit primary maintenance must already be authorized. `CLAUDE_ALLOW_MAIN_EDITS=1`
+disables the Claude hook but does not grant that authority or override task scope.
+If worktree creation is blocked, stop writes rather than silently edit primary.
+Missing jq/fail-open hook behavior does not waive procedural isolation.
 
 ### Requirements
 
@@ -44,8 +47,11 @@ The hook uses only shell builtins, `git`, and `jq`. It deliberately avoids `sed`
 
 ## Skills
 
-- `using-git-worktrees` — Creates the isolated workspace. Worktrees are the default, not an opt-in.
-- `finishing-a-development-branch` — Merge, PR, keep, or discard; always leaves the primary checkout on the default branch.
+- `using-git-worktrees` — Verifies/reuses isolation or creates a worktree from a
+  verified base. Permission failure stops writes; no sandbox fallback to primary.
+- `finishing-a-development-branch` — Executes only the authorized action, verifies
+  primary read-only and preserves unrelated state. Cleanup requires explicit
+  target authority and verified provenance; a `.worktrees/` path proves no ownership.
 
 ## Rules
 
@@ -55,7 +61,8 @@ So `worktree-workflow.md` is injected deliberately, by a `SessionStart` hook. Th
 
 - `worktree-workflow.md` — The invariant, branch naming, subagent policy. **Injected at session start** whenever the session is inside a git repo.
 - `git-workflow.md` — Commit message format, PR workflow
-- `development-workflow.md` — Full feature pipeline (research → worktree → plan → TDD → review → commit)
+- `development-workflow.md` — Git responsibilities in the shared engineering
+  lifecycle, proportional planning/checks and authorized delivery.
 
 ## Hooks
 

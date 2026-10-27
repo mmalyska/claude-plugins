@@ -830,3 +830,104 @@ identities, tool/model metadata, discovery paths, hooks and dependencies remain
 unchanged. Earlier no-manifest/no-delivery statements describe the initial T04
 implementation. T05+, merge and release remain unauthorized. Revalidate static
 tests, local links, diff whitespace and Markdown diagnostics before publication.
+
+## T05 worktree isolation evidence
+
+T05 completed locally in DEEP + SOLO on `fix/hybrid-ai-workflow-isolation`, worktree
+`/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-isolation`, based on
+`d39e0b0e477b50c6b8246d8a238cc3714e955809` (merged T04 PR #12). Primary main was clean and updated fast-forward
+before creation. No AI subagent, other harness, orchestrator, commit/push/PR or
+cleanup operation was executed. Tests use disposable fixtures, not user worktrees.
+
+### Exact T05 file changes
+
+- `plugins/git-workflows/skills/using-git-worktrees/SKILL.md`: inspect actual
+  isolation/submodule/detached ownership, use suitable exposed native creation
+  or manual git, locally exclude directory, verify base and preserve primary
+  state. Permission/exclude/creation failure stops writes; normal host permission
+  handling is the only escalation path. Setup/checks stay within task scope.
+- `plugins/git-workflows/skills/finishing-a-development-branch/SKILL.md`: honor
+  chosen action rather than a compulsory menu; no automatic restore-primary or
+  path-derived ownership. Readiness/PR do not authorize merge/discard/cleanup.
+  Explicit local merge has scoped primary-maintenance and runtime boundaries,
+  ff-only base/integration examples, divergence reporting and isolated validation.
+  Cleanup verifies provenance, authority, dirty/untracked state and active users;
+  external/unknown/active worktrees remain. No broad prune or default force.
+- `plugins/git-workflows/rules/worktree-workflow.md`: explicit topology authority
+  for reviewer/sequential sharing and distinct writer worktrees/integrator,
+  blocked-isolation stop, state/provenance preservation, scoped maintenance and
+  clear distinction between technical hook escape hatch and user authority.
+- `plugins/git-workflows/README.md`: align actual skill behavior and remove stale
+  research/TDD/commit pipeline summary; document procedural requirements even
+  without jq/native hooks. No automatic loader or Codex interceptor is claimed.
+- `tests/test_workflow_contract.py`: seven new tests for creation/finish/actor
+  boundaries, three creation-deletion and five cleanup-deletion samples, two
+  explicit unsafe old directives, four unchanged-hook/fixture digests and an
+  executable missing-jq fixture. Helpers inspect guidance, not a policy engine.
+- `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: status, evidence and next task.
+
+No manifest/version, hook source, native adapter, new skill, history or sibling
+repository changed. Snapshot digests cover guard-main-checkout.sh,
+inject-worktree-rule.sh, hooks.json and test-guard.sh; rule text is intentionally
+updated but injection mechanics stay unchanged. Names/discovery remain intact.
+
+### T05 commands and actual results
+
+| Command / check | Exit | Observed result |
+| --- | --- | --- |
+| `python3 -B -m unittest discover -s tests -p test_workflow_contract.py -v` | 0 | 26 tests PASS including 7 new isolation checks |
+| `python3 -B -m unittest discover -s tests -p test_codex_manifests.py -v` | 0 | 3 tests PASS; discovery metadata, wrapper/resource containment |
+| `python3 -B -m unittest discover -s tests -p test_rule_scanners.py -v` | 0 | 2 tests PASS |
+| `bash plugins/git-workflows/hooks/test-guard.sh` with process-only signing override | 0 | 58 assertions PASS on Linux Bash 5 |
+| Installed markdownlint-cli on changed Markdown, MD013 disabled | 0 | PASS; touched table separators normalized, no structural rule disabled |
+| Local links/fragments, exact scope, task-state and `git diff --check` | 0 | PASS; primary clean on main, no staged/untracked product changes |
+
+Guard invocation used the T01 wrapper: copy process environment, append
+`commit.gpgsign=false` at the next GIT_CONFIG_COUNT slot and execute the unchanged
+Bash fixture suite, preserving other config entries. No global/repository config
+or real repository commit was changed. The known unavailable signing-agent issue
+is avoided only for disposable fixture commits; it is not a product workaround.
+
+The new executable fixture initializes an empty temporary main repository without
+committing, runs the real guard on a Write payload in auto mode and observes deny.
+It then supplies a PATH containing real cat/git symlinks but no jq and observes
+exit 0 with empty output. No target write occurs in either run. This verifies
+fail-open behavior only; separate document checks ensure the missing hook never
+waives the procedural invariant. The hook is not made fail-closed by this task.
+
+### S08/S12/S16 local walkthroughs and limitations
+
+- S08: authorized read-only reviewer may share owner's isolated checkout; an
+  authorized sequential implementer can reuse it within scope; concurrent writers
+  require distinct branch/worktree plus integrator. None of those allowances grants
+  authority to add an actor. No live agent was launched for this walkthrough.
+- S12: no suitable native tool means manual git isolation, not another CLI session.
+  Blocked local exclude/creation means stop writes and normal host permission
+  handling or a read-only/blocker report. No editing primary after denial. Missing
+  jq is independently exercised as described above; procedural checks still bind.
+- S16: detect submodule and actual isolation before writes; report and preserve
+  dirty/non-default primary instead of switching/stashing/resetting it. Existing
+  detached/external workspace is preserved, not implicitly attached or removed.
+  A path in .worktrees does not prove ownership; active/unknown provenance blocks
+  cleanup, and even a successful local merge grants no cleanup permission.
+- Explicit primary maintenance is a separate bounded operation. If a local merge
+  would trigger runtime effects, fresh impact/rollback permission is needed; a
+  technical hook escape hatch itself never grants it. Divergent base/integration
+  stops for an agreed strategy, without automatic rebase/force/reset.
+
+These scenario traces and declaration-mutation cases are same-agent static/local
+review, not proof of model behavior or a live destructive/permission trial. Linux
+Bash 5 guard results are real; Bash 3.2/macOS remains NOT RUN and is still a release
+gate. Native discovery/full unittest discovery, live multi-actor workflows and
+external services were not run under the no-other-harness constraint. Remaining
+Ship/delivery paths are intentionally T06 work; full conformance is not claimed.
+T05 is complete locally with no commit/push/PR. Stop before T06 and delivery.
+
+### T05 PR preparation update
+
+The subsequent user instruction authorizes T05 commit/push/PR. Apply the planned
+paired patch version increment git-workflows 1.3.0 → 1.3.1. Only version fields
+change in its Claude/Codex manifests; names, discovery paths, hooks and dependencies
+remain unchanged. Earlier no-manifest/no-delivery statements describe initial
+implementation. T06+, merge and release remain unauthorized. Revalidate tests,
+links, Markdown and scope before publishing.

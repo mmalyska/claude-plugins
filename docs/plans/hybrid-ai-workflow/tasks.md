@@ -1,6 +1,6 @@
 # Implementation tasks — Hybrid AI Engineering Workflow
 
-Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01–T03 merged; T04 COMPLETE locally on `feat/hybrid-ai-workflow-role-authorization` at `a6b54c40f7e1189fcfb4b36378edcfccaddf580d`; T05–T11 NOT STARTED. The latest PR instruction authorizes T04 commit/push/PR and planned paired version increments only; later tasks and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
+Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01–T04 merged; T05 COMPLETE locally on `fix/hybrid-ai-workflow-isolation` at `d39e0b0e477b50c6b8246d8a238cc3714e955809`; T06–T11 NOT STARTED. The latest PR instruction authorizes T05 commit/push/PR and the planned paired git-workflows version increment only; later tasks and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
 
 All file paths are repository-relative. A task's listed files are its allowed proposed scope; do not add unrelated cleanup. Every task must record changed paths, exact commands, exit status, results/limitations, unresolved findings, and next action before checking its box. Native discovery/behavioral trials below are future maintainer gates and require a session in which launching the target CLI is permitted. Static instruction review is not a live model trial.
 
@@ -152,7 +152,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T05 — Enforce isolation without silent primary fallback
 
-- [ ] Complete T05.
+- [x] Complete T05.
 
 **PR:** 2. **Dependencies:** T04.
 
@@ -169,6 +169,8 @@ The full suite validates all marketplace plugins through the existing discovery 
 **Tests/expected:** S08/S12/S16 manual traces and static negative checks; current guard remains 58/58 on Bash 5+, Bash 3.2 required before release. No edit to `guard-main-checkout.sh`, `inject-worktree-rule.sh` or `hooks.json` is planned; existing guard behavior and fail-open policy remain stable. Missing jq means no enforced hook, never permission to violate procedural rules.
 
 **Done:** permission failure cannot authorize primary edits; parent/read-only/sequential/parallel cases are coherent and cleanup cannot delete someone else's workspace.
+
+**Evidence:** [T05 worktree isolation](audit.md#t05-worktree-isolation-evidence). 26 workflow tests (7 new), 3 manifest/reference tests, 2 scanner tests and 58 guard assertions PASS. Missing-jq fixture verifies fail-open without actual writes; static checks preserve procedural isolation and hook digests. S08/S12/S16 source walkthroughs completed; Bash 3.2/native/model checks NOT RUN. Exact five T05 implementation/test paths plus plan evidence only; hooks unchanged. The subsequent PR instruction authorizes T05 delivery and the paired git-workflows version increment only. Stop before T06.
 
 **Rollback:** revert procedural changes and tests, leaving hook unchanged; do not delete live worktrees as rollback.
 
@@ -338,6 +340,10 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 **Rollback:** reverse PR3 then PR2 then PR1; run corresponding static/discovery gates after each revert and verify prior names/resources work. A maintainer can reinstall the previously recorded revision without data migration. Do not claim a runtime rollback from reverting documentation.
 
-## Completion record for this Plan stage
+## Completion and current execution record
 
-The audit, architecture decisions, traceability, tasks and test strategy have been prepared in SOLO. This is not evidence that any implementation task above is complete. Current artifacts are limited to `plan.md`, `tasks.md`, `audit.md`; primary checkout remains clean on `main`. T01–T03 are merged; T04 is locally complete and uncommitted. The next implementation task is T05 and requires a subsequent instruction. T04 commit/push/PR is now authorized; T05 requires a subsequent instruction.
+The original Plan stage created only plan/tasks/audit documents in SOLO. Subsequent
+T01–T04 are merged; T05 is locally complete and uncommitted. Primary is clean on
+main. The next implementation task is T06 and requires a subsequent instruction.
+T05 commit/push/PR is now authorized; other worktrees and user state remain
+preserved.
