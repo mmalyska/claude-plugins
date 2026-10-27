@@ -27,6 +27,21 @@ change the sandbox, intercept commands, or produce an automatic audit log.
 Treat `freeze src/api/` or `guard --dir src/api/` as user intent accompanying the
 skill, not a claim that these are installed CLI subcommands.
 
+## Delivery and runtime authority
+
+Default STANDARD + SOLO preserves explicit task scope. Readiness alone authorizes no commit, push, PR, review publication, merge or runtime mutation.
+List the exact authorized actions and exclusions; reuse existing authority for
+the same operation rather than asking again. Prepare all concrete reviewable
+work before requesting a missing decision, then stop before the dependent action.
+Preserve unrelated staged/unstaged/untracked changes and other owners' worktrees.
+No blanket override may bypass mandatory safety or project gates.
+
+A GitOps/HCP auto-apply merge is runtime mutation and needs separate fresh explicit authorization with impact and rollback.
+Destructive actions, cleanup and credential rotation require their own exact
+scope; general plan/delegation/commit/PR approval is not that authority. "Off"
+cannot waive these boundaries. Inspect actual effects before mutation and report
+missing enforcement honestly; this skill remains procedural guidance only.
+
 ## Host controls
 
 - **Claude Code:** inspect applicable permissions and installed hooks if the task

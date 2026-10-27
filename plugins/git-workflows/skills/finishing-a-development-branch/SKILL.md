@@ -46,6 +46,17 @@ primary's branch/status. Do not infer task ownership from directory name.
 - Dirty/non-default primary: report and preserve it. Do not switch, stash, reset,
   clean or merge merely to satisfy a clean-default postcondition.
 
+## Delivery scope carried into finishing
+
+Apply the action boundaries in [git conventions](../../rules/git-workflow.md).
+Readiness alone authorizes no commit, push, PR, review publication, merge or runtime mutation.
+Reuse valid evidence for the same content; new changes invalidate affected checks.
+Commit-only stops after its verified commit; a PR can include necessary branch
+push but no merge/review-publication/cleanup. Stage only the task's authorized
+content and preserve unrelated staged/unstaged/untracked work. History rewrite
+needs its own explicit scope; a force-with-lease flag is not authorization.
+No blanket override may bypass mandatory safety or project gates.
+
 ## Step 3: Honor the requested action
 
 An already selected authorized action does not require another fixed menu.

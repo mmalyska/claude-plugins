@@ -215,8 +215,9 @@ Special cases:
 
 - Draft PR → Always use **COMMENT** (not approve/block)
 - Only docs/config changes → Lighter review, focus on correctness
-- Explicit `--approve` or `--request-changes` input selects report intent only;
-  report all findings, preserve mandatory project gates and check publication authority
+- `--approve` / `--request-changes` cannot override mandatory gates. Determine
+  whether the user requested an external event or only a local recommendation
+  before publication; report all findings.
 
 ### Phase 6 — REPORT
 
@@ -264,40 +265,28 @@ review artifact at `.reports/agent-workflows/reviews/pr-<NUMBER>-review.md`:
 ### Phase 7 — PUBLISH
 
 Only publish when the current user request explicitly authorizes external review
-publication. Otherwise stop with the local report. Prior authorization for the
-same publication scope is sufficient; a local recommendation grants no authority.
-The commands below are examples for that authorized action:
+publication. A local report, PR number, GO recommendation or PR-creation request
+is not that authority. An explicit request to post this review or approve/request
+changes on the verified PR can supply it; reuse accepted authority for the same
+event/target/content without another permission menu. If not authorized, stop with
+the local artifact. No publication implies merge or deployment.
+
+Readiness alone authorizes no commit, push, PR, review publication, merge or runtime mutation.
+No blanket override may bypass mandatory safety or project gates.
+A GitOps/HCP auto-apply merge is runtime mutation and needs separate fresh explicit authorization with impact and rollback.
+
+Use an available sufficient GitHub tool, otherwise the configured CLI. Prepare the
+actual findings and event for review before requesting missing authority, without
+changing code or publishing as an implicit side effect. For an authorized CLI
+review, use a body file and inspect the response:
 
 ```bash
-# If APPROVE
-gh pr review <NUMBER> --approve --body "<summary of review>"
-
-# If REQUEST CHANGES
-gh pr review <NUMBER> --request-changes --body "<summary with required fixes>"
-
-# If COMMENT only (draft PR or informational)
-gh pr review <NUMBER> --comment --body "<summary>"
+gh pr review <verified-PR> --approve --body-file <prepared-review-file>
+# Or the specifically authorized --request-changes / --comment event.
 ```
 
-For inline comments on specific lines, use the GitHub review comments API:
-
-```bash
-gh api "repos/{owner}/{repo}/pulls/<NUMBER>/comments" \
-  -f body="<comment>" \
-  -f path="<file>" \
-  -F line=<line-number> \
-  -f side="RIGHT" \
-  -f commit_id="$(gh pr view <NUMBER> --json headRefOid --jq .headRefOid)"
-```
-
-Alternatively, post a single review with multiple inline comments at once:
-
-```bash
-gh api "repos/{owner}/{repo}/pulls/<NUMBER>/reviews" \
-  -f event="COMMENT" \
-  -f body="<overall summary>" \
-  --input comments.json  # [{"path": "file", "line": N, "body": "comment"}, ...]
-```
+The example is not a command to execute automatically. Report the actual review
+identifier/result, or failure/NOT RUN; never claim publication from local readiness.
 
 ### Phase 8 — OUTPUT
 
