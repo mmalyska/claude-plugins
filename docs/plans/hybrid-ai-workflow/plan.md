@@ -12,7 +12,7 @@
 - Authority: repository inspection, isolated worktree creation, writing and validating these plan documents. The user subsequently authorized committing and pushing these documents and opening a plan-only PR to `main`. The subsequent T01 instruction authorizes baseline verification and plan-evidence updates in a separate implementation worktree only. The T01 delivery instruction authorized its evidence PR only. A subsequent instruction authorizes T02 implementation; the latest instruction authorizes T02 commit/push/PR only; no manifest edits, T03+, merge, deployment, subagent, second harness or orchestrator is authorized.
 - Implementation baseline: `2194b9ad587963dd75a8d6b4fa320b963ee88f9a` (`main` after merged plan PR #8).
 - T01 branch/worktree: `feat/hybrid-ai-workflow`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow`.
-- T02 branch/worktree: `feat/hybrid-ai-workflow-contract`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-contract`; based on T01 commit `ad2ec8c` (PR #9 not yet in fetched `origin/main`).
+- T02 branch/worktree: `feat/hybrid-ai-workflow-contract`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-contract`; based on T01 commit `ad2ec8c` (T01 PR #9 is now merged into `main` at `d0c51a0`).
 - Next action: await an instruction for T03 in [tasks.md](tasks.md). The latest instruction authorizes T02 commit/push/PR, not later tasks, merge or runtime mutation.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
