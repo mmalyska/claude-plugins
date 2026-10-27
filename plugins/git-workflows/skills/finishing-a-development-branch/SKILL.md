@@ -5,211 +5,134 @@ description: "Use when implementation is complete, all tests pass, and you need 
 
 # Finishing a Development Branch
 
-## Overview
+Verify readiness, inspect provenance and execute only the selected authorized
+operation. Preserve existing primary/worktree state. Follow
+[worktree policy](../../rules/worktree-workflow.md) and
+[git conventions](../../rules/git-workflow.md). This procedure grants no implicit
+delivery, primary maintenance or cleanup authority.
 
-Guide completion of development work by presenting clear options and handling chosen workflow.
+## Step 1: Verify readiness and scope
 
-**Core principle:** Verify tests → Detect environment → Present options → Execute choice → Clean up → Restore the primary checkout.
+Announce use of this skill and read the current requested action, task state and
+verification evidence. Run applicable required checks in the isolated workspace;
+use project commands and report actual results. Failed required gates block
+readiness; missing ones remain NOT RUN. Do not fetch tools or start another
+harness outside session authority. A readiness-only instruction stops here.
 
-**Postcondition — every path through this skill:** the primary checkout ends on the default branch with a clean tree. Options 2 and 3 keep the worktree alive, but the primary checkout is still left on the default branch. See [worktree-workflow.md](../../rules/worktree-workflow.md).
+## Step 2: Inspect checkout and ownership
 
-**Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
-
-## The Process
-
-### Step 1: Verify Tests
-
-**Before presenting options, verify tests pass:**
-
-```bash
-npm test / cargo test / pytest / go test ./...
-```
-
-**If tests fail:**
-```
-Tests failing (<N> failures). Must fix before completing:
-[Show failures]
-Cannot proceed with merge/PR until tests pass.
-```
-
-Stop. Don't proceed to Step 2.
-
-### Step 2: Detect Environment
+Record these facts before any switch, merge, branch creation or cleanup:
 
 ```bash
-GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
-GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
+git rev-parse --show-toplevel
+git rev-parse --absolute-git-dir
+git rev-parse --git-common-dir
+git rev-parse --show-superproject-working-tree
+git branch --show-current
+git status --porcelain
+git worktree list --porcelain
 ```
 
-| State | Menu | Cleanup |
-|-------|------|---------|
-| `GIT_DIR == GIT_COMMON` (normal repo) | Standard 4 options | No worktree to clean up |
-| `GIT_DIR != GIT_COMMON`, named branch | Standard 4 options | Provenance-based (see Step 6) |
-| `GIT_DIR != GIT_COMMON`, detached HEAD | Reduced 3 options (no merge) | No cleanup (externally managed) |
+Resolve git/common paths and primary location from metadata, and distinguish a
+submodule from a linked checkout. Inspect actual default/base revision and the
+primary's branch/status. Do not infer task ownership from directory name.
 
-### Step 3: Determine Base Branch
+- Named, task-owned worktree: only requested operations are candidates.
+- Detached/external worktree: preserve host ownership. Branch creation/push needs
+  its own scope; no automatic branch attachment or local merge from ambiguity.
+- Primary or unclear isolation: stop dependent writes; establish isolation using
+  the existing using-git-worktrees procedure unless primary maintenance itself
+  is explicitly authorized.
+- Dirty/non-default primary: report and preserve it. Do not switch, stash, reset,
+  clean or merge merely to satisfy a clean-default postcondition.
+
+## Step 3: Honor the requested action
+
+An already selected authorized action does not require another fixed menu.
+If no delivery action is selected, report readiness and preserve the branch;
+options can include local merge, PR, keep or explicitly requested discard. Do not
+infer cleanup, external publication, merge or deployment from readiness or PR.
+
+### Authorized local merge
+
+Local merge requires explicit authorization, including its primary maintenance
+scope. If merge triggers GitOps/HCP auto-apply or other runtime effects, obtain
+separate fresh runtime permission with impact and rollback before mutation.
+
+Only proceed when the intended primary is clean and already on the verified
+base/default branch. Respect normal host permissions; a hook exception is not
+itself authorization. Inspect local versus remote base state. Update the base
+with `git pull --ff-only` when authorized; stop on divergence or failed update.
+Then perform only the authorized merge, using fast-forward where possible:
 
 ```bash
-git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
+git -C <verified-primary> pull --ff-only
+git -C <verified-primary> merge --ff-only <verified-task-branch>
 ```
 
-Or ask: "This branch split from main - is that correct?"
+If fast-forward is impossible, report the divergence and agree on an allowed
+integration strategy; do not silently rebase, reset or force a merge. Verify the
+merged revision using appropriate checks in an isolated checkout rather than
+running state-generating tests in primary. Record merged SHA and results.
+Successful merge does not itself authorize deleting a worktree or branch.
 
-### Step 4: Present Options
+### Authorized PR
 
-**Normal repo and named-branch worktree — present exactly these 4 options:**
+Verify intended base, branch, diff and delivery scope, then use the existing PR
+procedure or the current host's available GitHub tool. A PR request may cover its
+necessary branch push; it does not cover merge, discard or cleanup. Inspect a
+pre-existing PR before creating another. Preserve the worktree for feedback.
 
-```
-Implementation complete. What would you like to do?
+### Keep
 
-1. Merge back to <base-branch> locally
-2. Push and create a Pull Request
-3. Keep the branch as-is (I'll handle it later)
-4. Discard this work
+Report current branch/HEAD, worktree path and readiness/remaining uncertainty.
+Keep all work and leave primary untouched. Do not force a return to default.
 
-Which option?
-```
+### Explicit discard
 
-**Detached HEAD — present exactly these 3 options:**
+Before destructive discard, identify exact branch, commits, local changes and
+worktree to remove. Require explicit authorization covering those targets; do
+not infer it from “finish”, merge, PR creation or a path under `.worktrees/`.
+Apply the ownership/cleanup checks below; if scope or provenance is unclear,
+preserve work and report the blocker. Never use forced cleanup as a default.
 
-```
-Implementation complete. You're on a detached HEAD (externally managed workspace).
+## Step 4: Optional authorized cleanup
 
-1. Push as new branch and create a Pull Request
-2. Keep as-is (I'll handle it later)
-3. Discard this work
+Directory location alone is not proof of cleanup ownership. A worktree under
+`.worktrees/` or `worktrees/` may belong to another task, session or harness.
+Verify recorded creation provenance, current ownership, branch/HEAD, all local
+changes (including untracked files), and active consumers before removal.
 
-Which option?
-```
+Cleanup requires explicit authorization for the verified owned target. Preserve
+external, unknown or active worktrees. For a merged branch, verify successful
+integration and checks first; for discard, verify scope covers lost commits and
+local changes. Stop if dirty state is not covered, ownership changed, another
+session is using it, or any check cannot be established. Do not force removal.
 
-**Don't add explanation** - keep options concise.
+Run a targeted worktree removal from a safe location outside that worktree only
+after those checks. Avoid broad pruning of other worktree metadata. Branch
+removal is separate: verify no worktree uses it and remove only the authorized
+branch; use a safe merged-branch deletion after integration. Unmerged deletion
+needs explicit destructive authority and must not be inferred from cleanup.
 
-### Step 5: Execute Choice
+## Step 5: Read-only primary verification
 
-#### Option 1: Merge Locally
+Reinspect primary branch, HEAD and status and compare them with the initial
+observation. Report any discrepancy; do not restore primary by switching,
+stashing, resetting, cleaning or merging to hide it. If it was initially clean
+on default and no authorized maintenance occurred, it must remain so. If the
+user authorized primary maintenance, report the exact permitted change and
+result; do not widen that exception. Preserve and report unrelated existing state.
 
-```bash
-MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-cd "$MAIN_ROOT"
-git checkout <base-branch>
-git pull
-git merge <feature-branch>
-<test command>  # Verify tests on merged result
-```
+## Quick reference
 
-Then: Cleanup worktree (Step 6), then delete branch:
-```bash
-git branch -d <feature-branch>
-```
+| Requested action | Primary mutation | Worktree/branch removal |
+| --- | --- | --- |
+| Readiness / keep | None | None |
+| PR creation | No implicit primary mutation | None; keep for feedback |
+| Local merge | Explicit scoped primary maintenance only | Separate cleanup authority/provenance required |
+| Discard | No implicit primary mutation | Exact destructive scope and provenance required |
 
-#### Option 2: Push and Create PR
-
-```bash
-git push -u origin <feature-branch>
-gh pr create --title "<title>" --body "$(cat <<'EOF'
-## Summary
-<2-3 bullets of what changed>
-
-## Test Plan
-- [ ] <verification steps>
-EOF
-)"
-```
-
-**Do NOT clean up worktree** — user needs it alive to iterate on PR feedback.
-
-#### Option 3: Keep As-Is
-
-Report: "Keeping branch <name>. Worktree preserved at <path>."
-
-**Don't cleanup worktree.**
-
-#### Option 4: Discard
-
-**Confirm first:**
-```
-This will permanently delete:
-- Branch <name>
-- All commits: <commit-list>
-- Worktree at <path>
-
-Type 'discard' to confirm.
-```
-
-Wait for exact confirmation. If confirmed:
-```bash
-MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-cd "$MAIN_ROOT"
-```
-
-Then: Cleanup worktree (Step 6), then force-delete branch:
-```bash
-git branch -D <feature-branch>
-```
-
-### Step 6: Cleanup Workspace
-
-**Only runs for Options 1 and 4.** Options 2 and 3 always preserve the worktree.
-
-```bash
-WORKTREE_PATH=$(git rev-parse --show-toplevel)
-GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
-GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
-```
-
-**If `GIT_DIR == GIT_COMMON`:** Normal repo, no worktree to clean up. Done.
-
-**If worktree path is under `.worktrees/` or `worktrees/`:** We own cleanup.
-
-```bash
-MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-cd "$MAIN_ROOT"
-git worktree remove "$WORKTREE_PATH"
-git worktree prune
-```
-
-**Otherwise:** The host environment owns this workspace. Do NOT remove it. Use a workspace-exit tool if available.
-
-### Step 7: Restore the Primary Checkout
-
-Runs for **all four options**, including the ones that keep the worktree.
-
-```bash
-MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-DEFAULT=$(git -C "$MAIN_ROOT" symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
-DEFAULT=${DEFAULT#origin/}
-git -C "$MAIN_ROOT" switch "${DEFAULT:-main}"
-git -C "$MAIN_ROOT" status --short
-```
-
-`git status --short` must print nothing. If it does not, report the dirty files and stop — do not clean them up unprompted.
-
-## Quick Reference
-
-| Option | Merge | Push | Keep Worktree | Cleanup Branch | Restore primary |
-|--------|-------|------|---------------|----------------|-----------------|
-| 1. Merge locally | yes | - | - | yes | yes |
-| 2. Create PR | - | yes | yes | - | yes |
-| 3. Keep as-is | - | - | yes | - | yes |
-| 4. Discard | - | - | - | yes (force) | yes |
-
-## Red Flags
-
-**Never:**
-- Proceed with failing tests
-- Merge without verifying tests on result
-- Delete work without typed "discard" confirmation
-- Force-push without explicit request
-- Remove a worktree before confirming merge success
-- Clean up worktrees you didn't create
-- Run `git worktree remove` from inside the worktree
-
-**Always:**
-- Verify tests before offering options
-- Detect environment before presenting menu
-- Present exactly 4 options (or 3 for detached HEAD)
-- Get typed confirmation for Option 4
-- Clean up worktree for Options 1 & 4 only
-- `cd` to main repo root before worktree removal
-- Run `git worktree prune` after removal
-- Leave the primary checkout on the default branch, clean
+Missing jq, absent native hooks or a failed-open guard never waive procedural
+isolation, task ownership or user permissions. Codex follows these checks with
+bundled hooks disabled. Never claim an action, cleanup or test result not observed.

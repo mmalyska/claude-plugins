@@ -8,6 +8,10 @@ These checks do not establish live harness behavior or independent review.
 from pathlib import Path
 import hashlib
 import json
+import os
+import shutil
+import subprocess
+import tempfile
 import re
 import unittest
 
@@ -478,6 +482,161 @@ class RoleAuthorizationTest(unittest.TestCase):
             'report conflicting instructions and pause dependent actions until reconciled;',
         ):
             self.assertIn(declaration.lower(), prose.lower())
+
+
+GIT_PLUGIN = ROOT / 'plugins/git-workflows'
+WORKTREE_CREATION = GIT_PLUGIN / 'skills/using-git-worktrees/SKILL.md'
+WORKTREE_FINISH = GIT_PLUGIN / 'skills/finishing-a-development-branch/SKILL.md'
+UNCHANGED_WORKTREE_HOOKS = {'guard-main-checkout.sh': 'af5510df0aa35479f8dfda41b21bffbdeffd93c31a28fa8c9f59660f445e8c51',
+ 'hooks.json': '501056f7d13da344b80ba6a49c687b9a45bb74ee8187eebbcd4d84827f4ff5bf',
+ 'inject-worktree-rule.sh': '2ed8e409b89e0b19c250ca7862b284091621bedfae4d417e6e1242f0f40a187f',
+ 'test-guard.sh': '0259c27e6320a2494ab6660f119693b21644dbece528cadaff51aca5f2c0ee52'}
+
+
+def isolation_creation_errors(document):
+    prose = active_prose(document)
+    required = {
+        'blocked-writes': 'If worktree creation fails, stop writes and report the permission prerequisite.',
+        'no-primary-fallback': 'Never silently fall back to editing primary.',
+        'normal-permissions': 'Use normal host permission escalation only when available and within scope;',
+        'preserve-primary': 'Do not switch a dirty or non-default primary merely to satisfy a postcondition.',
+        'no-second-harness': 'Do not start a second CLI session to imitate a missing tool or bypass a restriction.',
+        'procedural-invariant': 'A missing jq or failed-open hook does not waive this procedural invariant;',
+    }
+    errors = {code for code, declaration in required.items() if declaration not in prose}
+    if re.search(r"(?i)you're working in the current directory instead|permission error on create.*?\| Work in place", prose):
+        errors.add('unsafe-fallback')
+    return errors
+
+
+def isolation_finish_errors(document):
+    prose = active_prose(document)
+    required = {
+        'path-not-owner': 'Directory location alone is not proof of cleanup ownership.',
+        'owned-target-authority': 'Cleanup requires explicit authorization for the verified owned target.',
+        'preserve-external': 'Preserve external, unknown or active worktrees.',
+        'no-automatic-cleanup': 'Successful merge does not itself authorize deleting a worktree or branch.',
+        'primary-readonly': 'do not restore primary by switching, stashing, resetting, cleaning or merging to hide it.',
+        'dirty-primary': 'Dirty/non-default primary: report and preserve it.',
+        'runtime-scope': 'separate fresh runtime permission with impact and rollback before mutation.',
+    }
+    errors = {code for code, declaration in required.items() if declaration not in prose}
+    if re.search(r'(?i)we own cleanup|runs for.*all four options', prose):
+        errors.add('unsafe-cleanup')
+    return errors
+
+
+class WorktreeIsolationTest(unittest.TestCase):
+    def test_creation_stops_on_permission_failure_without_primary_edits(self):
+        text = WORKTREE_CREATION.read_text()
+        self.assertEqual(isolation_creation_errors(text), set())
+        for command in ('git rev-parse --absolute-git-dir', 'git rev-parse --git-common-dir',
+                        'git rev-parse --show-superproject-working-tree',
+                        'git worktree list --porcelain', 'git pull --ff-only'):
+            self.assertIn(command, text)
+        for state in ('Submodule', 'Detached', 'Existing suitable linked worktree', 'verified-base'):
+            self.assertIn(state.lower(), text.lower())
+        self.assertIn('.git/info/exclude', text)
+
+    def test_finishing_preserves_provenance_primary_and_delivery_scope(self):
+        text = WORKTREE_FINISH.read_text()
+        self.assertEqual(isolation_finish_errors(text), set())
+        self.assertIn('pull --ff-only', text)
+        self.assertIn('merge --ff-only', text)
+        self.assertNotIn('git checkout', text)
+        self.assertNotIn('git worktree prune', text)
+        self.assertNotIn('git branch -D', text)
+        self.assertIn('Do not force removal.', text)
+        self.assertIn('including untracked files', text)
+        self.assertIn('active consumers', text)
+
+    def test_removed_unsafe_fallbacks_are_detected(self):
+        text = active_prose(WORKTREE_CREATION.read_text())
+        cases = (
+            ('If worktree creation fails, stop writes and report the permission prerequisite.',
+             'blocked-writes'),
+            ('Never silently fall back to editing primary.', 'no-primary-fallback'),
+            ('Do not switch a dirty or non-default primary merely to satisfy a postcondition.',
+             'preserve-primary'),
+        )
+        for declaration, expected in cases:
+            with self.subTest(boundary=expected):
+                self.assertIn(declaration, text)
+                self.assertIn(expected, isolation_creation_errors(text.replace(declaration, '', 1)))
+        self.assertIn('unsafe-fallback', isolation_creation_errors(
+            text + " If sandbox fails, you're working in the current directory instead."))
+
+    def test_ownership_and_readonly_boundaries_cannot_disappear(self):
+        text = active_prose(WORKTREE_FINISH.read_text())
+        cases = (
+            ('Directory location alone is not proof of cleanup ownership.', 'path-not-owner'),
+            ('Cleanup requires explicit authorization for the verified owned target.',
+             'owned-target-authority'),
+            ('Preserve external, unknown or active worktrees.', 'preserve-external'),
+            ('Successful merge does not itself authorize deleting a worktree or branch.',
+             'no-automatic-cleanup'),
+            ('do not restore primary by switching, stashing, resetting, cleaning or merging to hide it.',
+             'primary-readonly'),
+        )
+        for declaration, expected in cases:
+            with self.subTest(boundary=expected):
+                self.assertIn(declaration, text)
+                self.assertIn(expected, isolation_finish_errors(text.replace(declaration, '', 1)))
+        self.assertIn('unsafe-cleanup', isolation_finish_errors(text + ' If under .worktrees/, we own cleanup.'))
+
+    def test_actor_isolation_permissions_are_not_delegation_authority(self):
+        text = active_prose((GIT_PLUGIN / 'rules/worktree-workflow.md').read_text())
+        for declaration in (
+            'HANDOFF, PARALLEL and REVIEW require explicit user authorization',
+            'Distinct branch/worktree for each writer and a named integrator',
+            'These are isolation rules, not delegation permission.',
+            'A missing jq or failed-open hook removes technical enforcement, not procedural requirements.',
+        ):
+            self.assertIn(declaration, text)
+        readme = (GIT_PLUGIN / 'README.md').read_text()
+        self.assertIn('stop writes rather than silently edit primary', readme)
+        self.assertNotIn('always leaves the primary checkout on the default branch', readme)
+        self.assertNotIn('research → worktree → plan → TDD → review → commit', readme)
+
+    def test_existing_hook_sources_and_fixtures_unchanged(self):
+        for name, expected_hash in UNCHANGED_WORKTREE_HOOKS.items():
+            with self.subTest(path=name):
+                self.assertEqual(hashlib.sha256((GIT_PLUGIN / 'hooks' / name).read_bytes()).hexdigest(),
+                                 expected_hash)
+
+
+    @unittest.skipUnless(os.name == 'posix' and all(shutil.which(tool)
+                         for tool in ('bash', 'git', 'cat', 'jq')),
+                         'POSIX Bash, git, cat and jq required')
+    def test_missing_jq_keeps_fail_open_hook_and_procedural_requirement(self):
+        with tempfile.TemporaryDirectory(prefix='workflow-missing-jq-') as temporary:
+            root = Path(temporary)
+            repository = root / 'repo'
+            result = subprocess.run(['git', 'init', '-q', '-b', 'main', str(repository)],
+                                    text=True, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            payload = json.dumps({'tool_name': 'Write', 'cwd': str(repository),
+                                  'permission_mode': 'auto',
+                                  'tool_input': {'file_path': str(repository / 'probe.txt')}})
+            guard = GIT_PLUGIN / 'hooks/guard-main-checkout.sh'
+            environment = dict(os.environ)
+            environment.pop('CLAUDE_ALLOW_MAIN_EDITS', None)
+            control = subprocess.run([shutil.which('bash'), str(guard)], input=payload,
+                                     env=environment, text=True, capture_output=True)
+            self.assertEqual(control.returncode, 0, control.stderr)
+            self.assertEqual(json.loads(control.stdout)['hookSpecificOutput']['permissionDecision'],
+                             'deny')
+            tools = root / 'tools'
+            tools.mkdir()
+            for tool in ('cat', 'git'):
+                (tools / tool).symlink_to(shutil.which(tool))
+            environment['PATH'] = str(tools)  # Real cat/git, deliberately no jq.
+            missing = subprocess.run([shutil.which('bash'), str(guard)], input=payload,
+                                     env=environment, text=True, capture_output=True)
+            self.assertEqual(missing.returncode, 0)
+            self.assertEqual(missing.stdout, '')
+            self.assertFalse((repository / 'probe.txt').exists())
+            self.assertEqual(isolation_creation_errors(WORKTREE_CREATION.read_text()), set())
 
 
 if __name__ == '__main__':

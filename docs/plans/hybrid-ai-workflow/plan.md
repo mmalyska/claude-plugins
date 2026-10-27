@@ -8,12 +8,12 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: T01–T03 merged; T04 COMPLETE locally. T05–T11 NOT STARTED; no complete workflow conformance claim.
-- Current authority: T04 role/metadata/security-rule implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes T04 commit/push/PR and planned paired version increments; T05+, merge, deployment, subagent, second harness and orchestrator remain unauthorized. Earlier delivery authority applied only to already-merged PRs.
-- T04 baseline: `a6b54c40f7e1189fcfb4b36378edcfccaddf580d` (`main` after merged T03 PR #11).
-- T04 branch/worktree: `feat/hybrid-ai-workflow-role-authorization`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-role-authorization`.
+- Status: T01–T04 merged; T05 COMPLETE locally. T06–T11 NOT STARTED; no complete workflow conformance claim.
+- Current authority: T05 worktree procedure implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes T05 commit/push/PR and the planned paired git-workflows version increment; T06+, merge, deployment, subagent, second harness and orchestrator remain unauthorized. Earlier delivery authority applied only to already-merged PRs.
+- T05 baseline: `d39e0b0e477b50c6b8246d8a238cc3714e955809` (`main` after merged T04 PR #12).
+- T05 branch/worktree: `fix/hybrid-ai-workflow-isolation`, `/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-isolation`.
 - Previous worktrees and inventory snapshots remain preserved; earlier evidence describes historical baselines.
-- Next action: publish T04 under the current PR instruction, then await T05 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T04.
+- Next action: publish T05 under the current PR instruction, then await T06 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T05.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.
@@ -251,3 +251,20 @@ whitespace and scope checks pass. [T04 evidence](audit.md#t04-role-authorization
 records source walkthroughs and missing live/native evidence. No hook, new skill or sibling-repository change. At the authorized PR boundary,
 only version fields in the five changed plugins are incremented in both host
 manifests. Publish T04 only; stop before T05.
+
+## T05 completion update
+
+Removed the sandbox fallback to primary and made base selection/state inspection
+explicit. Finishing preserves dirty/non-default/external state, requires actual
+provenance and target authority for cleanup, and verifies primary read-only instead
+of restoring it automatically. Writer/reviewer sharing requires actor authority;
+parallel writers remain isolated with a named integrator. Hook source and fixtures
+are unchanged. Seven added tests cover declarations, unsafe negative samples,
+unchanged hook digests and an executable missing-jq fixture. Workflow tests 26/26,
+manifest/reference tests 3/3, scanners 2/2 and guard assertions 58/58 pass on Linux
+Bash 5 with fixture-only signing disabled. Markdown (MD013 disabled), links and
+scope/whitespace checks pass. Bash 3.2/macOS and native/model trials remain NOT RUN.
+[T05 evidence](audit.md#t05-worktree-isolation-evidence) records exact limitations
+and S08/S12/S16 local walkthroughs. No new skill, hook implementation or sibling-repository change. At the authorized
+PR boundary, only git-workflows version fields are incremented to 1.3.1 in both
+host manifests. Publish T05 only; stop before T06.
