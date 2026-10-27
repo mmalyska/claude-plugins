@@ -8,6 +8,114 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 
 
+# Frozen T01 inventory at 2194b9ad587963dd75a8d6b4fa320b963ee88f9a.
+# Source: docs/plans/hybrid-ai-workflow/audit.md, T01 catalog/skill/wrapper tables.
+FROZEN_T01_CATALOG = {'agent-toolkit': './plugins/agent-toolkit',
+ 'android': './plugins/android',
+ 'backend': './plugins/backend',
+ 'devcontainer': './plugins/devcontainer',
+ 'development-lifecycle': './plugins/development-lifecycle',
+ 'devops': './plugins/devops',
+ 'dotnet': './plugins/dotnet',
+ 'frontend': './plugins/frontend',
+ 'git-workflows': './plugins/git-workflows',
+ 'personal-essentials': './plugins/personal-essentials',
+ 'renovate': './plugins/renovate',
+ 'security': './plugins/security'}
+FROZEN_T01_SKILLS = {'agent-toolkit:autonomous-agent-harness': 'plugins/agent-toolkit/skills/autonomous-agent-harness/SKILL.md',
+ 'agent-toolkit:blueprint': 'plugins/agent-toolkit/skills/blueprint/SKILL.md',
+ 'agent-toolkit:context-budget': 'plugins/agent-toolkit/skills/context-budget/SKILL.md',
+ 'agent-toolkit:continuous-agent-loop': 'plugins/agent-toolkit/skills/continuous-agent-loop/SKILL.md',
+ 'agent-toolkit:eval-harness': 'plugins/agent-toolkit/skills/eval-harness/SKILL.md',
+ 'agent-toolkit:iterative-retrieval': 'plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md',
+ 'agent-toolkit:rules-distill': 'plugins/agent-toolkit/skills/rules-distill/SKILL.md',
+ 'agent-toolkit:safety-guard': 'plugins/agent-toolkit/skills/safety-guard/SKILL.md',
+ 'agent-toolkit:search-first': 'plugins/agent-toolkit/skills/search-first/SKILL.md',
+ 'agent-toolkit:subagent-driven-development': 'plugins/agent-toolkit/skills/subagent-driven-development/SKILL.md',
+ 'agent-toolkit:team-builder': 'plugins/agent-toolkit/skills/team-builder/SKILL.md',
+ 'agent-toolkit:verification-loop': 'plugins/agent-toolkit/skills/verification-loop/SKILL.md',
+ 'agent-toolkit:workspace-surface-audit': 'plugins/agent-toolkit/skills/workspace-surface-audit/SKILL.md',
+ 'agent-toolkit:writing-skills': 'plugins/agent-toolkit/skills/writing-skills/SKILL.md',
+ 'backend:api-design': 'plugins/backend/skills/api-design/SKILL.md',
+ 'backend:backend-patterns': 'plugins/backend/skills/backend-patterns/SKILL.md',
+ 'backend:database-migrations': 'plugins/backend/skills/database-migrations/SKILL.md',
+ 'backend:database-reviewer': 'plugins/backend/skills/database-reviewer/SKILL.md',
+ 'backend:hexagonal-architecture': 'plugins/backend/skills/hexagonal-architecture/SKILL.md',
+ 'backend:mcp-server-patterns': 'plugins/backend/skills/mcp-server-patterns/SKILL.md',
+ 'backend:nestjs-patterns': 'plugins/backend/skills/nestjs-patterns/SKILL.md',
+ 'backend:postgres-patterns': 'plugins/backend/skills/postgres-patterns/SKILL.md',
+ 'devcontainer:devcontainer-auditor': 'plugins/devcontainer/skills/devcontainer-auditor/SKILL.md',
+ 'devcontainer:devcontainer-ghcr-image-pipeline': 'plugins/devcontainer/skills/devcontainer-ghcr-image-pipeline/SKILL.md',
+ 'devcontainer:devcontainer-renovate-digest-pinning': 'plugins/devcontainer/skills/devcontainer-renovate-digest-pinning/SKILL.md',
+ 'devcontainer:devcontainer-secrets-injection': 'plugins/devcontainer/skills/devcontainer-secrets-injection/SKILL.md',
+ 'development-lifecycle:ai-regression-testing': 'plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md',
+ 'development-lifecycle:architect': 'plugins/development-lifecycle/skills/architect/SKILL.md',
+ 'development-lifecycle:architecture-decision-records': 'plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md',
+ 'development-lifecycle:aside': 'plugins/development-lifecycle/skills/aside/SKILL.md',
+ 'development-lifecycle:build-error-resolver': 'plugins/development-lifecycle/skills/build-error-resolver/SKILL.md',
+ 'development-lifecycle:claude-devfleet': 'plugins/development-lifecycle/skills/claude-devfleet/SKILL.md',
+ 'development-lifecycle:code-review': 'plugins/development-lifecycle/skills/code-review/SKILL.md',
+ 'development-lifecycle:code-reviewer': 'plugins/development-lifecycle/skills/code-reviewer/SKILL.md',
+ 'development-lifecycle:development-lifecycle-rules': 'plugins/development-lifecycle/skills/development-lifecycle-rules/SKILL.md',
+ 'development-lifecycle:doc-updater': 'plugins/development-lifecycle/skills/doc-updater/SKILL.md',
+ 'development-lifecycle:docs-lookup': 'plugins/development-lifecycle/skills/docs-lookup/SKILL.md',
+ 'development-lifecycle:e2e-testing': 'plugins/development-lifecycle/skills/e2e-testing/SKILL.md',
+ 'development-lifecycle:learn-eval': 'plugins/development-lifecycle/skills/learn-eval/SKILL.md',
+ 'development-lifecycle:review': 'plugins/development-lifecycle/skills/review/SKILL.md',
+ 'development-lifecycle:ship': 'plugins/development-lifecycle/skills/ship/SKILL.md',
+ 'development-lifecycle:simplify': 'plugins/development-lifecycle/skills/simplify/SKILL.md',
+ 'development-lifecycle:skill-create': 'plugins/development-lifecycle/skills/skill-create/SKILL.md',
+ 'development-lifecycle:spec': 'plugins/development-lifecycle/skills/spec/SKILL.md',
+ 'development-lifecycle:tdd-guide': 'plugins/development-lifecycle/skills/tdd-guide/SKILL.md',
+ 'development-lifecycle:test': 'plugins/development-lifecycle/skills/test/SKILL.md',
+ 'development-lifecycle:update-codemaps': 'plugins/development-lifecycle/skills/update-codemaps/SKILL.md',
+ 'development-lifecycle:update-docs': 'plugins/development-lifecycle/skills/update-docs/SKILL.md',
+ 'devops:deployment-patterns': 'plugins/devops/skills/deployment-patterns/SKILL.md',
+ 'devops:docker-patterns': 'plugins/devops/skills/docker-patterns/SKILL.md',
+ 'dotnet:csharp-reviewer': 'plugins/dotnet/skills/csharp-reviewer/SKILL.md',
+ 'dotnet:csharp-testing': 'plugins/dotnet/skills/csharp-testing/SKILL.md',
+ 'dotnet:dotnet-patterns': 'plugins/dotnet/skills/dotnet-patterns/SKILL.md',
+ 'dotnet:dotnet-rules': 'plugins/dotnet/skills/dotnet-rules/SKILL.md',
+ 'frontend:design-system': 'plugins/frontend/skills/design-system/SKILL.md',
+ 'frontend:frontend-patterns': 'plugins/frontend/skills/frontend-patterns/SKILL.md',
+ 'frontend:frontend-rules': 'plugins/frontend/skills/frontend-rules/SKILL.md',
+ 'frontend:nextjs-turbopack': 'plugins/frontend/skills/nextjs-turbopack/SKILL.md',
+ 'git-workflows:commit': 'plugins/git-workflows/skills/commit/SKILL.md',
+ 'git-workflows:finishing-a-development-branch': 'plugins/git-workflows/skills/finishing-a-development-branch/SKILL.md',
+ 'git-workflows:git-workflows-rules': 'plugins/git-workflows/skills/git-workflows-rules/SKILL.md',
+ 'git-workflows:pr': 'plugins/git-workflows/skills/pr/SKILL.md',
+ 'git-workflows:using-git-worktrees': 'plugins/git-workflows/skills/using-git-worktrees/SKILL.md',
+ 'personal-essentials:personal-setup': 'plugins/personal-essentials/skills/personal-setup/SKILL.md',
+ 'renovate:renovate-auditor': 'plugins/renovate/skills/renovate-auditor/SKILL.md',
+ 'renovate:renovate-automerge-rules': 'plugins/renovate/skills/renovate-automerge-rules/SKILL.md',
+ 'renovate:renovate-custom-regex-managers': 'plugins/renovate/skills/renovate-custom-regex-managers/SKILL.md',
+ 'renovate:renovate-extending-presets': 'plugins/renovate/skills/renovate-extending-presets/SKILL.md',
+ 'security:security-review': 'plugins/security/skills/security-review/SKILL.md',
+ 'security:security-scan': 'plugins/security/skills/security-scan/SKILL.md'}
+FROZEN_T01_WRAPPERS = {'plugins/backend/agents/database-reviewer.md': 'plugins/backend/skills/database-reviewer/SKILL.md',
+ 'plugins/devcontainer/agents/devcontainer-auditor.md': 'plugins/devcontainer/skills/devcontainer-auditor/SKILL.md',
+ 'plugins/development-lifecycle/agents/architect.md': 'plugins/development-lifecycle/skills/architect/SKILL.md',
+ 'plugins/development-lifecycle/agents/build-error-resolver.md': 'plugins/development-lifecycle/skills/build-error-resolver/SKILL.md',
+ 'plugins/development-lifecycle/agents/code-reviewer.md': 'plugins/development-lifecycle/skills/code-reviewer/SKILL.md',
+ 'plugins/development-lifecycle/agents/doc-updater.md': 'plugins/development-lifecycle/skills/doc-updater/SKILL.md',
+ 'plugins/development-lifecycle/agents/docs-lookup.md': 'plugins/development-lifecycle/skills/docs-lookup/SKILL.md',
+ 'plugins/development-lifecycle/agents/tdd-guide.md': 'plugins/development-lifecycle/skills/tdd-guide/SKILL.md',
+ 'plugins/development-lifecycle/commands/aside.md': 'plugins/development-lifecycle/skills/aside/SKILL.md',
+ 'plugins/development-lifecycle/commands/code-review.md': 'plugins/development-lifecycle/skills/code-review/SKILL.md',
+ 'plugins/development-lifecycle/commands/learn-eval.md': 'plugins/development-lifecycle/skills/learn-eval/SKILL.md',
+ 'plugins/development-lifecycle/commands/review.md': 'plugins/development-lifecycle/skills/review/SKILL.md',
+ 'plugins/development-lifecycle/commands/ship.md': 'plugins/development-lifecycle/skills/ship/SKILL.md',
+ 'plugins/development-lifecycle/commands/skill-create.md': 'plugins/development-lifecycle/skills/skill-create/SKILL.md',
+ 'plugins/development-lifecycle/commands/spec.md': 'plugins/development-lifecycle/skills/spec/SKILL.md',
+ 'plugins/development-lifecycle/commands/test.md': 'plugins/development-lifecycle/skills/test/SKILL.md',
+ 'plugins/development-lifecycle/commands/update-codemaps.md': 'plugins/development-lifecycle/skills/update-codemaps/SKILL.md',
+ 'plugins/development-lifecycle/commands/update-docs.md': 'plugins/development-lifecycle/skills/update-docs/SKILL.md',
+ 'plugins/dotnet/agents/csharp-reviewer.md': 'plugins/dotnet/skills/csharp-reviewer/SKILL.md',
+ 'plugins/git-workflows/commands/commit.md': 'plugins/git-workflows/skills/commit/SKILL.md',
+ 'plugins/git-workflows/commands/pr.md': 'plugins/git-workflows/skills/pr/SKILL.md',
+ 'plugins/personal-essentials/commands/personal-setup.md': 'plugins/personal-essentials/skills/personal-setup/SKILL.md',
+ 'plugins/renovate/agents/renovate-auditor.md': 'plugins/renovate/skills/renovate-auditor/SKILL.md'}
+
 def frontmatter(path):
     text = path.read_text()
     if not text.startswith('---\n'):
@@ -37,6 +145,11 @@ def links(text):
         if fence is None:
             lines.append(line)
     return re.findall(r'\]\(([^)\n]+)\)', '\n'.join(lines))
+
+
+def hard_workflow_provider(manifest):
+    """Inspect declared dependencies only, not optional prose/keywords/history."""
+    return bool(re.search(r'(?i)superpowers', json.dumps(manifest.get('dependencies', []))))
 
 
 class SharedPluginTest(unittest.TestCase):
@@ -104,6 +217,47 @@ class SharedPluginTest(unittest.TestCase):
                 selector = f"{entry['name']}@{catalog['name']}"
                 self.assertIn(f'codex plugin add {selector}', setup)
                 self.assertIn(f'claude plugin install {selector}', setup)
+
+
+    def test_t01_catalog_and_shared_identities_are_preserved(self):
+        catalog = json.loads((ROOT / '.claude-plugin/marketplace.json').read_text())
+        self.assertEqual(catalog['name'], 'mmalyska-claude-plugins')
+        self.assertEqual({entry['name']: entry['source'] for entry in catalog['plugins']},
+                         FROZEN_T01_CATALOG)
+        actual = {}
+        for plugin in (ROOT / 'plugins').iterdir():
+            for path in plugin.glob('skills/*/SKILL.md'):
+                fields, _ = frontmatter(path)
+                actual[f"{plugin.name}:{fields['name']}"] = str(path.relative_to(ROOT))
+        self.assertEqual(len(FROZEN_T01_SKILLS), 70)
+        self.assertEqual(actual, FROZEN_T01_SKILLS)
+
+    def test_t01_wrapper_set_links_and_descriptions_are_preserved(self):
+        actual = {}
+        for kind in ('commands', 'agents'):
+            for source in (ROOT / 'plugins').glob(f'*/{kind}/*.md'):
+                target = source.parent.parent / 'skills' / source.stem / 'SKILL.md'
+                fields, body = frontmatter(source)
+                shared_fields, _ = frontmatter(target)
+                actual[str(source.relative_to(ROOT))] = str(target.relative_to(ROOT))
+                self.assertIn(f'../skills/{source.stem}/SKILL.md', body)
+                def value(raw):
+                    return json.loads(raw) if raw.startswith('"') else raw
+                self.assertEqual(value(fields['description']), value(shared_fields['description']))
+        self.assertEqual(len(FROZEN_T01_WRAPPERS), 23)
+        self.assertEqual(actual, FROZEN_T01_WRAPPERS)
+
+    def test_external_workflow_provider_is_optional_in_both_manifests(self):
+        for plugin in (ROOT / 'plugins').iterdir():
+            for host in ('.claude-plugin', '.codex-plugin'):
+                with self.subTest(plugin=plugin.name, host=host):
+                    manifest = json.loads((plugin / host / 'plugin.json').read_text())
+                    self.assertFalse(hard_workflow_provider(manifest))
+        for dependency in ('superpowers@claude-plugins-official', 'SUPERPOWERS@other'):
+            with self.subTest(reintroduced_dependency=dependency):
+                sample = {'dependencies': [dependency]}
+                self.assertTrue(hard_workflow_provider(sample))
+        self.assertFalse(hard_workflow_provider({'keywords': ['optional superpowers']}))
 
 
 if __name__ == '__main__':

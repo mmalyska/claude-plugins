@@ -233,7 +233,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T08 — Remove hard optional-provider dependency and verify adapters
 
-- [ ] Complete T08.
+- [x] Complete T08 locally; native installation/discovery NOT RUN, blocking release acceptance.
 
 **PR:** 2; version procedure also applies at each implementation PR boundary. **Dependencies:** T07.
 
@@ -346,8 +346,9 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## Completion and current execution record
 
-The original Plan stage created only plan/tasks/audit documents in SOLO. Subsequent
-T01–T06 are merged; T07 is locally complete and uncommitted. Primary is clean on
-main. The next implementation task is T08 and requires a subsequent instruction.
-T07 commit/push/PR is now authorized; other worktrees and user state remain
-preserved. No external service, actor or scheduler was started.
+The original Plan stage created only plan/tasks/audit documents in SOLO.
+T01–T07 are merged; T08 is locally complete and uncommitted, with native
+installation/discovery explicitly NOT RUN. Primary is clean on main. T09–T11
+remain pending. The subsequent PR instruction authorizes T08 commit/push/PR; T09 requires a new instruction. Previous
+worktrees and user state remain preserved; no other harness, actor, service or
+scheduler was started. See the T08 evidence in [audit.md](audit.md).

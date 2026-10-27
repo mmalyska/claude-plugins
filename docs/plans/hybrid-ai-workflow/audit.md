@@ -1164,3 +1164,90 @@ manifests; identity, discovery, hooks and dependencies remain unchanged. Earlier
 no-manifest/no-delivery statements describe initial implementation. T08+, merge,
 release and service/worker/scheduler launch remain unauthorized. Revalidate static
 tests, Markdown, links and scope before publishing.
+
+## T08 optional providers and adapter compatibility evidence
+
+T07 PR #15 is merged. T08 uses base
+`7298c93ecfd9642f0980afdc82dd5626072402b3` in branch
+`fix/hybrid-ai-workflow-optional-providers`, worktree
+`/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-optional-providers`.
+Primary remains clean on main. Execution is DEEP + SOLO; no additional actor,
+second harness, scheduler, service, model turn or orchestrator was launched.
+
+### Exact T08 file ownership and results
+
+- `plugins/development-lifecycle/.claude-plugin/plugin.json`: removed the sole
+  hard Superpowers dependency; version 1.2.4. The matching Codex manifest is also
+  1.2.4 and keeps empty hooks. F11 is addressed for active installation metadata;
+  historical dependency findings remain evidence about the audited revision.
+- `plugins/development-lifecycle/README.md`: existing local/manual paths cover
+  all seven stages, optional blueprint/provider and capability fallback, existing
+  artifact preservation, host differences and incomplete-conformance notice.
+- `plugins/git-workflows/README.md`: standalone STANDARD + SOLO, safe procedural
+  Codex preflight, optional provider/service behavior and no fake success. Both
+  git-workflows manifest versions increment together to 1.3.3.
+- `docs/codex.md`: shared identities, on-demand loading/enforcement differences,
+  optional provider removal without uninstalling user state, isolated native-test
+  opt-in and honest release gates. No native OpenCode adapter is implemented.
+- `tests/test_codex_manifests.py`: literal T01 snapshots of 12 catalog identities,
+  70 shared skills and 23 native wrapper mappings; exact discovery, target and
+  description parity; both-host dependency regression checks and negative fixtures
+  that restore the forbidden dependency. Expected identities are frozen evidence,
+  not generated from the installation under test.
+- `tests/test_host_discovery.py`: explicit opt-in gates for three native tests.
+  Prepared standalone cases for each of the three owners and a combined case use
+  temporary config/workspace paths. Claude validates marketplace/plugin metadata
+  and installed enabled content; Codex additionally prepares all-catalog actual
+  skill discovery using metadata RPCs only. Installed manifests, skills, wrappers
+  and rules are compared to source; provider installation is neither requested nor
+  accepted. CLI interface assumptions must be verified in an authorized native run.
+- `tests/test_workflow_contract.py`: local-stage completeness, documented adapter
+  limits and native opt-in/NOT RUN guards, with no host process execution.
+- `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: resume and evidence updates.
+
+No shared skill, native wrapper, hook, marketplace, historical plan, domain
+checklist or sibling repository changed. Toolkit/backend/dotnet/renovate/devcontainer
+manifest pairs already received their planned patch versions at their implementation
+PR boundaries; equality is verified instead of incrementing unchanged packages.
+There is no second host catalog, Plan/Build skill, configuration migration or
+provider uninstall. Existing installed users can retain Superpowers voluntarily.
+
+### T08 verification and limits
+
+| Check | Result |
+| --- | --- |
+| Workflow contract tests | 43 PASS (three new T08 checks) |
+| Manifest/discovery source tests | 6 PASS (three new T08 checks) |
+| Rule scanner tests | 2 PASS |
+| Native host discovery with `WORKFLOW_NATIVE_TESTS=0` | Three SKIPPED / NOT RUN; zero host subprocesses |
+| Markdown lint (MD013 disabled), changed local links/fragments, scope and diff whitespace | PASS |
+
+Commands use `python3 -B -m unittest discover -s tests -p <module>.py -v`
+for `test_workflow_contract`, `test_codex_manifests`, `test_rule_scanners` and
+`test_host_discovery`; only the latter is explicitly run with native opt-in off.
+Static checks cannot prove installation, actual host discovery, provider fallback
+behavior or model obedience. Native installation/discovery remains NOT RUN under
+the user's no-other-harness instruction, blocking final release acceptance.
+No full workflow conformance is claimed. The existing hook is unchanged, so its
+historical Bash/Linux evidence is retained rather than presented as a new run;
+Bash 3.2 and behavioral scenario gates still require later authorized evidence.
+
+### Review, rollback and next authority
+
+Separate local review checked that dependency removal leaves every existing
+entrypoint and rule intact; both host versions agree; no implicit tool launch or
+fake native PASS was introduced. Source links to the installed contract stay
+plugin-local. Documentation preserves established artifacts before new defaults.
+Rollback restores the T08 manifests/docs/tests together and reinstalls a selected
+prior revision in a new session; it neither removes user state nor uninstalls
+providers. T08 is complete locally with the above native limitations. No commit,
+push or PR is created. Await explicit delivery or T09 instruction; T09 is not
+started, and T09–T11 plus outstanding native evidence remain required.
+
+### T08 PR preparation update
+
+The subsequent user instruction authorizes T08 commit/push/PR to main. Earlier
+no-delivery statements describe the initial local implementation boundary. Paired
+versions are already 1.2.4 for lifecycle and 1.3.3 for git-workflows; no additional
+version increment is needed. Native checks stay NOT RUN; T09+, merge, release and
+other harness execution remain outside this instruction.
