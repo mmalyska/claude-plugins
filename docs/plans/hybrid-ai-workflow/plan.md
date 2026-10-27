@@ -8,12 +8,12 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: T01–T02 merged; T03 COMPLETE locally. T04–T11 NOT STARTED; no complete workflow conformance claim.
-- Current authority: T03 implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes commit/push/PR and the planned paired version increments for changed plugins; T04+, merge, deployment, subagent, second harness and orchestrator remain unauthorized. Earlier delivery authority applied to the already-merged T01/T02 PRs.
-- T03 baseline: `775372df4c65a397bc74687a20052ebb6c9c0852` (`main` after merged T02 PR #10).
-- T03 branch/worktree: `feat/hybrid-ai-workflow-profiles`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-profiles`.
-- Previous worktrees remain preserved; T01/T02 evidence below describes their historical baselines.
-- Next action: publish T03 under the current PR instruction, then await T04 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T03.
+- Status: T01–T03 merged; T04 COMPLETE locally. T05–T11 NOT STARTED; no complete workflow conformance claim.
+- Current authority: T04 role/metadata/security-rule implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes T04 commit/push/PR and planned paired version increments; T05+, merge, deployment, subagent, second harness and orchestrator remain unauthorized. Earlier delivery authority applied only to already-merged PRs.
+- T04 baseline: `a6b54c40f7e1189fcfb4b36378edcfccaddf580d` (`main` after merged T03 PR #11).
+- T04 branch/worktree: `feat/hybrid-ai-workflow-role-authorization`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-role-authorization`.
+- Previous worktrees and inventory snapshots remain preserved; earlier evidence describes historical baselines.
+- Next action: publish T04 under the current PR instruction, then await T05 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T04.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.
@@ -233,3 +233,21 @@ templates and release metadata remain queued for later tasks. No native adapter,
 PR boundary, only the version fields in both manifests of development-lifecycle,
 agent-toolkit and git-workflows are incremented per the planned release procedure.
 Publish T03 only; stop before T04.
+
+## T04 completion update
+
+Corrected ten native/shared role description pairs and added direct-entry authority
+guards while preserving native names, tools/model settings and thin wrapper links.
+All six lifecycle roles load the existing contract; four domain roles remain
+standalone with their checklist suffixes byte-identical. Common agents guidance
+gates read-only parallel work as well as writers; security assessment remains
+mandatory without a reviewer and credential rotation needs separate authority.
+Seven added static tests cover metadata, descriptions, guards, checklist digests,
+negative authorization/policy cases and security response. All 19 workflow tests,
+3 manifest/reference tests and 2 scanner tests pass. Markdown comparison adds no
+file/rule diagnostics relative to the baseline; existing checklist formatting
+findings are preserved rather than expanded into unrelated edits. Local links,
+whitespace and scope checks pass. [T04 evidence](audit.md#t04-role-authorization-evidence)
+records source walkthroughs and missing live/native evidence. No hook, new skill or sibling-repository change. At the authorized PR boundary,
+only version fields in the five changed plugins are incremented in both host
+manifests. Publish T04 only; stop before T05.

@@ -6,10 +6,12 @@ These checks do not establish live harness behavior or independent review.
 """
 
 from pathlib import Path
+import hashlib
+import json
 import re
 import unittest
 
-from test_codex_manifests import links
+from test_codex_manifests import frontmatter, links
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / 'plugins/development-lifecycle'
@@ -315,6 +317,167 @@ class ProfileGuidanceTest(unittest.TestCase):
         self.assertIn('shared `AGENTS.md` first in either host', text)
         self.assertIn('Only publish when the current user request explicitly authorizes', text)
         self.assertLess(text.index('Only publish when'), text.index('gh pr review'))
+
+
+# Frozen from the merged T03 baseline: native names/tools/models and domain
+# checklist suffixes. Descriptions and role guards are the only T04 changes.
+NATIVE_ROLE_METADATA = {'backend/database-reviewer': {'model': 'sonnet',
+                               'name': 'database-reviewer',
+                               'tools': '["Read", "Write", "Edit", "Bash", "Grep", "Glob"]'},
+ 'devcontainer/devcontainer-auditor': {},
+ 'development-lifecycle/architect': {'model': 'opus',
+                                     'name': 'architect',
+                                     'tools': '["Read", "Grep", "Glob"]'},
+ 'development-lifecycle/build-error-resolver': {'model': 'sonnet',
+                                                'name': 'build-error-resolver',
+                                                'tools': '["Read", "Write", "Edit", "Bash", '
+                                                         '"Grep", "Glob"]'},
+ 'development-lifecycle/code-reviewer': {'model': 'sonnet',
+                                         'name': 'code-reviewer',
+                                         'tools': '["Read", "Grep", "Glob", "Bash"]'},
+ 'development-lifecycle/doc-updater': {'model': 'haiku',
+                                       'name': 'doc-updater',
+                                       'tools': '["Read", "Write", "Edit", "Bash", "Grep", '
+                                                '"Glob"]'},
+ 'development-lifecycle/docs-lookup': {'model': 'sonnet',
+                                       'name': 'docs-lookup',
+                                       'tools': '["Read", "Grep", "Glob", "WebSearch", "WebFetch", '
+                                                '"mcp__context7__resolve-library-id", '
+                                                '"mcp__context7__query-docs"]'},
+ 'development-lifecycle/tdd-guide': {'model': 'sonnet',
+                                     'name': 'tdd-guide',
+                                     'tools': '["Read", "Write", "Edit", "Bash", "Grep"]'},
+ 'dotnet/csharp-reviewer': {'model': 'sonnet',
+                            'name': 'csharp-reviewer',
+                            'tools': '["Read", "Grep", "Glob", "Bash"]'},
+ 'renovate/renovate-auditor': {}}
+DOMAIN_CHECKLIST_HASHES = {'backend/database-reviewer': '4ea928c83e3a2e8ce93a16b5f914b8ae3ed7bbf6dcc34be68c2fdb77dd66cdde',
+ 'devcontainer/devcontainer-auditor': 'e7ddf4b91e77822f9c5d4622323f9fc7825b7b8c348598533e78cf16fb04be5c',
+ 'dotnet/csharp-reviewer': '89f572e3598d37d6b31776399f7ee5340e8791208cd2b7fa6fd5a38b134f88e7',
+ 'renovate/renovate-auditor': 'd39418706bb4f5d7f3e7458095e127dec10d6b626d5de32c7cce4cb328560716'}
+
+
+def role_authorization_errors(document):
+    prose = active_prose(document)
+    boundaries = {
+        'local-default': 'Use this role locally by default (STANDARD + SOLO)',
+        'role-not-actor': 'Naming a role does not authorize another actor.',
+        'actor-authorization':
+            'HANDOFF, PARALLEL and REVIEW require explicit user authorization before delegation.',
+        'authority-before-capability': 'Check authority before exposed capability;',
+        'model-scope': 'Keep the configured model and task/tool/permission limits.',
+        'no-bypass': 'Never launch another CLI to bypass a restriction.',
+        'shared-policy': '`AGENTS.md` first, then host adapters and project policy;',
+        'policy-conflict': 'report conflicts and pause dependent actions until reconciled.',
+    }
+    return {code for code, declaration in boundaries.items() if declaration not in prose}
+
+
+def security_response_errors(document):
+    prose = active_prose(document)
+    boundaries = {
+        'assessment-without-reviewer':
+            'agent does not waive assessment or mandatory gates.',
+        'required-gates': 'A failed required security or coverage gate blocks readiness.',
+        'rotation-authority':
+            'Credential rotation requires separate fresh explicit authorization with impact and rollback.',
+        'scope': 'Review-only is not remediation or delivery permission.',
+        'policy-conflict': 'report conflicts and pause dependent actions until reconciled.',
+    }
+    return {code for code, declaration in boundaries.items() if declaration not in prose}
+
+
+class RoleAuthorizationTest(unittest.TestCase):
+    def test_native_metadata_and_entrypoint_mapping_preserved(self):
+        for identity, expected in NATIVE_ROLE_METADATA.items():
+            plugin, role = identity.split('/')
+            native = ROOT / f'plugins/{plugin}/agents/{role}.md'
+            shared = ROOT / f'plugins/{plugin}/skills/{role}/SKILL.md'
+            with self.subTest(role=identity):
+                fields, body = frontmatter(native)
+                metadata = {key: value for key, value in fields.items() if key != 'description'}
+                self.assertEqual(metadata, expected)
+                shared_fields, _ = frontmatter(shared)
+                self.assertEqual(shared_fields['name'], role)
+                self.assertEqual(json.loads(fields['description']),
+                                 json.loads(shared_fields['description']))
+                self.assertEqual(body.strip(),
+                                 f'Read [the shared {role} workflow](../skills/{role}/SKILL.md) '
+                                 'and follow it for this task.')
+
+    def test_descriptions_cannot_mandate_an_actor_or_universal_tdd(self):
+        for identity in NATIVE_ROLE_METADATA:
+            plugin, role = identity.split('/')
+            for relative in (f'agents/{role}.md', f'skills/{role}/SKILL.md'):
+                path = ROOT / f'plugins/{plugin}' / relative
+                fields, _ = frontmatter(path)
+                description = json.loads(fields['description'])
+                with self.subTest(path=path):
+                    self.assertNotRegex(description, r'(?i)proactiv|must be used|use immediately|80%')
+                    self.assertIn('Apply locally by default;', description)
+                    self.assertIn('explicit user authorization', description)
+
+    def test_each_shared_role_has_direct_entry_guards(self):
+        for identity in NATIVE_ROLE_METADATA:
+            plugin, role = identity.split('/')
+            path = ROOT / f'plugins/{plugin}/skills/{role}/SKILL.md'
+            with self.subTest(role=identity):
+                self.assertEqual(role_authorization_errors(path.read_text()), set())
+                if plugin == 'development-lifecycle':
+                    targets = [(path.parent / link.split('#')[0]).resolve()
+                               for link in links(path.read_text()) if '://' not in link]
+                    self.assertIn(CONTRACT.resolve(), targets)
+
+    def test_domain_checklists_unchanged_and_no_new_provider_dependency(self):
+        for identity, expected_hash in DOMAIN_CHECKLIST_HASHES.items():
+            plugin, role = identity.split('/')
+            text = (ROOT / f'plugins/{plugin}/skills/{role}/SKILL.md').read_text()
+            with self.subTest(role=identity):
+                checklist = text.split('pause dependent actions until reconciled.', 1)[1]
+                self.assertEqual(hashlib.sha256(checklist.encode()).hexdigest(), expected_hash)
+                self.assertNotIn('../../rules/common/workflow.md', text)
+
+    def test_missing_authority_and_policy_conflict_are_detected(self):
+        text = active_prose((PLUGIN / 'skills/architect/SKILL.md').read_text())
+        cases = (
+            ('Naming a role does not authorize another actor.', 'role-not-actor'),
+            ('explicit user authorization before delegation.', 'actor-authorization'),
+            ('Check authority before exposed capability;', 'authority-before-capability'),
+            ('report conflicts and pause dependent actions until reconciled.', 'policy-conflict'),
+        )
+        for declaration, error in cases:
+            with self.subTest(boundary=error):
+                self.assertIn(declaration, text)
+                sample = text.replace(declaration, 'Proceed without checking.', 1)
+                self.assertIn(error, role_authorization_errors(sample))
+
+    def test_security_response_does_not_depend_on_a_reviewer(self):
+        path = PLUGIN / 'rules/common/security.md'
+        text = path.read_text()
+        self.assertEqual(security_response_errors(text), set())
+        prose = active_prose(text)
+        cases = (
+            ('agent does not waive assessment or mandatory gates.', 'assessment-without-reviewer'),
+            ('A failed required security or coverage gate blocks readiness.', 'required-gates'),
+            ('Credential rotation requires separate fresh explicit authorization with impact and rollback.',
+             'rotation-authority'),
+            ('report conflicts and pause dependent actions until reconciled.', 'policy-conflict'),
+        )
+        for declaration, error in cases:
+            with self.subTest(boundary=error):
+                self.assertIn(declaration, prose)
+                self.assertIn(error, security_response_errors(
+                    prose.replace(declaration, 'Reviewer unavailable: skip security.', 1)))
+
+    def test_common_agent_rule_gates_parallel_work_and_has_no_cli_bypass(self):
+        prose = active_prose((PLUGIN / 'rules/common/agents.md').read_text())
+        for declaration in (
+            'HANDOFF, PARALLEL and REVIEW require explicit user authorization',
+            'Parallel read-only work requires explicit topology authorization',
+            'Never launch another CLI, worker or orchestrator to bypass a restriction.',
+            'report conflicting instructions and pause dependent actions until reconciled;',
+        ):
+            self.assertIn(declaration.lower(), prose.lower())
 
 
 if __name__ == '__main__':

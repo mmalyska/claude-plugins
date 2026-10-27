@@ -723,3 +723,110 @@ are the sole scope extension at the authorized PR boundary; names, discovery,
 hooks and dependencies remain unchanged. Earlier no-manifest/no-delivery statements
 above describe the initial implementation stage. T04+, merge and release remain
 unauthorized. Revalidate tests, Markdown and scope before publishing.
+
+## T04 role authorization evidence
+
+T04 completed locally in DEEP + SOLO on `feat/hybrid-ai-workflow-role-authorization`,
+worktree `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-role-authorization`,
+based on `a6b54c40f7e1189fcfb4b36378edcfccaddf580d` (merged T03 PR #11). Primary `main` was clean and updated
+fast-forward before worktree creation. No subagent, other harness, orchestrator,
+commit, push or PR was invoked for this task. Earlier inventory remains historical.
+
+### File-level changes and compatibility
+
+Exact owners are the 23 implementation/test paths listed in T04, plus the three
+plan evidence documents. No additional product path is changed.
+
+- Native/shared role pairs: lifecycle architect, build-error-resolver,
+  code-reviewer, doc-updater, docs-lookup and tdd-guide; backend database-reviewer;
+  dotnet csharp-reviewer; renovate renovate-auditor; devcontainer
+  devcontainer-auditor. Purpose-specific descriptions now say local by default
+  and require explicit user authorization for separate-agent execution. Removed
+  proactive/MUST-BE-USED actor triggers and the native unconditional TDD/80% claim.
+- Native adapters change only description text. Exact presence/absence and values
+  of all other frontmatter fields (name, tools, model) and their one-link bodies
+  are frozen in regression tests. Missing native names remain implicit basenames.
+- Shared role entry guards default to STANDARD + SOLO while preserving explicit
+  task selection. A role name grants no new actor; HANDOFF/PARALLEL/REVIEW require
+  authority before exposed capability. Guard preserves configured model/task/tool
+  scope, prohibits another CLI bypass and requires shared AGENTS policy/conflict
+  reconciliation before dependent actions.
+- All six lifecycle roles reference the same plugin-local workflow contract.
+  Domain guards add no dependency or cross-plugin resource link. Four domain
+  checklist suffixes have the same SHA-256 as the merged T03 baseline.
+- Common agents rule names actor topology and authority, including read-only
+  parallel work; missing capability is disclosed without silent topology change.
+  Writer isolation/integrator duties and honest partial-result reporting remain.
+- Security rule retains mandatory applicable checks and local assessment. Missing
+  security-reviewer does not waive a security/coverage failure. Fixes require
+  actual scope; rotation/runtime remediation needs separate fresh permission
+  with impact/rollback. Conflicting host policy cannot select weaker safety.
+- `tests/test_workflow_contract.py` adds seven tests and baseline compatibility
+  constants. `plan.md`, `tasks.md`, `audit.md` record status, evidence and next task.
+
+The original domain checklist text is not reformatted or rewritten. Existing
+lifecycle role procedures beyond guard/description remain intact. No tools/model
+was selected or a native agent instantiated in this session. No manifests,
+versions, hooks, duplicate skills, new lifecycle or sibling repositories changed;
+paired versions belong to a later authorized PR boundary under T08's procedure.
+
+### T04 commands and results
+
+| Command / check | Exit | Observed result |
+| --- | --- | --- |
+| `python3 -B -m unittest discover -s tests -p test_workflow_contract.py -v` | 0 | 19 tests PASS, including 7 new T04 tests |
+| `python3 -B -m unittest discover -s tests -p test_codex_manifests.py -v` | 0 | 3 tests PASS; identity/discovery metadata, wrapper links and contained resources |
+| `python3 -B -m unittest discover -s tests -p test_rule_scanners.py -v` | 0 | 2 tests PASS; both-host scanner behavior |
+| Markdown lint comparison, MD013 disabled | 0 | Baseline 69 diagnostics, current 67 across 22 touched role/rule Markdown files; no added count for any file/rule pair |
+| Plan-evidence Markdown lint, local links/fragments, scope/metadata inspection and `git diff --check` | 0 | PASS; primary clean on main, exact authorized paths only |
+
+Markdown comparison reads baseline file contents with `git show HEAD:<path>` into
+a temporary directory, runs installed markdownlint-cli with `--json --disable
+MD013`, and compares diagnostic counts for each relative file/rule pair. This
+is a no-added-diagnostics check, not a claim that all historical formatting is
+clean. Existing headings/list/table issues remain in preserved checklists.
+Native wrappers and domain bodies stay unchanged rather than normalize those
+unrelated sections. Newly written rules and plan evidence are checked separately.
+
+### Separate local walkthroughs and negative samples
+
+- S01 direct role request: description and shared entry guard both select local
+  role application by default. A tool registry or a named role cannot create
+  authority. STANDARD + SOLO applies when fields are absent.
+- S04 DEEP + SOLO: same expertise applied as a local pass, preserving configured
+  model and tool/permission limits, with lack of independent review disclosed.
+  No second agent/harness launch is suggested by complexity.
+- Authorized external reviewer missing: common agents rule discloses the limit
+  and offers local sequential analysis only if compatible with user intent;
+  available-but-unauthorized native agents remain unused.
+- Security issue with no reviewer: perform the local checklist/assessment and
+  report a failed required security gate as blocking readiness. Absence of a
+  specialist cannot convert failure into PASS or trigger a secret rotation.
+- Conflicting AGENTS versus host-adapter policy: shared-role and security guards
+  require reporting the conflict and pausing dependent actions; neither host
+  silently chooses a weaker rule.
+- Static negative samples delete the role-not-actor, explicit authority,
+  authority-before-capability and conflict boundaries; four more weaken the
+  missing-reviewer, required-gate, rotation-permission and policy-conflict
+  declarations. Tests reject each sample. Metadata tests cover all ten adapters,
+  paired descriptions, immutable non-description fields and original wrapper
+  bodies; domain hashes verify exact checklist preservation.
+
+These are source-based same-agent walkthroughs and document checks, not an
+execution policy engine or proof of native/model behavior. Native discovery/full
+suite and live actor scenarios remain NOT RUN under the no-other-harness
+constraint. Hook/guard tests were not repeated because no hook/isolation code
+changed. Remaining F04/F05/F20 behavior outside these owners is queued for
+T05–T08; full workflow conformance is not claimed. T04 is complete locally and
+uncommitted; stop before T05 and delivery pending another instruction.
+
+### T04 PR preparation update
+
+The subsequent user instruction authorizes T04 commit/push/PR. Apply the planned
+paired patch version increments for corrected role authorization guidance:
+development-lifecycle 1.2.0 → 1.2.1; backend and dotnet 1.0.1 → 1.0.2; renovate
+and devcontainer 0.1.1 → 0.1.2. Only version fields change in the ten manifests;
+identities, tool/model metadata, discovery paths, hooks and dependencies remain
+unchanged. Earlier no-manifest/no-delivery statements describe the initial T04
+implementation. T05+, merge and release remain unauthorized. Revalidate static
+tests, local links, diff whitespace and Markdown diagnostics before publication.

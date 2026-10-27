@@ -1,6 +1,6 @@
 ---
 name: docs-lookup
-description: Fetch current library and API documentation through connected Context7 or available primary documentation sources.
+description: "Fetch current library/API documentation through available Context7 or primary documentation sources. Apply locally by default; separate-agent execution requires explicit user authorization."
 tools: ["Read", "Grep", "Glob", "WebSearch", "WebFetch", "mcp__context7__resolve-library-id", "mcp__context7__query-docs"]
 model: sonnet
 ---
