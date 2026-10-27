@@ -322,7 +322,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T11 — Integrate scenario checks and final acceptance evidence
 
-- [ ] Complete T11.
+- [x] Complete T11 local implementation/preparation; required native/platform/live/rollback acceptance remains NOT RUN and blocks release.
 
 **PR:** 3. **Dependencies:** T10 and all prior tasks.
 
@@ -347,9 +347,13 @@ The full suite validates all marketplace plugins through the existing discovery 
 ## Completion and current execution record
 
 The original Plan stage created only plan/tasks/audit documents in SOLO.
-T01–T09 are merged; T10 is locally complete and uncommitted. Primary is clean on
-main. T11 remains pending. Native installation/discovery, installed-resource and
-behavioral checks remain NOT RUN; consumer-only AC12/AC14/AC18 and native OpenCode
-are deferred, not completed here. The subsequent PR instruction authorizes T10
-commit/push/PR; T11 needs a new instruction. Prior worktrees and user state remain preserved; no other harness,
-actor, service or scheduler was started. See T10 evidence in [audit.md](audit.md).
+T01–T10 are merged; T11 local implementation/preparation is complete and uncommitted.
+Primary is clean on main. All local implementation tasks have evidence, but final
+release acceptance is BLOCKED: native installation/discovery/actual reinstall,
+Bash 3.2, live S01–S16 and actual prior-version rollback smoke remain NOT RUN.
+Consumer-only AC12/AC14/AC18 and native OpenCode remain deferred, not completed.
+No subsequent implementation task or release is implicit. The subsequent PR
+instruction authorizes T11 commit/push/PR; host/actor/platform evidence collection
+requires separate authority. Prior worktrees
+and user state remain preserved; no other harness, actor, service or scheduler
+was started. See [verification](../../workflow/verification.md) and [audit](audit.md).

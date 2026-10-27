@@ -1,6 +1,8 @@
 """Optional maintainer checks; installing plugins needs no Python dependency."""
 
 import json
+import shutil
+import tempfile
 from pathlib import Path
 import re
 from urllib.parse import unquote, urlsplit
@@ -251,6 +253,30 @@ class SharedPluginTest(unittest.TestCase):
                 self.assertIn(f'../skills/{entrypoint.stem}/SKILL.md', entrypoint.read_text())
             for rule in plugin.glob('rules/**/*.md'):
                 self.assertIn(rule.resolve(), referenced)
+
+    def test_disposable_copy_preserves_catalog_content_and_detects_corruption(self):
+        # Filesystem smoke only: no CLI installation/discovery claim.
+        from test_host_discovery import HostDiscoveryTest
+        check = HostDiscoveryTest('test_claude_accepts_marketplace_and_plugin_contents')
+        with tempfile.TemporaryDirectory() as temporary:
+            for name, source in FROZEN_T01_CATALOG.items():
+                with self.subTest(plugin=name):
+                    installed = Path(temporary) / name
+                    shutil.copytree(ROOT / source, installed)
+                    check.assert_installed_content(name, installed)
+            lifecycle = Path(temporary) / 'development-lifecycle'
+            manifest = lifecycle / '.codex-plugin/plugin.json'
+            content = manifest.read_text()
+            altered = json.loads(content)
+            altered['version'] = '0.0.0'
+            manifest.write_text(json.dumps(altered))
+            with self.assertRaises(AssertionError):
+                check.assert_installed_content('development-lifecycle', lifecycle)
+            manifest.write_text(content)
+            resource = lifecycle / 'resources/workflow/plan.md'
+            resource.write_text(resource.read_text() + '\n[broken](missing.md)\n')
+            with self.assertRaises(AssertionError):
+                check.assert_installed_content('development-lifecycle', lifecycle)
 
     def test_personal_setup_contains_both_host_installations(self):
         catalog = json.loads((ROOT / '.claude-plugin/marketplace.json').read_text())
