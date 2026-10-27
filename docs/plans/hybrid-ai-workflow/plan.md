@@ -8,12 +8,12 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: T01–T05 merged; T06 COMPLETE locally. T07–T11 NOT STARTED; no complete workflow conformance claim.
-- Current authority: T06 delivery-boundary implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes T06 commit/push/PR and planned paired version increments; T07+, merge, deployment, subagent, second harness and orchestrator remain unauthorized. Earlier delivery authority applied only to already-merged PRs.
-- T06 baseline: `e3857a62ffc1f8ddbcf53dd8123c707381ab7bb2` (`main` after merged T05 PR #13).
-- T06 branch/worktree: `fix/hybrid-ai-workflow-delivery`, `/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-delivery`.
+- Status: T01–T06 merged; T07 COMPLETE locally. T08–T11 NOT STARTED; no complete workflow conformance claim.
+- Current authority: T07 toolkit/service guidance implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes T07 commit/push/PR and planned paired version increments; T08+, merge, deployment, subagent, second harness, service connection, scheduler and orchestrator launch remain unauthorized. Earlier delivery authority applied only to already-merged PRs.
+- T07 baseline: `97e225ad8c13f70906075d752207ef1a632179e9` (`main` after merged T06 PR #14).
+- T07 branch/worktree: `fix/hybrid-ai-workflow-toolkit-authorization`, `/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-toolkit-authorization`.
 - Previous worktrees and inventory snapshots remain preserved; earlier evidence describes historical baselines.
-- Next action: publish T06 under the current PR instruction, then await T07 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T06.
+- Next action: publish T07 under the current PR instruction, then await T08 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T07.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.
@@ -285,3 +285,24 @@ walkthroughs are recorded in [T06 evidence](audit.md#t06-delivery-boundary-evide
 not claimed as live action trials. No runtime mutation, hook, native adapter, new skill or sibling-repository change.
 At the authorized PR boundary, only version fields in the three changed plugins
 are incremented in both host manifests. Publish T06 only; stop before T07.
+
+## T07 completion update
+
+All nine targeted toolkit/DevFleet entrypoints now check authority before capability
+with local STANDARD + SOLO defaults. Planning/role proposals do not launch workers;
+loops carry profile/topology/permissions and stop at task/budget/failure boundaries.
+Blueprint preserves project paths and isolation; retrieval/distillation examples
+are local by default. DevFleet requires verified inert planning and disabled
+unauthorized dispatch/merge before any service mutation, otherwise use no service.
+Its DAG remains an optional execution mechanism, with pilot prerequisites and
+separate launch/integration/runtime scope. Seven added static tests cover guards,
+unsafe examples, standalone toolkit metadata and failure-control declarations.
+Workflow 40/40, manifest/reference 3/3 and scanner 2/2 tests pass. Markdown adds no
+file/rule diagnostics versus baseline (34 → 19 on ten touched guidance documents);
+remaining findings belong to preserved sections. Local links/scope/whitespace
+checks pass. [T07 evidence](audit.md#t07-toolkit-and-service-authorization-evidence)
+records S05–S08/S10/S14 source walkthroughs and NOT RUN live/native limitations.
+No service, worker, schedule or connection was created. Hooks, native adapters and sibling repositories unchanged; no copied/new skills.
+At the authorized PR boundary, only version fields for agent-toolkit and
+development-lifecycle are incremented in both host manifests. Publish T07 only;
+stop before T08.

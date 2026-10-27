@@ -7,6 +7,23 @@ metadata:
 
 # Rules Distill
 
+## Execution boundary
+
+Check authority before capability. Default STANDARD + SOLO; preserve explicit
+accepted task profile/topology and current exclusions. Planning or selecting
+roles does not authorize a worker. HANDOFF, PARALLEL and REVIEW require explicit
+user authorization before changing actors. Never launch another CLI, worker or
+orchestrator to bypass a restriction. Check actual exposed tools/schemas only
+after authority; availability alone grants no action.
+
+If requested capability is missing, disclose it and use SOLO/manual execution only
+when consistent with user intent. Do not relabel local role passes as independent
+review or fabricate tool/background success. Reuse existing specific authority
+within scope; no repeated permission menu. Keep the configured model unless a
+change is authorized. Mandatory project gates and worktree-first always apply.
+Consult the existing development-lifecycle-rules contract when installed; this
+plugin's safe local path requires no other plugin or copied skill catalog.
+
 Scan installed skills, extract cross-cutting principles that appear in multiple skills, and distill them into rules — appending to existing rule files, revising outdated content, or creating new rule files.
 
 Applies the "deterministic collection + LLM judgment" principle: scripts collect facts exhaustively, then an LLM cross-reads the full context and produces verdicts.
@@ -82,10 +99,11 @@ After all batches complete, merge candidates across batches:
 - Deduplicate candidates with the same or overlapping principles
 - Re-check the "2+ skills" requirement using evidence from **all** batches combined — a principle found in 1 skill per batch but 2+ skills total is valid
 
-#### Subagent Prompt
+#### Local or authorized worker brief
 
 Use the following analysis brief with the available delegation tool, or apply it
-in the current session when delegation is unavailable:
+in the current session in SOLO or when a local fallback matches user intent.
+This brief is not permission to add actors:
 
 ````
 You are an analyst who cross-reads skills to extract principles that should be promoted to rules.
@@ -193,7 +211,9 @@ User responds with numbers to:
 - **Modify**: Edit draft before applying
 - **Skip**: Do not apply this candidate
 
-**Never modify rules automatically. Always require user approval.**
+**Apply only within explicitly approved rule scope.** Prepare concrete candidate
+drafts first; reuse existing approval for the same target/content rather than
+request it again. A scan or plan does not authorize rule edits.
 
 #### Save Results
 
@@ -230,7 +250,10 @@ the installed plugin/skill directory:
 
 ## Example
 
-### End-to-end run
+### End-to-end local run
+
+This example stays SOLO; worker analysis is possible only after separate explicit
+actor authorization. Example approval covers the stated rule drafts, not delivery.
 
 ```
 $ /rules-distill
@@ -242,8 +265,8 @@ Rules:  22 files (75 headings indexed)
 
 Proceeding to cross-read analysis...
 
-[Subagent analysis: Batch 1 (agent/meta skills) ...]
-[Subagent analysis: Batch 2 (coding/pattern skills) ...]
+[SOLO local role pass: Batch 1 (agent/meta skills) ...]
+[SOLO local role pass: Batch 2 (coding/pattern skills) ...]
 [Cross-batch merge: 2 duplicates removed, 1 cross-batch candidate promoted]
 
 # Rules Distillation Report

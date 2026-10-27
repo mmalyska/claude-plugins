@@ -734,5 +734,123 @@ class DeliveryAuthorizationTest(unittest.TestCase):
         self.assertIn('Separate fresh permission', rows[6][1])
 
 
+TOOLKIT_ENTRYPOINTS = (
+    'blueprint', 'subagent-driven-development', 'team-builder',
+    'autonomous-agent-harness', 'continuous-agent-loop', 'iterative-retrieval',
+    'rules-distill', 'writing-skills',
+)
+TOOLKIT_AUTHORITY = {
+    'authority-first': 'Check authority before capability.',
+    'default': 'STANDARD + SOLO',
+    'actor-scope': 'HANDOFF, PARALLEL and REVIEW require explicit user authorization',
+    'no-bypass': 'Never launch another CLI, worker or orchestrator to bypass a restriction.',
+}
+
+
+def toolkit_authority_errors(document):
+    prose = active_prose(document)
+    return {code for code, declaration in TOOLKIT_AUTHORITY.items() if declaration not in prose}
+
+
+def service_control_errors(document):
+    prose = active_prose(document)
+    required = {
+        'inert-plan': 'Do not call `plan_project` until verified controls prevent unauthorized launch and merge.',
+        'unsafe-service': 'If safe controls cannot be verified before the call, report incompatibility and use no service.',
+        'failed-dependency': 'A failed worker blocks dependent integration and further dependent dispatch.',
+    }
+    return {code for code, declaration in required.items() if declaration not in prose}
+
+
+class ToolkitAuthorizationTest(unittest.TestCase):
+    def test_every_entrypoint_gates_authority_and_unsafe_examples(self):
+        paths = [ROOT / f'plugins/agent-toolkit/skills/{name}/SKILL.md'
+                 for name in TOOLKIT_ENTRYPOINTS]
+        paths.append(PLUGIN / 'skills/claude-devfleet/SKILL.md')
+        for host in ('.claude-plugin', '.codex-plugin'):
+            manifest = json.loads((ROOT / 'plugins/agent-toolkit' / host / 'plugin.json').read_text())
+            self.assertEqual(manifest.get('dependencies', []), [])
+        for path in paths:
+            text = path.read_text()
+            with self.subTest(path=path):
+                self.assertEqual(toolkit_authority_errors(text), set())
+                # Include fenced examples/diagrams, not only opening prose.
+                self.assertNotRegex(text, r'auto_dispatch\s*=\s*true')
+                for old in ('executing-plans', 'Fresh subagent per task +',
+                            'direct mode (edit-in-place', '[Subagent analysis:'):
+                    self.assertNotIn(old, text)
+
+    def test_deleting_authority_declarations_is_detected(self):
+        path = ROOT / 'plugins/agent-toolkit/skills/blueprint/SKILL.md'
+        prose = active_prose(path.read_text())
+        for code, declaration in TOOLKIT_AUTHORITY.items():
+            with self.subTest(boundary=code):
+                self.assertIn(declaration, prose)
+                self.assertIn(code, toolkit_authority_errors(prose.replace(declaration, '', 1)))
+
+    def test_plan_and_execution_are_local_by_default_with_preserved_paths(self):
+        blueprint = active_prose((ROOT / 'plugins/agent-toolkit/skills/blueprint/SKILL.md').read_text())
+        for declaration in ('Preserve the existing artifact directory.',
+                            'If isolation is blocked, stop writes',
+                            'only if configured and within accepted write scope;',
+                            '.plans/<slug>/plan.md'):
+            self.assertIn(declaration, blueprint)
+        executor = active_prose((ROOT / 'plugins/agent-toolkit/skills/subagent-driven-development/SKILL.md').read_text())
+        for declaration in ('A plan is state, not authority to execute all its tasks.',
+                            'A failed worker or required gate blocks dependent integration.',
+                            'no automatic final reviewer dispatch.',
+                            'TDD is selected when useful/requested or required by project policy'):
+            self.assertIn(declaration, executor)
+
+    def test_loops_carry_restrictions_bounds_and_compatible_fallback(self):
+        for name in ('continuous-agent-loop', 'autonomous-agent-harness'):
+            text = active_prose((ROOT / f'plugins/agent-toolkit/skills/{name}/SKILL.md').read_text())
+            with self.subTest(skill=name):
+                for field in ('profile/topology', 'permissions', 'revoked', 'attempt', 'scope'):
+                    self.assertIn(field, text)
+                self.assertIn('only when compatible with user intent', text)
+                self.assertIn('blocks dependent integration', text)
+        autonomous = active_prose((ROOT / 'plugins/agent-toolkit/skills/autonomous-agent-harness/SKILL.md').read_text())
+        self.assertIn('report incompatibility and create nothing.', autonomous)
+        self.assertIn('not a fallback for local SOLO work', autonomous)
+
+    def test_service_controls_must_be_verified_before_side_effects(self):
+        prose = active_prose((PLUGIN / 'skills/claude-devfleet/SKILL.md').read_text())
+        boundaries = (
+            'Do not call `plan_project` until verified controls prevent unauthorized launch and merge.',
+            'If safe controls cannot be verified before the call, report incompatibility and use no service.',
+            'A failed worker blocks dependent integration and further dependent dispatch.',
+        )
+        for declaration in boundaries:
+            with self.subTest(boundary=declaration):
+                self.assertIn(declaration, prose)
+                self.assertEqual(service_control_errors(prose), set())
+                self.assertTrue(service_control_errors(prose.replace(
+                    declaration, 'Launch the chain anyway.', 1)))
+        self.assertIn('at least three completed manual HANDOFF/PARALLEL tasks', prose)
+        self.assertIn('partial-execution failure test', prose)
+        self.assertIn('workers are Claude workers', prose)
+        self.assertIn('fresh explicit permission with impact/rollback', prose)
+
+    def test_retrieval_and_distillation_examples_stay_local(self):
+        retrieval = (ROOT / 'plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md').read_text()
+        self.assertNotIn('DISPATCH', retrieval)
+        self.assertIn('complete: false', retrieval)
+        self.assertIn('critical missing context blocks dependent implementation', active_prose(retrieval))
+        distill = (ROOT / 'plugins/agent-toolkit/skills/rules-distill/SKILL.md').read_text()
+        self.assertIn('[SOLO local role pass:', distill)
+        self.assertIn('brief is not permission to add actors', distill)
+        self.assertIn('reuse existing approval', active_prose(distill))
+
+    def test_authoring_and_readme_cover_proposals_without_launch_permission(self):
+        writing = active_prose((ROOT / 'plugins/agent-toolkit/skills/writing-skills/SKILL.md').read_text())
+        for area in ('descriptions', 'diagrams', 'examples', 'prompts', 'final steps'):
+            self.assertIn(area, writing)
+        self.assertIn('Persist profile/topology/permissions', writing)
+        readme = active_prose((ROOT / 'plugins/agent-toolkit/README.md').read_text())
+        self.assertIn('not launch authority', readme)
+        self.assertIn('without copying skills or requiring Superpowers', readme)
+
+
 if __name__ == '__main__':
     unittest.main()

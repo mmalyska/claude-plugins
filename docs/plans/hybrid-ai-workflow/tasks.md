@@ -1,6 +1,6 @@
 # Implementation tasks — Hybrid AI Engineering Workflow
 
-Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01–T05 merged; T06 COMPLETE locally on `fix/hybrid-ai-workflow-delivery` at `e3857a62ffc1f8ddbcf53dd8123c707381ab7bb2`; T07–T11 NOT STARTED. The latest PR instruction authorizes T06 commit/push/PR and planned paired version increments only; later tasks and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
+Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01–T06 merged; T07 COMPLETE locally on `fix/hybrid-ai-workflow-toolkit-authorization` at `97e225ad8c13f70906075d752207ef1a632179e9`; T08–T11 NOT STARTED. The latest PR instruction authorizes T07 commit/push/PR and planned paired version increments only; later tasks, service/worker/scheduler launch and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
 
 All file paths are repository-relative. A task's listed files are its allowed proposed scope; do not add unrelated cleanup. Every task must record changed paths, exact commands, exit status, results/limitations, unresolved findings, and next action before checking its box. Native discovery/behavioral trials below are future maintainer gates and require a session in which launching the target CLI is permitted. Static instruction review is not a live model trial.
 
@@ -203,7 +203,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T07 — Make toolkit and service procedures obey topology
 
-- [ ] Complete T07.
+- [x] Complete T07.
 
 **PR:** 2. **Dependencies:** T06.
 
@@ -226,6 +226,8 @@ The full suite validates all marketplace plugins through the existing discovery 
 **Tests/expected:** S05–S08/S10/S14: available-but-unauthorized tool is never called, missing service produces prerequisite/manual path, bounded failed worker stops dependent integration, default remains SOLO. Review diagrams/examples along with prose. Standalone toolkit works without mandatory lifecycle installation or Superpowers.
 
 **Done:** no procedure or example silently changes actors; service plan approval cannot authorize runtime or a chain of uncontrolled auto-merges. Optional orchestrator pilot prerequisites recorded.
+
+**Evidence:** [T07 toolkit/service authorization](audit.md#t07-toolkit-and-service-authorization-evidence). Workflow 40/40 (7 new), manifest/reference 3/3, scanner 2/2 PASS. Guards, unsafe examples and negative service-control declarations covered; S05–S08/S10/S14 walkthroughs are static/local, not live worker/service trials. No added Markdown file/rule diagnostics versus baseline; local links/scope PASS. No hooks/service connections changed; the subsequent PR instruction authorizes T07 delivery and paired version increments only. Stop before T08.
 
 **Rollback:** revert toolkit/service instructions and tests together; do not cancel external jobs unless separately authorized (none are launched by these tasks).
 
@@ -345,7 +347,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 ## Completion and current execution record
 
 The original Plan stage created only plan/tasks/audit documents in SOLO. Subsequent
-T01–T05 are merged; T06 is locally complete and uncommitted. Primary is clean on
-main. The next implementation task is T07 and requires a subsequent instruction.
-T06 commit/push/PR is now authorized; other worktrees and user state remain
-preserved.
+T01–T06 are merged; T07 is locally complete and uncommitted. Primary is clean on
+main. The next implementation task is T08 and requires a subsequent instruction.
+T07 commit/push/PR is now authorized; other worktrees and user state remain
+preserved. No external service, actor or scheduler was started.

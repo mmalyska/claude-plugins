@@ -7,11 +7,30 @@ metadata:
 
 # Iterative Retrieval Pattern
 
-Solves the "context problem" in multi-agent workflows where subagents don't know what context they need until they start working.
+## Execution boundary
+
+Check authority before capability. Default STANDARD + SOLO; preserve explicit
+accepted task profile/topology and current exclusions. Planning or selecting
+roles does not authorize a worker. HANDOFF, PARALLEL and REVIEW require explicit
+user authorization before changing actors. Never launch another CLI, worker or
+orchestrator to bypass a restriction. Check actual exposed tools/schemas only
+after authority; availability alone grants no action.
+
+If requested capability is missing, disclose it and use SOLO/manual execution only
+when consistent with user intent. Do not relabel local role passes as independent
+review or fabricate tool/background success. Reuse existing specific authority
+within scope; no repeated permission menu. Keep the configured model unless a
+change is authorized. Mandatory project gates and worktree-first always apply.
+Consult the existing development-lifecycle-rules contract when installed; this
+plugin's safe local path requires no other plugin or copied skill catalog.
+
+A bounded context-search technique for local SOLO analysis or explicitly
+authorized workers. Search/evaluate/refine steps are not another lifecycle or
+authority to spawn a retrieval agent. Code below is pseudocode, not exposed tools.
 
 ## When to Activate
 
-- Spawning subagents that need codebase context they cannot predict upfront
+- Retrieving context locally or briefing an already authorized worker
 - Building multi-agent workflows where context is progressively refined
 - Encountering "context too large" or "missing context" failures in agent tasks
 - Designing RAG-like retrieval pipelines for code exploration
@@ -31,13 +50,15 @@ Standard approaches fail:
 
 ## The Solution: Iterative Retrieval
 
-A 4-phase loop that progressively refines context:
+A bounded search loop that progressively refines context. At the limit, report
+unresolved gaps; critical missing context blocks dependent implementation rather
+than granting permission to guess. Local search does not need another actor:
 
 ```
 ┌─────────────────────────────────────────────┐
 │                                             │
 │   ┌──────────┐      ┌──────────┐            │
-│   │ DISPATCH │─────│ EVALUATE │            │
+│   │ SEARCH │─────│ EVALUATE │            │
 │   └──────────┘      └──────────┘            │
 │        ▲                  │                 │
 │        │                  ▼                 │
@@ -49,7 +70,7 @@ A 4-phase loop that progressively refines context:
 └─────────────────────────────────────────────┘
 ```
 
-### Phase 1: DISPATCH
+### Phase 1: SEARCH
 
 Initial broad query to gather candidate files:
 
@@ -61,7 +82,7 @@ const initialQuery = {
   excludes: ['*.test.ts', '*.spec.ts']
 };
 
-// Dispatch to retrieval agent
+// Local search or an explicitly authorized retrieval operation
 const candidates = await retrieveFiles(initialQuery);
 ```
 
@@ -129,7 +150,7 @@ async function iterativeRetrieve(task, maxCycles = 3) {
     // Check if we have sufficient context
     const highRelevance = evaluation.filter(e => e.relevance >= 0.7);
     if (highRelevance.length >= 3 && !hasCriticalGaps(evaluation)) {
-      return highRelevance;
+      return {files: highRelevance, complete: true};
     }
 
     // Refine and continue
@@ -137,7 +158,7 @@ async function iterativeRetrieve(task, maxCycles = 3) {
     bestContext = mergeContext(bestContext, highRelevance);
   }
 
-  return bestContext;
+  return {files: bestContext, complete: false};
 }
 ```
 
@@ -149,12 +170,12 @@ async function iterativeRetrieve(task, maxCycles = 3) {
 Task: "Fix the authentication token expiry bug"
 
 Cycle 1:
-  DISPATCH: Search for "token", "auth", "expiry" in src/**
+  SEARCH: Search for "token", "auth", "expiry" in src/**
   EVALUATE: Found auth.ts (0.9), tokens.ts (0.8), user.ts (0.3)
   REFINE: Add "refresh", "jwt" keywords; exclude user.ts
 
 Cycle 2:
-  DISPATCH: Search refined terms
+  SEARCH: Search refined terms
   EVALUATE: Found session-manager.ts (0.95), jwt-utils.ts (0.85)
   REFINE: Sufficient context (2 high-relevance files)
 
@@ -167,17 +188,17 @@ Result: auth.ts, tokens.ts, session-manager.ts, jwt-utils.ts
 Task: "Add rate limiting to API endpoints"
 
 Cycle 1:
-  DISPATCH: Search "rate", "limit", "api" in routes/**
+  SEARCH: Search "rate", "limit", "api" in routes/**
   EVALUATE: No matches - codebase uses "throttle" terminology
   REFINE: Add "throttle", "middleware" keywords
 
 Cycle 2:
-  DISPATCH: Search refined terms
+  SEARCH: Search refined terms
   EVALUATE: Found throttle.ts (0.9), middleware/index.ts (0.7)
   REFINE: Need router patterns
 
 Cycle 3:
-  DISPATCH: Search "router", "express" patterns
+  SEARCH: Search "router", "express" patterns
   EVALUATE: Found router-setup.ts (0.8)
   REFINE: Sufficient context
 
@@ -186,7 +207,7 @@ Result: throttle.ts, middleware/index.ts, router-setup.ts
 
 ## Integration with Agents
 
-Use in agent prompts:
+Apply this brief locally by default or give it to an already authorized worker:
 
 ```markdown
 When retrieving context for this task:
