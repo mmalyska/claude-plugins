@@ -8,12 +8,12 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: T01–T10 merged; T11 local implementation/preparation COMPLETE. Native/platform/live/rollback acceptance remains incomplete; required NOT RUN gates block release and full workflow conformance.
-- Current authority: T11 data-only scenarios, maintainer tests, local verification and acceptance evidence in DEEP + SOLO. The subsequent user instruction authorizes T11 commit/push/PR; merge, release/tag, consumer migration, runtime, subagent, second harness, service, scheduler and orchestrator launch remain unauthorized.
-- T11 baseline: `9b53f84fc53aae20ee03ecfd2a4f22638d841cf6` (`main` after merged T10 PR #18).
-- T11 branch/worktree: `test/hybrid-ai-workflow-acceptance`, `/workspaces/claude-plugins/.worktrees/test/hybrid-ai-workflow-acceptance`.
+- Status: T01–T11 merged; native follow-up and Codex alias fix verified locally. All three Claude/Codex native methods PASS; full Codex catalog has exactly 70 canonical skills and zero aliases. Required live/Bash 3.2/prior-version rollback evidence still blocks release and full conformance.
+- Current authority: user-requested Codex alias fix and PR, paired versions, isolated Claude/Codex metadata install/discovery and previously requested OpenCode metadata checks in DEEP + SOLO. Commit/push/PR is authorized; model turns, additional actors, runtime, consumer migration, merge and release/tag remain unauthorized.
+- Native-verification baseline: `5d3703739ffff207cdc98f606a32c260794bc6f8` (`main` after merged T11 PR #19).
+- Current branch/worktree: `test/hybrid-ai-workflow-native-verification`, `/workspaces/claude-plugins/.worktrees/test/hybrid-ai-workflow-native-verification`.
 - Previous worktrees and historical evidence remain preserved. Primary stays clean on main.
-- Next action: publish T11 under the current PR instruction, retaining the [verification protocol](../../workflow/verification.md); further native/actor/platform trials require separate authority. No additional implementation task is implicit, and no release acceptance is granted by static success.
+- Next action: publish the requested alias-fix PR using [post-fix evidence](../../workflow/evidence/2026-10-27-codex-alias-fix.md); await separately scoped live/platform/rollback evidence authority. Earlier native failure records describe the pre-fix state.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.
@@ -350,3 +350,45 @@ Current rollback: revert T11 test/fixture/evidence changes together, preserving
 prior plugin behavior and all user artifacts. Re-run applicable static checks;
 reverting documentation cannot reverse runtime. Broader sequence rollback and
 actual prior-version native smoke remain subject to the protocol and new authority.
+
+## Post-T11 metadata evidence update
+
+T11 PR #19 is merged. Later explicit user authorization permits isolated CLI-only
+metadata trials and installation/removal of trial-owned plugins. See the
+[native evidence](../../workflow/evidence/2026-10-27-native-metadata.md) and structured
+observations. Both hosts completed fresh/remove/reinstall checks for owners alone,
+owners combined and all 12 plugins. Claude's two native metadata methods passed.
+All 70 canonical skills were discovered and enabled in Codex at expected paths,
+but the strict native test FAIL remains: extra generated command aliases and
+invalid relative links (11 aliases in the full catalog at Codex 0.164.0).
+The local fixture now creates CODEX_HOME before invoking Codex. No equality gate
+was weakened and no plugin source/manifest/wrapper changed. AC6/AC7/AC8/AC13 now
+have actual bounded metadata/content/reinstall evidence; their complete native
+acceptance still needs the alias issue resolved. AC10/AC11/AC16/AC17 live behavior,
+Bash 3.2 and prior-version rollback remain NOT RUN; consumer/OpenCode work stays
+deferred. The previous AC matrix records the T11 pre-authorization snapshot.
+
+### OpenCode metadata extension
+
+The user subsequently included local OpenCode. Version 2.2.0 explicit-source
+metadata trials discovered all 70 canonical directory IDs at matching copied
+paths/bodies with contained links; owners alone, combined and all plugins passed
+configured/detached/reattached phases (15 records). Readiness waits for asynchronous
+registration and no model session is created. This is a bounded manual-config spike,
+not a production adapter, package installer, Codex namespace equivalence or live
+behavior PASS. See [OpenCode evidence](../../workflow/evidence/2026-10-27-opencode-metadata.md).
+The strict Codex alias mismatch and other unrun acceptance gates still block
+release. Further model/actor/runtime/delivery authority is not inferred.
+
+### Codex alias fix and PR update
+
+The user explicitly authorized fixing the alias issue and creating a PR. Codex
+command-owning manifests now declare `commands: []`, retaining the existing shared
+skills and unchanged native Claude wrappers. Paired patch versions are lifecycle
+1.2.7, git-workflows 1.3.5 and personal-essentials 1.0.2. Actual strict native suite:
+3 PASS, zero skips; static suite: 68 PASS; fresh/remove/reinstall: all 20 host/phase
+records PASS and exact Codex 70-skill discovery with zero aliases. The equality
+assertion is not weakened. See [post-fix evidence](../../workflow/evidence/2026-10-27-codex-alias-fix.md).
+This supersedes the earlier native alias FAIL, not its historical record. Live
+behavior, Bash 3.2 and previous-revision rollback remain NOT RUN. No release,
+consumer migration, production OpenCode adapter or runtime acceptance is implied.

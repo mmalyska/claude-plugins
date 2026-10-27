@@ -46,6 +46,14 @@ Existing shared skill names are preserved, including `claude-devfleet` and
 `renovate-automerge-rules`. Skill directories match their names. Rule indexes
 remain `<plugin>-rules`. No duplicate host adapter catalog is maintained.
 
+Claude command wrappers remain native entrypoints. Plugins with those wrappers
+set `commands: []` only in their Codex manifests to disable install-time legacy
+command conversion: Codex already discovers the canonical shared skill bodies.
+Without that opt-out, Codex 0.164.0 adds `source-command-*` wrappers whose relative
+links can break after migration. Keep `skills: "./skills/"`, preserve Claude
+command files, and verify exact installed skill identity/path equality after updates.
+See the [native fix evidence](workflow/evidence/2026-10-27-codex-alias-fix.md).
+
 ## Shared workflow and capability differences
 
 Read the [packaged workflow contract](../plugins/development-lifecycle/rules/common/workflow.md)
