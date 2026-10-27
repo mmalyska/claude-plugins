@@ -603,3 +603,123 @@ Negative samples remove/reorder lifecycle stages, remove profile/topology defaul
 - Plan/task-only instruction: stop at that boundary; neither seven-stage wording nor readiness authorizes later tasks, commit/push/PR or runtime mutation.
 
 These are source-based walkthroughs by the same agent, not live model trials or independent review. Native discovery/validation and full unittest discovery remain NOT RUN under the no-other-harness constraint; scanners and guard retain the unchanged passing T01 baseline and were not rerun because no related files changed. Remaining uncertainty is model compliance and integration with the still-unmodified consumers. T03 is the next task and requires a new instruction; T02 commit/push/PR is now authorized by a subsequent instruction; merge remains unauthorized. T01 PR #9 is now merged at `d0c51a0`; the T02 branch incorporates main and PR #10 targets `main` with only the T02 increment. Earlier baseline/branch observations above describe the initial T02 implementation.
+
+## T03 profile-sized procedure evidence
+
+T03 completed locally in DEEP + SOLO on `feat/hybrid-ai-workflow-profiles`, worktree
+`/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-profiles`, based on
+`775372df4c65a397bc74687a20052ebb6c9c0852` (merged T02 PR #10). Clean primary `main` was updated by fast-forward
+before creating the worktree. No subagent, other harness, orchestrator, commit,
+push or PR was used for T03. Historical inventory and findings above are preserved;
+this section records targeted remediation rather than silently replacing baseline.
+
+### Exact scope and minimum changes
+
+The sixteen guidance paths are enumerated in the T03 task and in the explicit
+`PROFILE_DOCUMENTS` tuple in `tests/test_workflow_contract.py`:
+
+- `spec` and `architect`: concise QUICK/session output, relevant STANDARD design,
+  durable DEEP files/dependencies/gates/decisions; template/checklist is selective,
+  not a full dossier for every edit; explicit stage boundary.
+- `test` and `tdd-guide`: selected feature/fix RED-GREEN-REFACTOR and meaningful
+  reproducers remain; documentation can use a documented check; project-command
+  discovery includes unittest and checks runner side effects. Removed universal
+  test-first/all-types/80% requirements and phantom provider prerequisite.
+- `ai-regression-testing`: retain domain regression examples, replace extra
+  bug-check skill/command proposal with existing test/review links; no automatic
+  API tests for a wording-only change and no instruction to ignore new behavior.
+- `review`, `code-review`, `code-reviewer`, `simplify`: current unstaged/staged and
+  relevant untracked work first, then actual task base when clean or intended
+  explicit revision; documentation/configuration included. Existing role/checklist
+  and local/PR transport preserved. Shared AGENTS policy first; no package fetch;
+  report publication needs authority; rollback only owned simplification edits.
+- Common testing/code-review/patterns/performance rules: profile/risk-sized checks
+  and research, local role fallback, no universal coverage/dossier/parallel agents;
+  failed mandatory project security/coverage gates still block readiness.
+- Git development-workflow rule: shared stage responsibilities instead of another
+  research/TDD/commit pipeline; safe standalone defaults and plugin-local links.
+- Toolkit search-first and verification-loop: proportional local-first research,
+  scoped adoption actions, relevant checkpoints, real exit status, NOT RUN versus
+  NOT APPLICABLE, no global 80% example or automatic last-commit target.
+- `tests/test_workflow_contract.py`: seven additional tests, explicit 16-file audit
+  scope, eight historical-directive negative samples, eight project-gate mutation
+  samples across four documents, scope/provider/publish/link regressions. The
+  test-only prose checker ignores fenced examples and frontmatter, keeping actor
+  metadata migration scoped to T04; confidence percentages are not coverage gates.
+- `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: task status and this evidence.
+
+Names and native command/agent wrappers are preserved. Shared tdd-guide's coverage
+claim was corrected with its T03 technique scope; the native tdd-guide trigger and
+remaining proactive/MUST-BE-USED metadata are explicitly pending T04. The shared
+workflow contract itself is unchanged, with no duplicate skill or new lifecycle.
+Readability-only Markdown fixes (headings, fences, lists and table separators) are
+limited to the touched documents. No manifest/version, hook, native adapter,
+historical plan or sibling-repository file changed. T08's paired version procedure
+remains a future delivery/release boundary, not authority to modify manifests now.
+
+### Commands, observed results and limits
+
+| Command / check | Exit | Observed result |
+| --- | --- | --- |
+| `python3 -B -m unittest discover -s tests -p test_workflow_contract.py -v` | 0 | 12 tests PASS, including 7 new T03 checks |
+| `python3 -B -m unittest discover -s tests -p test_codex_manifests.py -v` | 0 | 3 tests PASS; identities, contained references and native wrappers intact |
+| `python3 -B -m unittest discover -s tests -p test_rule_scanners.py -v` | 0 | 2 tests PASS; scanner and both-host directory behavior unchanged |
+| Markdown lint on changed Markdown, MD013 disabled | 0 | Structure/formatting PASS; no additional lint rule disabled |
+| Plugin/document links, task-status and scope inspection; `git diff --check` | 0 | No broken local link/fragment or whitespace error; exact task scope only |
+
+An intermediate test run caught a missing exact project-failure declaration in
+verification-loop (semicolon instead of a sentence boundary); the document and
+negative-test precondition were corrected and the final suite passes. This is
+static declaration coverage, not a claim of model obedience. Initial Markdown
+lint found existing formatting issues in the touched files and moved heading
+positions; they were corrected locally without disabling structural checks.
+Native discovery/full unittest discovery, model scenarios, optional providers,
+Bash 3.2/macOS and consumers remain NOT RUN under current restrictions. Guard
+was not repeated because no isolation/hook implementation changed; its passing
+T01 fixture evidence is historical, not a new T03 run.
+
+### Separate local scenario walkthroughs and negative policy samples
+
+- S02 QUICK documentation typo: spec can stay in session, Plan is a short checklist,
+  Build is scoped wording, Test is meaningful Markdown/link validation, Review
+  sees the actual unstaged/staged/untracked change, Simplify can be a no-op, Ship
+  is readiness only. No synthetic RED, registry sweep or mandatory design dossier.
+- S03 STANDARD observable bug: accepted behavior, affected files/checks, meaningful
+  reproducer, expected RED, authorized fix, GREEN and appropriate regressions;
+  code review/Simplify invalidate and rerun affected checks. A verification-only
+  request reports defects without silently authorizing implementation.
+- S04 DEEP architecture change: repository-grounded alternatives, durable phases,
+  exact files/dependencies/ownership/gates, impact/rollback and a separate local
+  role review pass. Current host/model remains; no worker launched by complexity.
+- Required-policy sample: a project can require 95% coverage, TDD for a component,
+  security checks and no exposed secrets. The static checker accepts those scoped
+  requirements and rejects deleting the binding/failure declarations in each of
+  four active policies. Failed security/coverage gates block readiness even in
+  QUICK; unavailable required gates stay NOT RUN, never PASS. No synthetic policy
+  runtime was created to mirror and “prove” English instructions.
+- Scope sample: opposing staged and unstaged changes are both inspected, relevant
+  untracked docs are not dropped, and a clean task branch uses its actual base.
+  A recent unrelated commit is never the default review target.
+- S09 boundary check: PR-number input produces a local artifact, not automatic
+  external publication; commands run only with publication authority. Full Ship
+  and all other delivery paths remain pending T06, so S09 integration is not
+  claimed complete here.
+
+These are same-agent source walkthroughs, not independent or live-harness trials.
+F01/F02/F03/F13/F19/F20 are addressed only in the T03 owners above. Native actor
+triggers, other worktree/Ship/toolkit paths and the hard optional-provider manifest
+still await T04–T08. Remaining uncertainty is their integration and actual model
+behavior; full conformance is not claimed. T03 is marked complete locally with no
+commit/push/PR. Stop before T04; further delivery or implementation needs a new
+instruction.
+
+### T03 PR preparation update
+
+The subsequent user instruction authorizes committing/pushing T03 and opening its
+PR to main. Following the T03/T08 version procedure, increment only version fields
+in each paired Claude/Codex manifest: development-lifecycle 1.1.1 → 1.2.0,
+agent-toolkit 1.0.1 → 1.1.0, git-workflows 1.2.1 → 1.3.0. These six metadata edits
+are the sole scope extension at the authorized PR boundary; names, discovery,
+hooks and dependencies remain unchanged. Earlier no-manifest/no-delivery statements
+above describe the initial implementation stage. T04+, merge and release remain
+unauthorized. Revalidate tests, Markdown and scope before publishing.

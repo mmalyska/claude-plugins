@@ -8,12 +8,12 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: T01 and T02 COMPLETE. The shared contract and its discovery/index documentation are implemented locally; T03–T11 NOT STARTED.
-- Authority: repository inspection, isolated worktree creation, writing and validating these plan documents. The user subsequently authorized committing and pushing these documents and opening a plan-only PR to `main`. The subsequent T01 instruction authorizes baseline verification and plan-evidence updates in a separate implementation worktree only. The T01 delivery instruction authorized its evidence PR only. A subsequent instruction authorizes T02 implementation; the latest instruction authorizes T02 commit/push/PR only; no manifest edits, T03+, merge, deployment, subagent, second harness or orchestrator is authorized.
-- Implementation baseline: `2194b9ad587963dd75a8d6b4fa320b963ee88f9a` (`main` after merged plan PR #8).
-- T01 branch/worktree: `feat/hybrid-ai-workflow`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow`.
-- T02 branch/worktree: `feat/hybrid-ai-workflow-contract`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-contract`; based on T01 commit `ad2ec8c` (T01 PR #9 is now merged into `main` at `d0c51a0`).
-- Next action: await an instruction for T03 in [tasks.md](tasks.md). The latest instruction authorizes T02 commit/push/PR, not later tasks, merge or runtime mutation.
+- Status: T01–T02 merged; T03 COMPLETE locally. T04–T11 NOT STARTED; no complete workflow conformance claim.
+- Current authority: T03 implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes commit/push/PR and the planned paired version increments for changed plugins; T04+, merge, deployment, subagent, second harness and orchestrator remain unauthorized. Earlier delivery authority applied to the already-merged T01/T02 PRs.
+- T03 baseline: `775372df4c65a397bc74687a20052ebb6c9c0852` (`main` after merged T02 PR #10).
+- T03 branch/worktree: `feat/hybrid-ai-workflow-profiles`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-profiles`.
+- Previous worktrees remain preserved; T01/T02 evidence below describes their historical baselines.
+- Next action: publish T03 under the current PR instruction, then await T04 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T03.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.
@@ -215,3 +215,21 @@ Baseline refreshed at `2194b9ad587963dd75a8d6b4fa320b963ee88f9a`; original audit
 ## T02 completion update
 
 T02 implemented locally on `feat/hybrid-ai-workflow-contract`, based on `ad2ec8c` (completed T01). Added the packaged common workflow contract, connected the existing rules skill, aligned README summaries and added structural regression tests. No new skill/command, native adapter, manifest, hook or execution engine was introduced. Five new tests and three existing manifest/reference tests passed; local scenario walkthroughs confirmed the same stages across profiles and no worker requirement for DEEP + SOLO. Markdown lint, local links and diff whitespace checks passed. These are static/local checks, not native discovery or model behavior evidence. See [T02 audit evidence](audit.md#t02-contract-implementation-evidence). Existing conflicting procedure bodies remain queued for T03–T08; do not claim complete workflow conformance. T02 commit/push/PR is now authorized by the subsequent user instruction; T03 and merge remain unauthorized.
+
+## T03 completion update
+
+The sixteen procedure/rule documents named by T03 now use profile-sized research,
+planning, verification and review. Lifecycle skills load the one existing contract;
+TDD remains a selected technique, project gates stay binding, current working
+changes are reviewed before historical targets, and API-regression guidance reuses
+existing test/review entrypoints. Added seven structural regression tests to the
+existing five contract tests. Twelve workflow tests, three manifest/reference tests
+and two scanner tests pass. Markdown (MD013 disabled for wide tables), plugin-local
+links, local evidence links and whitespace checks pass. Local scenario walkthroughs
+S02–S04 and negative project-policy samples are documented in [T03 evidence](audit.md#t03-profile-sized-procedure-evidence).
+These checks are static/local, not live model trials. Native trigger metadata,
+remaining Ship defaults, isolation fallback, optional-provider dependency removal,
+templates and release metadata remain queued for later tasks. No native adapter, hook or sibling repository changed. At the later authorized
+PR boundary, only the version fields in both manifests of development-lifecycle,
+agent-toolkit and git-workflows are incremented per the planned release procedure.
+Publish T03 only; stop before T04.

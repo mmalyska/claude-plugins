@@ -1,7 +1,7 @@
 {
   "name": "agent-toolkit",
   "description": "AI agent patterns and meta-skills — autonomous loops, eval harnesses, context management, safety guards, and Claude Code and Codex workspace tooling",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": {
     "name": "Michał Małyska"
   },

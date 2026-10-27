@@ -5,9 +5,16 @@ description: "Reduce complexity in recently changed code — guard clauses, extr
 
 # Simplify
 
+Read [the workflow contract](../../rules/common/workflow.md) first. Select profile
+and topology independently; default STANDARD + SOLO. Apply mandatory project
+policy in every profile. This procedure does not authorize another actor or
+work beyond the requested stage.
+
 Reduce unnecessary complexity in recently changed code without changing behavior.
 
-**Golden Rule**: Never change behavior. Only change structure. Revert any change that breaks tests.
+**Golden Rule**: Preserve behavior and scope. Undo only your own failed
+simplification, preserving earlier user work; never reset or restore a whole
+file/worktree to roll back one edit.
 
 ## When to Activate
 
@@ -17,6 +24,7 @@ Reduce unnecessary complexity in recently changed code without changing behavior
 - When you spot nesting depth ≥ 4, functions > 50 lines, or repeated 3-line blocks while writing code
 
 Do **not** activate:
+
 - On code outside the current change scope
 - When all complexity findings are intentional (performance-critical tight loops, generated code, migrations)
 - When tests are failing — fix tests first
@@ -27,31 +35,37 @@ Do **not** activate:
 
 **If a specific file or directory was requested**, use that as the scope.
 
-**Otherwise**, detect recent changes:
+**Otherwise**, use [review scope selection](../review/SKILL.md): current unstaged,
+staged and task-relevant untracked files first, then the actual base comparison
+when clean. A recent commit is a target only when intended. Include docs/config
+when relevant; do not silently select an unrelated last commit.
 
-```bash
-git diff HEAD~1..HEAD --name-only 2>/dev/null | grep -E '\.(js|ts|tsx|jsx|py|go|rs|rb|java|cs|php)$'
-# If empty, fall back to staged:
-git diff --cached --name-only 2>/dev/null | grep -E '\.(js|ts|tsx|jsx|py|go|rs|rb|java|cs|php)$'
-```
-
-If no files found, skip this skill — nothing to simplify.
+QUICK removes obvious noise only; STANDARD evaluates clearer structure; DEEP
+records alternatives and maintenance tradeoffs. If nothing needs simplification,
+record a no-op assessment. Never expand scope to satisfy this skill.
 
 **Detect test command** from project config:
 
-| Marker                          | Command                                   |
-|---------------------------------|-------------------------------------------|
-| `package.json`                  | `npm test` (or `pnpm`/`yarn`/`bun test`)  |
-| `pytest.ini` or `pyproject.toml`| `pytest`                                  |
-| `go.mod`                        | `go test ./...`                           |
-| `Cargo.toml`                    | `cargo test`                              |
-| `Makefile` with `test` target   | `make test`                               |
+| Marker | Command |
+| --------------------------------- | ------------------------------------------- |
+| `package.json` | `npm test` (or `pnpm`/`yarn`/`bun test`) |
+| `pytest.ini` or `pyproject.toml` | `pytest` |
+| `go.mod` | `go test ./...` |
+| `Cargo.toml` | `cargo test` |
+| `Makefile` with `test` target | `make test` |
+| Repository unittest suite | Documented `python3 -B -m unittest discover -s tests` |
 
 ---
 
+For documentation/configuration changes, a relevant installed linter or manual
+check may be the meaningful verification; do not invent code tests or fetch tools.
+
 ## Phase 2 — SIMPLIFICATION PASSES
 
-Run passes sequentially. After each individual change, run the test command. If tests fail, revert that change and continue to the next.
+Run applicable passes sequentially. After each owned edit, rerun affected checks
+and mandatory project gates. If it regresses behavior, undo only that edit and
+verify recovery; stop if recovery fails. Report unavailable required checks as
+NOT RUN, never fabricate a green suite.
 
 ### Pass 1 — Guard Clauses
 
@@ -149,7 +163,7 @@ Name describes intent, not logic. Per condition: identify intent → extract to 
 
 ## Phase 3 — SUMMARY
 
-```
+```text
 ## Simplification Summary
 
 ### Changes
@@ -171,8 +185,6 @@ If nothing was simplified: `Code is already clean — no simplifications applied
 
 ## Lifecycle Position
 
-```text
-/spec → /plan → implementation → [simplify activates here] → /ship
-```
-
-Simplify runs after implementation and review, before the `/ship` quality gate.
+Follow [the workflow contract](../../rules/common/workflow.md). Simplify follows
+Review and precedes Ship readiness; rerun affected checks after edits. No-op is
+valid and neither simplification nor readiness authorizes delivery.

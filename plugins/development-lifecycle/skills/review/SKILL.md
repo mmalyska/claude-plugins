@@ -3,13 +3,23 @@ name: review
 description: "Five-axis code review — correctness, readability, architecture, security, performance"
 ---
 
+# /review - Five-Axis Code Review
+
+Read [the workflow contract](../../rules/common/workflow.md) first. Select profile
+and topology independently; default STANDARD + SOLO. Apply mandatory project
+policy in every profile. This procedure does not authorize another actor or
+work beyond the requested stage.
+
 Use the current user request as input. In a Claude command invocation, `$ARGUMENTS` carries that input; in Codex, use the text accompanying the skill.
 Command-style examples below name workflows: in Codex select the corresponding
 installed skill (`$plugin:skill`); do not execute slash commands in a shell.
 
-# /review - Five-Axis Code Review
-
-Run a comprehensive review across five quality dimensions: correctness, readability, architecture, security, and performance. Produces prioritized findings, then waits for your decision on which to fix.
+Use the five axes below at the depth selected by the workflow contract: QUICK
+focused self-review, STANDARD full self-review or separate local pass, DEEP a
+separate deliberate pass with evidence. SOLO does not add a reviewer agent.
+Apply [common review policy](../../rules/common/code-review.md) and the existing
+[reviewer role](../code-reviewer/SKILL.md) where useful; preserve task scope and
+project gates. Produce findings first; edits require existing or new fix authority.
 
 ---
 
@@ -17,19 +27,29 @@ Run a comprehensive review across five quality dimensions: correctness, readabil
 
 ### Determine Target Files
 
-**If `$ARGUMENTS` is provided:**
-- Check if it names a file or directory
-- If file: include only that file
-- If directory: include all source files in that directory (recursively); exclude `node_modules`, `dist`, `.git`, build artifacts, and binary files — include files with source extensions (`.ts`, `.js`, `.py`, `.go`, `.rs`, `.cs`, etc.)
+Honor an explicit file, directory, revision, range or PR target first. Include
+relevant documentation/configuration as well as source; exclude binaries, build
+outputs and vendored/generated files unless explicitly in scope.
 
-**If `$ARGUMENTS` is empty or unspecified:**
-- Run: `git diff HEAD~1..HEAD` to get files changed in the last commit
-- If that returns nothing, try: `git diff --cached` to get staged changes
-- If still nothing, ask the user to specify a file or commit a change first
+Without an explicit target, inspect current work before commit history:
+
+```bash
+git diff --name-only
+git diff --cached --name-only
+git ls-files --others --exclude-standard
+```
+
+Read both unstaged and staged diffs; an aggregate `git diff HEAD` alone can hide
+opposing staged/unstaged edits. Inspect task-relevant untracked files without
+staging them. If the working tree is clean, resolve the actual base branch and
+use `git diff <base>...HEAD` for committed task changes. Only inspect a recent
+commit when it is the intended task target. If nothing matches, report no changes
+or ask for a target; never require a commit merely to conduct review.
 
 ### Present Scope to User
 
 > Files to review:
+>
 > - [list each file with line count]
 >
 > Total: [N] files
@@ -37,9 +57,10 @@ Run a comprehensive review across five quality dimensions: correctness, readabil
 **GATE**: If no changed files are found:
 
 > No changed files found. Please provide:
+>
 > - A file path (e.g., `src/mycomponent.ts`)
 > - A directory (e.g., `src/services/`)
-> - Or commit some changes and run `/review` again
+> - Or a revision/range to inspect
 
 ---
 
@@ -52,6 +73,7 @@ Run each axis in sequence. For every issue found, assign **one severity** (`[CRI
 Look for logic bugs, off-by-one errors, type mismatches, null/undefined handling, and edge cases.
 
 **Focus areas:**
+
 - Branching logic that may miss cases
 - Array/collection indexing that could go out of bounds
 - Null checks missing where data could be undefined
@@ -59,6 +81,7 @@ Look for logic bugs, off-by-one errors, type mismatches, null/undefined handling
 - Edge cases not covered by existing tests
 
 **Example findings:**
+
 - `[CRITICAL] file.ts:45` — condition never true due to precedence error
 - `[HIGH] file.ts:120` — array access without bounds check
 - `[MEDIUM] file.ts:87` — missing null check before property access
@@ -68,6 +91,7 @@ Look for logic bugs, off-by-one errors, type mismatches, null/undefined handling
 Look for unclear variable names, overly complex logic, deep nesting, and missing comments where intent is not obvious.
 
 **Focus areas:**
+
 - Variable and function names that obscure intent
 - Functions longer than ~50 lines (suggest splitting)
 - Nesting depth greater than 4 levels (suggest early returns or helper functions)
@@ -76,6 +100,7 @@ Look for unclear variable names, overly complex logic, deep nesting, and missing
 - Comments that are missing where code intent is unclear
 
 **Example findings:**
+
 - `[MEDIUM] file.ts:30-60` — function is 31 lines, consider splitting by responsibility
 - `[LOW] file.ts:15` — variable `x` is not descriptive; suggest `remainingRetries`
 - `[MEDIUM] file.ts:88` — nested if/else is 5 levels deep; suggest early return pattern
@@ -85,6 +110,7 @@ Look for unclear variable names, overly complex logic, deep nesting, and missing
 Look for tight coupling, misplaced responsibilities, and patterns that diverge from codebase conventions without good reason.
 
 **Focus areas:**
+
 - Tight coupling that will make future changes hard (e.g., mixing concerns)
 - Responsibilities that belong in a different layer or module
 - Imports or dependencies that break layering
@@ -92,6 +118,7 @@ Look for tight coupling, misplaced responsibilities, and patterns that diverge f
 - Circular dependencies or reverse dependencies
 
 **Example findings:**
+
 - `[HIGH] file.ts:12` — UI component imports business logic directly; should use a service abstraction
 - `[MEDIUM] file.ts:50` — controller performs database query; should delegate to repository layer
 - `[HIGH] file.ts:5-8` — circular dependency with `module-b`
@@ -101,6 +128,7 @@ Look for tight coupling, misplaced responsibilities, and patterns that diverge f
 Look for unvalidated inputs, hardcoded secrets, injection vulnerabilities, and missing authentication checks.
 
 **Focus areas:**
+
 - User input that reaches external systems without validation
 - Hardcoded credentials, API keys, tokens, or secrets
 - SQL injection risk (string concatenation in queries)
@@ -111,6 +139,7 @@ Look for unvalidated inputs, hardcoded secrets, injection vulnerabilities, and m
 - Deserialization of untrusted data
 
 **Example findings:**
+
 - `[CRITICAL] file.ts:35` — hardcoded API key found; move to environment variable
 - `[CRITICAL] file.ts:60` — user input passed directly to SQL query; use parameterized query
 - `[HIGH] file.ts:90` — missing CSRF token validation on state-changing endpoint
@@ -121,6 +150,7 @@ Look for unvalidated inputs, hardcoded secrets, injection vulnerabilities, and m
 Look for N+1 queries, repeated expensive operations in loops, missing pagination, and inefficient algorithms.
 
 **Focus areas:**
+
 - N+1 queries (loop with database query inside)
 - Repeated expensive operations in loops (API calls, file reads, parsing)
 - Missing pagination on unbounded result sets
@@ -130,6 +160,7 @@ Look for N+1 queries, repeated expensive operations in loops, missing pagination
 - Unused imports or dead code that could slow build/parse time
 
 **Example findings:**
+
 - `[HIGH] file.ts:40-45` — loop makes database query on each iteration; use batch query or JOIN
 - `[MEDIUM] file.ts:78` — missing pagination on results; could fetch millions of rows
 - `[MEDIUM] file.ts:120` — blocking I/O in async function; use Promise-based API
@@ -143,7 +174,7 @@ After reviewing all axes, produce a summary with findings grouped by severity an
 
 ### Format
 
-```
+```text
 ## Review findings
 
 ### CRITICAL
@@ -159,13 +190,13 @@ After reviewing all axes, produce a summary with findings grouped by severity an
 - [file:line] [Axis] — Description
 ```
 
-**If no findings exist:**
-
-> No issues found. Code looks good.
+**If no findings exist:** report no findings in the reviewed scope and state
+verification limits; do not imply unrun checks passed.
 
 ### Ordering Within Each Severity
 
 Order findings within each severity group by:
+
 1. Axis (Correctness first, then Readability, Architecture, Security, Performance)
 2. Line number (ascending)
 
@@ -173,15 +204,10 @@ Order findings within each severity group by:
 
 ## Phase 4 — DECISION GATE
 
-After presenting the findings, ask:
-
-> How would you like to proceed?
->
-> - **Fix all CRITICAL/HIGH** — I'll apply the recommended fixes
-> - **Fix specific items** — List the line numbers or item numbers (e.g., "1, 3, 5")
-> - **Skip** — Proceed without making changes
-
-**GATE**: Wait for the user's explicit decision. Do not proceed until they respond.
+Present the findings. If fixes are already authorized, apply only those within
+the accepted scope; otherwise ask which findings to fix and wait before edits.
+Review-only requests produce a report without implicit remediation or delivery.
+A user's choice to skip fixes cannot waive mandatory security/project gates.
 
 ### Apply Fixes (if user selects fix option)
 
@@ -190,14 +216,14 @@ For each item the user approves:
 1. Re-read the current file (line numbers may have shifted from earlier edits)
 2. Locate the relevant code by searching for the context, not relying on the original line number
 3. Apply the fix based on the review finding
-3. Follow applicable project instructions and the active host's loaded rules
+4. Follow applicable project instructions and the active host's loaded rules
 
 After all fixes are applied:
 
-4. Run the project's test suite to verify nothing broke
-5. Show a summary of what changed:
+1. Run affected checks and mandatory project gates; report NOT RUN where unavailable
+2. Show a summary of what changed:
 
-```
+```text
 ## Applied Fixes
 
 - [file:line] [Axis] — Description of the fix applied
@@ -211,8 +237,6 @@ After all fixes are applied:
 
 ## Lifecycle Position
 
-```text
-/spec → implementation → /review → /ship
-```
-
-After review, fix findings and run `/ship` when ready.
+Follow [the workflow contract](../../rules/common/workflow.md). Review informs
+Simplify; rerun affected checks after edits before Ship readiness. Review alone
+does not authorize delivery.
