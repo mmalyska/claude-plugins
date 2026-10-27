@@ -1,150 +1,76 @@
 ---
 name: subagent-driven-development
-description: "Use when executing implementation plans with independent tasks in the current session"
+description: "Execute accepted task scope with explicitly authorized workers or local sequential role passes, preserving topology, verification and delivery limits."
 ---
 
 # Subagent-Driven Development
 
-Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review.
+## Execution boundary
 
-**Why subagents:** Delegate tasks to specialized agents with isolated context. By precisely crafting their instructions, you ensure they stay focused. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
+Check authority before capability. Default STANDARD + SOLO; preserve explicit
+accepted task profile/topology and current exclusions. Planning or selecting
+roles does not authorize a worker. HANDOFF, PARALLEL and REVIEW require explicit
+user authorization before changing actors. Never launch another CLI, worker or
+orchestrator to bypass a restriction. Check actual exposed tools/schemas only
+after authority; availability alone grants no action.
 
-**Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
+If requested capability is missing, disclose it and use SOLO/manual execution only
+when consistent with user intent. Do not relabel local role passes as independent
+review or fabricate tool/background success. Reuse existing specific authority
+within scope; no repeated permission menu. Keep the configured model unless a
+change is authorized. Mandatory project gates and worktree-first always apply.
+Consult the existing development-lifecycle-rules contract when installed; this
+plugin's safe local path requires no other plugin or copied skill catalog.
 
-**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are: BLOCKED status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete.
+## Selected execution technique
 
-## Host execution
+This existing name is retained for compatibility. Explicitly authorized workers
+are optional; SOLO uses the same task/spec-review/quality-review role passes in
+the current session. This technique operates inside the existing lifecycle; it
+is not a mandatory new sequence or an external plan-executor dependency.
 
-Check whether delegation is exposed and authorized. In Claude use the available
-Agent tool; in Codex use the delegation tool actually exposed in this session.
-Supply a focused context brief rather than requiring a specific context-inheritance
-flag. If delegation is unavailable, execute each implementation, spec-review,
-and quality-review pass sequentially yourself and disclose that review was not
-independent. Do not invoke a second CLI to bypass delegation restrictions.
-Keep commits and other side effects within the user's authorization.
-
-## When to Use
-
-```dot
-digraph when_to_use {
-    "Have implementation plan?" [shape=diamond];
-    "Tasks mostly independent?" [shape=diamond];
-    "Stay in this session?" [shape=diamond];
-    "subagent-driven-development" [shape=box];
-    "executing-plans" [shape=box];
-    "Manual execution or brainstorm first" [shape=box];
-
-    "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
-    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
-    "Tasks mostly independent?" -> "Stay in this session?" [label="yes"];
-    "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
-    "Stay in this session?" -> "subagent-driven-development" [label="yes"];
-    "Stay in this session?" -> "executing-plans" [label="no - parallel session"];
-}
+```text
+Accepted task scope -> check stage/actor authority
+  SOLO -> local implementation and separate local review passes
+  Authorized actors -> verify actual capability and bounded worker scope
+  Missing capability -> disclose; compatible local fallback or stop
+  Result/failure -> evidence, dependent gates, next authorized task or stop
 ```
 
-## The Process
+## Per-task procedure
 
-```dot
-digraph process {
-    rankdir=TB;
+1. Read the accepted task and current repository state. Record profile/topology,
+   allowed files/actions, base/branch/worktree, owner/integrator, verification and
+   attempt/runtime bounds. A plan is state, not authority to execute all its tasks.
+2. If work is authorized, implement locally in SOLO or brief an explicitly authorized
+   worker using actual exposed tooling. Include sufficient context, restrictions,
+   done condition and required evidence; do not depend on a host inheritance flag.
+3. Check spec compliance and relevant quality/security/test completeness as distinct
+   local passes, or authorized independent reviews. Do not claim actor independence
+   from a role label. TDD is selected when useful/requested or required by project
+   policy, not a universal instruction for every task.
+4. Resolve in-scope findings, rerun affected checks and record actual results.
+   A failed worker or required gate blocks dependent integration. Missing evidence
+   is not success; do not dispatch downstream work to conceal a failure.
+5. Continue only through currently authorized task scope and bounds. A single-task
+   or stage-only instruction stops there, not at the end of the whole plan.
+   Final review is local in SOLO; no automatic final reviewer dispatch.
 
-    subgraph cluster_per_task {
-        label="Per Task";
-        "Dispatch implementer subagent" [shape=box];
-        "Implementer asks questions?" [shape=diamond];
-        "Answer questions" [shape=box];
-        "Implementer implements, tests, commits, self-reviews" [shape=box];
-        "Dispatch spec reviewer subagent" [shape=box];
-        "Spec reviewer: code matches spec?" [shape=diamond];
-        "Implementer fixes spec gaps" [shape=box];
-        "Dispatch code quality reviewer subagent" [shape=box];
-        "Code quality reviewer approves?" [shape=diamond];
-        "Implementer fixes quality issues" [shape=box];
-        "Mark task complete in task checklist" [shape=box];
-    }
+Every concurrent writer has its own branch/worktree and a named integrator.
+An authorized read-only reviewer can share the owner's isolation; sequential
+writers can share it only within explicit scope. Preserve existing primary and
+external worktree ownership. Readiness does not authorize commit/push/PR, merge,
+cleanup or runtime; use existing finishing guidance only for a selected action.
 
-    "Read plan, extract all tasks, create task checklist" [shape=box];
-    "More tasks remain?" [shape=diamond];
-    "Dispatch final code reviewer for entire implementation" [shape=box];
-    "Use finishing-a-development-branch skill" [shape=box style=filled fillcolor=lightgreen];
+## Brief and status
 
-    "Read plan, extract all tasks, create task checklist" -> "Dispatch implementer subagent";
-    "Dispatch implementer subagent" -> "Implementer asks questions?";
-    "Implementer asks questions?" -> "Answer questions" [label="yes"];
-    "Answer questions" -> "Dispatch implementer subagent";
-    "Implementer asks questions?" -> "Implementer implements, tests, commits, self-reviews" [label="no"];
-    "Implementer implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent";
-    "Dispatch spec reviewer subagent" -> "Spec reviewer: code matches spec?";
-    "Spec reviewer: code matches spec?" -> "Implementer fixes spec gaps" [label="no"];
-    "Implementer fixes spec gaps" -> "Dispatch spec reviewer subagent" [label="re-review"];
-    "Spec reviewer: code matches spec?" -> "Dispatch code quality reviewer subagent" [label="yes"];
-    "Dispatch code quality reviewer subagent" -> "Code quality reviewer approves?";
-    "Code quality reviewer approves?" -> "Implementer fixes quality issues" [label="no"];
-    "Implementer fixes quality issues" -> "Dispatch code quality reviewer subagent" [label="re-review"];
-    "Code quality reviewer approves?" -> "Mark task complete in task checklist" [label="yes"];
-    "Mark task complete in task checklist" -> "More tasks remain?";
-    "More tasks remain?" -> "Dispatch implementer subagent" [label="yes"];
-    "More tasks remain?" -> "Dispatch final code reviewer for entire implementation" [label="no"];
-    "Dispatch final code reviewer for entire implementation" -> "Use finishing-a-development-branch skill";
-}
-```
+Give objective, exact task scope, relevant files/decisions, profile/topology,
+authority/exclusions, isolation, checks, done criteria and an output contract.
+Status is DONE, DONE_WITH_CONCERNS, NEEDS_CONTEXT or BLOCKED with evidence.
+Read concerns before accepting DONE; supply missing context only within scope.
+On repeated failure without new evidence or exhausted bounds, stop/report the
+blocker. Do not increase model, privileges or actor count as an implicit retry.
 
-## Model Selection
-
-Use the session's configured model by default. Only select another model when
-the user or active host instructions authorize it. When authorized, match
-capacity to each role:
-
-- **Mechanical tasks** (isolated functions, clear specs, 1-2 files): cheap/fast model
-- **Integration tasks** (multi-file coordination, pattern matching): standard model
-- **Architecture/review tasks**: most capable model
-
-## Handling Implementer Status
-
-**DONE:** Proceed to spec compliance review.
-
-**DONE_WITH_CONCERNS:** Read concerns before proceeding. If about correctness/scope, address first.
-
-**NEEDS_CONTEXT:** Provide missing context and re-dispatch.
-
-**BLOCKED:** Assess the blocker:
-1. Context problem → provide more context, re-dispatch
-2. Needs more reasoning → re-dispatch with more capable model
-3. Task too large → break into smaller pieces
-4. Plan is wrong → escalate to the human
-
-## Implementer Prompt Template
-
-Brief the implementer subagent with:
-- Full task text (extracted from plan — never make them read the plan file)
-- Scene-setting context: which codebase, what's been built so far, where this task fits
-- TDD requirement: write failing test first, then implement
-- Self-review requirement before reporting done
-- Report status: DONE / DONE_WITH_CONCERNS / NEEDS_CONTEXT / BLOCKED
-
-## Reviewer Prompt Templates
-
-**Spec reviewer:** Given the task spec and git diff, does the implementation cover everything in the spec with nothing extra? Report: ✅ compliant or ❌ with specific gaps/extras.
-
-**Code quality reviewer:** Review code quality against standards. Use an available review skill, or inspect correctness, maintainability, security, and tests directly. Report: ✅ approved or issues (Critical / Important / Minor).
-
-## Red Flags
-
-**Never:**
-- Start implementation on main/master branch without explicit user consent
-- Skip reviews (spec compliance OR code quality)
-- Proceed with unfixed issues
-- Dispatch multiple implementation subagents in parallel (conflicts)
-- Make subagent read plan file (provide full text instead)
-- Skip scene-setting context
-- Accept "close enough" on spec compliance
-- **Start code quality review before spec compliance is ✅** (wrong order)
-- Move to next task while either review has open issues
-
-## Integration
-
-- **using-git-worktrees** — ensures isolated workspace
-- Create an implementation plan with task dependencies and acceptance criteria; use a planning skill when available.
-- Use available review guidance, or the reviewer checklist above.
-- **finishing-a-development-branch** — complete development after all tasks
+For spec review, compare actual changes to acceptance and non-goals. For quality
+review, assess correctness, maintainability, security and test evidence. Use local
+checklists or existing installed skills; no absent provider is required.

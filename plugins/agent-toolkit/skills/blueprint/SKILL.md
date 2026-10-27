@@ -1,79 +1,87 @@
 ---
 name: blueprint
-description: "Turn a one-line objective into a step-by-step construction plan for multi-session, multi-agent engineering projects. Each step has a self-contained context brief so a fresh agent can execute it cold. Includes adversarial review gate, dependency graph, parallel step detection, anti-pattern catalog, and plan mutation protocol. TRIGGER when: user requests a plan, blueprint, or roadmap for a complex multi-PR task, or describes work that needs multiple sessions. DO NOT TRIGGER when: task is completable in a single PR or fewer than 3 tool calls, or user says \"just do it\"."
+description: "Create profile-sized, resumable implementation plans with exact file scopes, dependencies, checks and rollback. Planning does not authorize workers or delivery."
 metadata:
   origin: "community"
 ---
 
 # Blueprint — Construction Plan Generator
 
-Turn a one-line objective into a step-by-step construction plan that any coding agent can execute cold.
+## Execution boundary
 
-## When to Use
+Check authority before capability. Default STANDARD + SOLO; preserve explicit
+accepted task profile/topology and current exclusions. Planning or selecting
+roles does not authorize a worker. HANDOFF, PARALLEL and REVIEW require explicit
+user authorization before changing actors. Never launch another CLI, worker or
+orchestrator to bypass a restriction. Check actual exposed tools/schemas only
+after authority; availability alone grants no action.
 
-- Breaking a large feature into multiple PRs with clear dependency order
-- Planning a refactor or migration that spans multiple sessions
-- Coordinating parallel workstreams across sub-agents
-- Any task where context loss between sessions would cause rework
+If requested capability is missing, disclose it and use SOLO/manual execution only
+when consistent with user intent. Do not relabel local role passes as independent
+review or fabricate tool/background success. Reuse existing specific authority
+within scope; no repeated permission menu. Keep the configured model unless a
+change is authorized. Mandatory project gates and worktree-first always apply.
+Consult the existing development-lifecycle-rules contract when installed; this
+plugin's safe local path requires no other plugin or copied skill catalog.
 
-**Do not use** for tasks completable in a single PR, fewer than 3 tool calls, or when the user says "just do it."
+## Profile-sized planning
 
-## How It Works
+Use for a complex change, multi-session resume or requested implementation plan.
+A Plan-only instruction stops with the plan; it does not authorize Build, workers,
+commit/push/PR or runtime. The procedure below serves the existing Plan stage,
+not another engineering lifecycle.
 
-Blueprint runs a 5-phase pipeline:
+- QUICK: brief goal, scope, success and next step; no mandatory durable dossier.
+- STANDARD: relevant files/dependencies, acceptance and project checks; durable
+  state for multi-session work.
+- DEEP: repository-grounded decisions, risks, ownership/integrator, exact tasks,
+  verification, impact and rollout/rollback, plus a distinct local review pass.
 
-1. **Research** — Pre-flight checks (git, gh auth, remote, default branch), then reads project structure, existing plans, and memory files to gather context.
-2. **Design** — Breaks the objective into one-PR-sized steps (3–12 typical). Assigns dependency edges, parallel/serial ordering, task complexity and any authorized model selection, and rollback strategy per step.
-3. **Draft** — Writes a self-contained Markdown plan file to `plans/`. Every step includes a context brief, task list, verification commands, and exit criteria — so a fresh agent can execute any step without reading prior steps.
-4. **Review** — Runs adversarial review through an available authorized sub-agent or a separate local review pass against a checklist and anti-pattern catalog. Fixes all critical findings before finalizing.
-5. **Register** — Saves the plan, updates memory index, and presents the step count and parallelism summary to the user.
+## Prepare a resumable plan
 
-Blueprint detects git/gh availability automatically. With git + GitHub CLI, it generates full branch/PR/CI workflow plans. Without them, it switches to direct mode (edit-in-place, no branches).
+1. Inspect repository/task state, relevant architecture, prior accepted plans and
+   available project checks. GitHub authentication is not a prerequisite to local
+   planning. Research only unresolved questions at the selected depth.
+2. Break work into small verifiable tasks: exact paths, intended change, dependencies,
+   tests/expected results, done criterion and rollback. Identify independent scopes
+   as candidates, not permission to run them in parallel. SOLO stays serial.
+3. Preserve the existing artifact directory. If none exists, use
+   `.plans/<slug>/plan.md` and `tasks.md`. Do not move historical Superpowers/PRP
+   plans or create another catalog of procedure copies. Record objective/non-goals,
+   acceptance, profile/topology, owner, base SHA, branch/worktree, permissions,
+   decisions, status, actual evidence and exact next action.
+4. Review completeness, dependencies, overlapping writers, missing authority,
+   mandatory gates and rollback in a separate local pass. Independent review
+   needs explicit actor authority and suitable capability; disclose self-review.
+5. Write a resume brief. Update an existing memory index only if configured and
+   within accepted write scope; a Markdown state file is not automatic memory
+   loading. Do not invent a new user-level memory location or background service.
 
-## Examples
+## Isolation and missing tools
 
-### Basic usage
+Inspect existing isolation before writing a plan. Reuse a suitable linked worktree,
+otherwise use actual native creation or manual git with a verified base and local
+exclude. If isolation is blocked, stop writes and report the permission prerequisite.
+Missing git/gh is not an edit-in-place bypass: provide read-only/session planning
+or disclose the missing prerequisite when durable repository writes are needed.
+Normal host permission handling may resolve a scoped block; no second CLI fallback.
 
-```
-/blueprint myapp "migrate database to PostgreSQL"
-```
+## Example
 
-Produces `plans/myapp-migrate-database-to-postgresql.md` with steps like:
-- Step 1: Add PostgreSQL driver and connection config
-- Step 2: Create migration scripts for each table
-- Step 3: Update repository layer to use new driver
-- Step 4: Add integration tests against PostgreSQL
-- Step 5: Remove old database code and config
+For a requested DEEP + SOLO database migration plan, record behavior/constraints,
+current schema owners, staged migration/backfill/check/rollback tasks, permissions
+and resume state. A dependency graph may show independent components, but no worker
+starts and no migration runs merely because the graph or plan is approved.
 
-### Multi-agent project
+The existing blueprint skill is shared in both hosts (Codex uses
+`$agent-toolkit:blueprint`). Use exposed host planning/file tools; no generator,
+external executor or Superpowers installation is required.
 
-```
-/blueprint chatbot "extract LLM providers into a plugin system"
-```
+## Plan changes
 
-Produces a plan with parallel steps where possible (e.g., "implement Anthropic plugin" and "implement OpenAI plugin" run in parallel after the plugin interface step is done), complexity notes for interface design and implementation, and invariants verified after every step (e.g., "all existing tests pass", "no provider imports in core").
-
-## Key Features
-
-- **Cold-start execution** — Every step includes a self-contained context brief. No prior context needed.
-- **Adversarial review gate** — Every plan receives an adversarial review pass against a checklist covering completeness, dependency correctness, and anti-pattern detection.
-- **Branch/PR/CI workflow** — Built into every step. Degrades gracefully to direct mode when git/gh is absent.
-- **Parallel step detection** — Dependency graph identifies steps with no shared files or output dependencies.
-- **Plan mutation protocol** — Steps can be split, inserted, skipped, reordered, or abandoned with formal protocols and audit trail.
-- **Instruction-only workflow** — This skill requires no executable helper or build step.
-
-## Availability and execution
-
-This is a shared skill in this plugin collection. Invoke `blueprint` through the
-active host's skill interface (`$blueprint` in Codex). Git and GitHub CLI are
-optional; plan local work when they are unavailable. Installing this collection
-requires no build step. Do not assume that other plugins contain only Markdown.
-
-For adversarial review, use an available authorized subagent; otherwise perform
-a distinct review pass in the current session and disclose its lack of
-independence. Keep the configured model unless a model change is authorized.
-Write a resume brief alongside the plan; update an existing memory index only
-if that facility is configured, not an invented automatic memory location.
+On new evidence, revise affected tasks/edges/acceptance with rationale and retain
+actual completed evidence. Do not silently broaden scope, hide blocked work or
+mark a task done because a plan proposed it. Stop at the requested boundary.
 
 ## Source
 

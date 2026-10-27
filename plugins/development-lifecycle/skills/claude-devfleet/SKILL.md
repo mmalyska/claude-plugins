@@ -1,122 +1,88 @@
 ---
 name: claude-devfleet
-description: "Orchestrate multi-agent coding tasks via Claude DevFleet — plan projects, dispatch parallel agents in isolated worktrees, monitor progress, and read structured reports."
+description: "Plan or use bounded, explicitly authorized DevFleet work after verifying service side effects and controls; local planning remains available without the service."
 metadata:
   origin: "community"
 ---
 
-# Claude DevFleet Multi-Agent Orchestration
+# Claude DevFleet — Optional Execution Client
 
-## Calling host and dependency
+Read [the workflow contract](../../rules/common/workflow.md) first. Default
+STANDARD + SOLO, preserving explicit accepted task profile/topology and exclusions.
+Check authority before capability. Planning or selecting roles does not authorize
+a worker; HANDOFF, PARALLEL and REVIEW require explicit user authorization before
+changing actors. Never launch another CLI, worker or orchestrator to bypass a
+restriction. SOLO performs local planning/role passes without calling a worker
+service. A request for a plan or generic implementation is not service-launch scope.
 
-This skill can run in Claude Code or Codex. DevFleet is an external service that
-runs Claude workers; it does not turn those workers into Codex agents. Check for
-the connected DevFleet MCP tools and their actual schemas before any call. If
-they are absent, report the dependency and offer local planning or sequential
-execution; do not claim a mission was dispatched. Creating the connection is a
-separate setup action. When requested, the CLI forms are:
+## Host and prerequisites
 
-```sh
-# Claude Code caller
-claude mcp add devfleet --transport http http://localhost:18801/mcp
-# Codex caller
-codex mcp add devfleet --url http://localhost:18801/mcp
-```
+DevFleet is an optional external service whose workers are Claude workers even
+when the calling host is Codex. Do not describe them as Codex native agents.
+Inspect actual exposed tool schemas and verified service behavior within authorized
+service scope; the names below are illustrative existing operations, not guaranteed
+API signatures or permission to invoke them. No service is required for correctness.
 
-Verify the service URL with the user; localhost is an example. Inspect mission
-settings for auto-dispatch/auto-merge and ensure the requested scope authorizes
-those side effects before launching the chain. Poll with short nonblocking status
-calls rather than blocking the conversation for long waits.
+If the service/tool is absent, report the prerequisite and offer local planning or
+execution only if compatible with user intent. Do not invent a mission, success,
+connection or tool name. Connecting/configuring a service is separate setup scope;
+do not install it or start another host CLI implicitly.
 
-## When to Use
+Before an orchestrator pilot, record at least three completed manual
+HANDOFF/PARALLEL tasks and a partial-execution failure test. Include evidence from
+a parallel pilot when available. This task/skill does not itself run that pilot.
 
-Use this skill when you need to dispatch multiple Claude Code agents to work on coding tasks in parallel. Each agent runs in an isolated git worktree with full tooling.
+## Verify inert planning before any service mutation
 
-Requires a running Claude DevFleet instance connected to the calling host via MCP.
+A service planning call can create queued or active missions. Do not call
+`plan_project` until verified controls prevent unauthorized launch and merge.
+Automatic dispatch and merge must be disabled by verified service controls before
+creating jobs. Do not assume that a parameter exists or that changing a flag
+after creation can undo workers already launched.
 
-## How It Works
+If safe controls cannot be verified before the call, report incompatibility and
+use no service. This includes a service that cannot keep created jobs inert or
+cannot separate launch, integration and merge authority. A user approving a plan
+is not authorizing auto-dispatch, automatic merge or runtime effects.
 
-```
-User → "Build a REST API with auth and tests"
-  ↓
-plan_project(prompt) → project_id + mission DAG
-  ↓
-Show plan to user → get approval
-  ↓
-dispatch_mission(M1) → Agent 1 spawns in worktree
-  ↓
-M1 completes → auto-merge → auto-dispatch M2 (depends_on M1)
-  ↓
-M2 completes → auto-merge
-  ↓
-get_report(M2) → files_changed, what_done, errors, next_steps
-  ↓
-Report back to user
-```
+## Bounded manual execution when explicitly authorized
 
-### Tools
+1. Prepare a local task graph in the existing project artifact location. Record
+   objective, acceptance, profile/topology, owner/integrator, base/branch/worktree,
+   exact writer/reviewer scopes, permissions/exclusions, gates, attempt/time bounds,
+   stop/cancel controls, impact and rollback. Keep secrets out of briefs/reports.
+2. Verify actor/service authority and prerequisites, then actual exposed capability
+   and inert-job controls. Reuse existing specific authorization without another
+   menu. Explicit no-other-harness restrictions still prohibit external workers.
+3. Create only inert bounded jobs under verified schemas. Each concurrent writer
+   has a separate branch/worktree; reviewers are read-only unless scope says
+   otherwise. A named integrator owns final checks and any authorized integration.
+4. Dispatch only the individually authorized ready work. Dependency readiness is
+   not automatic permission to launch downstream work. Record actual job IDs,
+   limits, scope and control state, not hypothetical service defaults.
+5. Use short nonblocking status/report calls within the task's monitoring scope.
+   A failed worker blocks dependent integration and further dependent dispatch.
+   Report partial results and missing checks honestly; do not claim a whole graph
+   completed from one success. Repeated failure or exhausted bounds stops the work.
+6. Integration, branch delivery, remote merge and runtime mutations are separate
+   actions. A GitOps/HCP auto-apply merge requires fresh explicit permission with
+   impact/rollback. Runtime consent is not granted by the job graph or actor scope.
+   Do not allow an uncontrolled auto-merge chain.
+7. Preserve artifacts/worktrees for review. Cancel/retry only jobs in accepted
+   control scope; do not cancel unrelated jobs or increase actors/privileges/model
+   as a hidden retry. A plugin rollback does not undo external jobs/runtime effects.
 
-| Tool | Purpose |
-|------|---------|
-| `plan_project(prompt)` | AI breaks a description into a project with chained missions |
-| `create_project(name, path?, description?)` | Create a project manually, returns `project_id` |
-| `create_mission(project_id, title, prompt, depends_on?, auto_dispatch?)` | Add a mission. `depends_on` is a list of mission ID strings (e.g., `["abc-123"]`). Set `auto_dispatch=true` to auto-start when deps are met. |
-| `dispatch_mission(mission_id, model?, max_turns?)` | Start an agent on a mission |
-| `cancel_mission(mission_id)` | Stop a running agent |
-| `wait_for_mission(mission_id, timeout_seconds?)` | Block until a mission completes (see note below) |
-| `get_mission_status(mission_id)` | Check mission progress without blocking |
-| `get_report(mission_id)` | Read structured report (files changed, tested, errors, next steps) |
-| `get_dashboard()` | System overview: running agents, stats, recent activity |
-| `list_projects()` | Browse all projects |
-| `list_missions(project_id, status?)` | List missions in a project |
+## Operations to inspect, not blindly invoke
 
-> **Note on `wait_for_mission`:** This blocks the conversation for up to `timeout_seconds` (default 600). For long-running missions, prefer polling with `get_mission_status` every 30–60 seconds instead, so the user sees progress updates.
+| Existing operation name | Required precondition |
+| --- | --- |
+| `plan_project` | Verify planning is inert, bounded and within explicit service scope before calling |
+| `create_project` / `create_mission` | Verified schemas and no creation-time dispatch/merge side effect |
+| `dispatch_mission` | Explicit actor/work scope, actual capability, limits and isolated writers |
+| `get_mission_status` / `get_report` / `get_dashboard` | Accepted monitoring scope; report actual observed state |
+| `cancel_mission` | Exact job/control authority, no cancellation of unrelated work |
 
-### Workflow: Plan → Dispatch → Monitor → Report
-
-1. **Plan**: Call `plan_project(prompt="...")` → returns `project_id` + list of missions with `depends_on` chains and `auto_dispatch=true`.
-2. **Show plan**: Present mission titles, types, and dependency chain to the user.
-3. **Dispatch**: Call `dispatch_mission(mission_id=<first_mission_id>)` on the root mission (empty `depends_on`). Remaining missions auto-dispatch as their dependencies complete (because `plan_project` sets `auto_dispatch=true` on them).
-4. **Monitor**: Call `get_mission_status(mission_id=...)` or `get_dashboard()` to check progress.
-5. **Report**: Call `get_report(mission_id=...)` when missions complete. Share highlights with the user.
-
-### Concurrency
-
-DevFleet runs up to 3 concurrent agents by default (configurable via `DEVFLEET_MAX_AGENTS`). When all slots are full, missions with `auto_dispatch=true` queue in the mission watcher and dispatch automatically as slots free up. Check `get_dashboard()` for current slot usage.
-
-## Examples
-
-### Full auto: plan and launch
-
-1. `plan_project(prompt="...")` → shows plan with missions and dependencies.
-2. Dispatch the first mission (the one with empty `depends_on`).
-3. Remaining missions auto-dispatch as dependencies resolve (they have `auto_dispatch=true`).
-4. Report back with project ID and mission count so the user knows what was launched.
-5. Poll with `get_mission_status` or `get_dashboard()` periodically until all missions reach a terminal state (`completed`, `failed`, or `cancelled`).
-6. `get_report(mission_id=...)` for each terminal mission — summarize successes and call out failures with errors and next steps.
-
-### Manual: step-by-step control
-
-1. `create_project(name="My Project")` → returns `project_id`.
-2. `create_mission(project_id=project_id, title="...", prompt="...", auto_dispatch=true)` for the first (root) mission → capture `root_mission_id`.
-   `create_mission(project_id=project_id, title="...", prompt="...", auto_dispatch=true, depends_on=["<root_mission_id>"])` for each subsequent task.
-3. `dispatch_mission(mission_id=...)` on the first mission to start the chain.
-4. `get_report(mission_id=...)` when done.
-
-### Sequential with review
-
-1. `create_project(name="...")` → get `project_id`.
-2. `create_mission(project_id=project_id, title="Implement feature", prompt="...")` → get `impl_mission_id`.
-3. `dispatch_mission(mission_id=impl_mission_id)`, then poll with `get_mission_status` until complete.
-4. `get_report(mission_id=impl_mission_id)` to review results.
-5. `create_mission(project_id=project_id, title="Review", prompt="...", depends_on=[impl_mission_id], auto_dispatch=true)` — auto-starts since the dependency is already met.
-
-## Guidelines
-
-- Always confirm the plan with the user before dispatching, unless they said to go ahead.
-- Include mission titles and IDs when reporting status.
-- If a mission fails, read its report before retrying.
-- Check `get_dashboard()` for agent slot availability before bulk dispatching.
-- Mission dependencies form a DAG — do not create circular dependencies.
-- Each agent runs in an isolated git worktree and auto-merges on completion. If a merge conflict occurs, the changes remain on the agent's worktree branch for manual resolution.
-- When manually creating missions, always set `auto_dispatch=true` if you want them to trigger automatically when dependencies complete. Without this flag, missions stay in `draft` status.
+No automatic launch example or assumed concurrency count is a default. The service
+DAG is a transport/execution mechanism inside the shared lifecycle, not another
+engineering lifecycle or a hard dependency. Scheduling/background continuation
+must be verified, not inferred from these Markdown instructions.

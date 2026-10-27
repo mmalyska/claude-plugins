@@ -1037,3 +1037,130 @@ Claude/Codex manifests; identities, discovery, hooks and dependencies remain
 unchanged. Earlier no-manifest/no-delivery statements describe initial T06
 implementation. T07+, merge and release remain unauthorized. Revalidate tests,
 Markdown, links and scope before publishing.
+
+## T07 toolkit and service authorization evidence
+
+T07 completed locally in DEEP + SOLO on `fix/hybrid-ai-workflow-toolkit-authorization`,
+worktree `/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-toolkit-authorization`,
+based on `97e225ad8c13f70906075d752207ef1a632179e9` (merged T06 PR #14). Primary main was clean and updated
+fast-forward before worktree creation. No subagent/other harness/orchestrator,
+DevFleet call, service setup/connection, schedule, worker, real commit/push/PR,
+merge or runtime mutation occurred. Tests remain static/local disposable fixtures.
+
+### Exact T07 file ownership
+
+- `plugins/agent-toolkit/skills/blueprint/SKILL.md`: profile-sized Plan work,
+  established artifact paths first, neutral .plans fallback when absent, exact
+  task/check/rollback briefs, local review and explicit resume state. No direct
+  edit-in-place escape on missing git/gh or unconditional memory registration.
+  Graph independence is only a candidate, not permission for parallel work.
+- `plugins/agent-toolkit/skills/subagent-driven-development/SKILL.md`: retains
+  callable name while replacing unconditional fresh-worker/final-reviewer diagrams
+  and whole-plan execution with bounded accepted-task local passes or explicitly
+  authorized actors. No absent external executor dependency or universal TDD.
+- `plugins/agent-toolkit/skills/team-builder/SKILL.md`: proposes role expertise,
+  distinguishes selection from actor authority, avoids redundant pickers, uses
+  exposed metadata without CLI bypass and reports partial/missing role capability.
+- `plugins/agent-toolkit/skills/autonomous-agent-harness/SKILL.md` and
+  `plugins/agent-toolkit/skills/continuous-agent-loop/SKILL.md`: carry profile,
+  topology, owner/integrator, actor permissions/exclusions and bounds across
+  iterations; narrower/revoked instructions win. Worker failure blocks dependent
+  integration; no scheduler/background success or automatic downstream launch.
+  External-runner examples require explicit worker scope and no host restriction.
+- `plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md`: local SEARCH rather
+  than an assumed dispatch; explicitly pseudocode, bounded cycles and incomplete
+  return state. Critical missing context blocks dependent implementation.
+- `plugins/agent-toolkit/skills/rules-distill/SKILL.md`: main analysis and fenced
+  example use local role passes by default; an analysis brief grants no actors.
+  Apply only approved rule content and reuse existing approval without a new menu.
+- `plugins/agent-toolkit/skills/writing-skills/SKILL.md`: authoring review includes
+  metadata, diagrams, examples, prompts and final steps; authority before actual
+  capability, independent profile/topology and no state-as-new-permission.
+- `plugins/development-lifecycle/skills/claude-devfleet/SKILL.md`: optional execution
+  client, real Claude-worker identity, actual schemas/controls before any call.
+  Planning can mutate service state; verify inert jobs and no unauthorized
+  dispatch/merge before calling plan_project or creating anything. Incompatible
+  controls mean use no service. Manual bounded job launch/integration/control
+  authority is distinct; failed workers block dependent launch/integration.
+  Pilot needs three completed manual HANDOFF/PARALLEL tasks and partial-failure
+  evidence. Service operation names are illustrative, not invented API signatures.
+- `plugins/agent-toolkit/README.md`: safe standalone/default behavior, existing
+  role/technique names and optional providers; no implicit parallel team promise.
+- `tests/test_workflow_contract.py`: seven additional tests across nine entrypoints,
+  four deleted authority declarations, three service-control mutations, all-text
+  unsafe-example scans, bounds/state/path/role checks and standalone no-dependency
+  manifest checks. Helpers inspect actual instructions, not a policy executor.
+- `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: status, evidence and next task.
+
+Exactly eleven implementation/test paths plus three evidence documents changed.
+Names/frontmatter identity remain stable; only four misleading skill descriptions
+are narrowed. No new/copied skill, manifest/version, hook, native adapter or sibling
+repository change. Provider dependency removal in lifecycle remains T08; standalone
+agent-toolkit declares no hard dependency in either host manifest. This does not
+claim a fresh native installation was exercised in this session.
+
+### T07 commands and observed results
+
+| Command / check | Exit | Observed result |
+| --- | --- | --- |
+| `python3 -B -m unittest discover -s tests -p test_workflow_contract.py -v` | 0 | 40 tests PASS including 7 new T07 tests |
+| `python3 -B -m unittest discover -s tests -p test_codex_manifests.py -v` | 0 | 3 tests PASS; names/metadata, contained links and native wrappers |
+| `python3 -B -m unittest discover -s tests -p test_rule_scanners.py -v` | 0 | 2 tests PASS; scanner behavior remains valid |
+| Markdown baseline comparison, MD013 disabled | 0 | 34 baseline → 19 current diagnostics on ten touched guidance docs; no added count per file/rule |
+| Newly rewritten documents/evidence lint, local links/fragments, scope and `git diff --check` | 0 | PASS; exact task paths, primary clean on main, T08 unchecked |
+
+Markdown comparison uses `git show HEAD:<path>` baseline copies in a temporary
+directory and installed markdownlint-cli JSON diagnostics. It is a no-added-
+diagnostics check, not a claim that retained old sections are fully lint-clean.
+Old list/fence issues in preserved retrieval/distillation/authoring material remain;
+rewritten files and new evidence are checked separately. No new lint rule was
+disabled beyond MD013 for long paragraphs/tables. Blank-line inflation at inserted
+guard joins was removed without broad reformatting of preserved examples.
+
+No AI/service trial, native discovery/full unittest discovery, scheduler creation,
+real dispatch/merge or connected-service mutation was run. The executable missing-jq
+fixture still ran in the workflow suite; unchanged full guard fixtures were not
+rerun. Historical guard evidence is not relabeled as a new T07 run.
+
+### S05–S08/S10/S14 local walkthroughs
+
+- S05: a normal plan request or selecting architecture/security roles keeps SOLO.
+  Role/team/parallel candidates are proposals; even available tooling cannot be
+  called to launch workers without explicit actor scope. Unsafe old examples
+  (auto-dispatch true, automatic fresh-worker path, edit-in-place bypass and
+  ungated subagent-analysis output) are absent from active text and fenced examples.
+- S06: a cross-session brief carries exact accepted scope, profile/topology,
+  permissions, base/worktree, evidence and next action. Stored state grants no
+  new authority; narrower/revoked current instructions win.
+- S07/S08: explicitly authorized independent writers require distinct worktrees
+  and a named integrator. Failed worker/gate blocks dependent integration and
+  launch; local role passes cannot be labeled independent review. Read-only
+  sharing still needs actor authority; metadata availability is not permission.
+- S10: requested actor capability missing means disclose the limitation and use
+  local fallback only if compatible with user intent; no second CLI or invented
+  actor registry. Selecting DEEP cannot justify more actors or a model change.
+- S14: missing scheduler/scanner/DevFleet is a prerequisite/manual-path report,
+  never background/job/scan success. A planning API with unverified creation-time
+  dispatch/merge side effects is incompatible even if a graph is approved; no
+  call is made until verified safe controls and actual authority exist.
+- Service scope: job launch is bounded and manual after authority/capability checks;
+  graph approval is not auto-launch, merge or runtime consent. Runtime-triggering
+  merge needs fresh explicit impact/rollback authority, and cancel/retry scope
+  cannot target unrelated jobs. This task starts no service or pilot.
+
+These are same-agent source walkthroughs and negative instruction samples, not
+proof of live model/service behavior. Remaining uncertainty is actual service
+schema/control suitability and native behavior; those must be verified in a later
+explicitly authorized environment. T07 is complete locally and uncommitted; stop
+before T08 and delivery. Full conformance remains unclaimed while T08–T11 and
+native/scenario evidence are pending.
+
+### T07 PR preparation update
+
+The subsequent user instruction authorizes T07 commit/push/PR. Apply the planned
+paired patch version increments: agent-toolkit 1.1.1 → 1.1.2 and
+development-lifecycle 1.2.2 → 1.2.3. Only version fields change in the four host
+manifests; identity, discovery, hooks and dependencies remain unchanged. Earlier
+no-manifest/no-delivery statements describe initial implementation. T08+, merge,
+release and service/worker/scheduler launch remain unauthorized. Revalidate static
+tests, Markdown, links and scope before publishing.
