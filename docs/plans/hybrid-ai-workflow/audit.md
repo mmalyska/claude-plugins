@@ -565,3 +565,41 @@ To make later compatibility comparisons unambiguous, the digest below covers sor
 - Remaining findings F01–F20 are unchanged and deliberately unresolved by T01. No task scope or dependency adjustment is needed.
 - Changed paths for T01 are only this plan's `plan.md`, `tasks.md`, `audit.md`; no plugin, manifest or test was edited.
 - Next action: stop after T01. T02 (normative contract plus initial regression checks) needs a subsequent instruction; the subsequent user instruction authorizes commit/push/PR of these T01 documents only; merge and release remain unauthorized.
+
+## T02 contract implementation evidence
+
+T02 completed locally on `feat/hybrid-ai-workflow-contract`, in worktree `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-contract`, based on `ad2ec8c` (T01). The fetched `origin/main` remains `2194b9ad587963dd75a8d6b4fa320b963ee88f9a`; T01 PR #9 is not yet included there. A separate worktree preserves its branch and PR unchanged. Execution remains DEEP + SOLO with no subagent, second harness or orchestrator.
+
+### Changed paths and intent
+
+- `plugins/development-lifecycle/rules/common/workflow.md`: single packaged contract for stages, profiles, selection/defaults, actor topology/authority, worktree and safety, state/evidence, stage/delivery boundaries and loading/capability limits.
+- `plugins/development-lifecycle/skills/development-lifecycle-rules/SKILL.md`: read the contract first, then task-relevant rules; generic technique conflicts cannot override it or mandatory project policy.
+- `plugins/development-lifecycle/README.md`: linked full lifecycle, default and authorization summary; explicit incomplete-rollout notice for T03–T08.
+- `README.md`: linked existing lifecycle summary and default; normalized the touched table separator for Markdown lint.
+- `tests/test_workflow_contract.py`: document-structure and critical declaration checks, invalid sample coverage, existing rule index containment/reachability and README links. This is test-only Markdown inspection, not a resolver/workflow runtime.
+- `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: current status, actual evidence and next action; historical T01 identity snapshot is preserved.
+
+No manifest, native command/agent adapter, hook, existing stage skill body or sibling repository changed. Version changes belong to the later authorized implementation PR boundary. T02 creates no new Plan/Build skill or command. F01 is addressed in the README/contract only; existing stage diagrams and other F01–F20 consumers remain pending T03–T08, so no complete conformity claim is made.
+
+### Commands and results
+
+| Command / check | Exit | Evidence |
+| --- | --- | --- |
+| `python3 -B -m unittest discover -s tests -p test_workflow_contract.py -v` | 0 | 5 tests PASS; 12 malformed/missing-value samples and each of 9 missing sections are rejected |
+| `python3 -B -m unittest discover -s tests -p test_codex_manifests.py -v` | 0 | 3 tests PASS; identities, contained rule/skill references, native wrapper links and install instructions preserved |
+| Markdown lint on changed Markdown, with MD013 disabled for wide tables | 0 | Structural formatting PASS |
+| Local link/fragment inspection and `git diff --check` | 0 | No broken local targets or whitespace errors |
+| Separate local scope review | 0 | Five T02 implementation paths plus three evidence documents only; no manifest or hook edits; primary clean on main |
+
+Negative samples remove/reorder lifecycle stages, remove profile/topology defaults, replace SOLO with PARALLEL, remove a profile column/stage/topology row, empty a profile cell, weaken explicit actor authorization, remove the stage stop boundary or empty the document. Section-deletion samples check every required contract section. Tests validate shape and critical declarations, not natural-language policy obedience or an invented runtime implementation.
+
+### Separate local scenario walkthrough
+
+- Unqualified request: the default block supplies STANDARD and SOLO independently; current explicit user instructions and accepted same-task state take precedence. Unknown/conflicting input requires clarification before dependent action.
+- QUICK documentation typo: session goal/checklist, smallest edit, meaningful Markdown check, focused self-review, no-op Simplify, readiness only; the seven stages remain conceptually present without requiring TDD/full planning dossiers.
+- STANDARD bug fix: focused requirements and plan, implementation with relevant reproducer/project gates, full self-review, scoped simplification and readiness; no default dispatch.
+- DEEP + SOLO architecture work: durable tasks/decisions/rollback, layered checks and a separate deliberate local review pass. The contract explicitly prohibits using DEEP or tool availability as permission to add an actor.
+- Missing requested reviewer capability: disclose the limitation, no second CLI or fake REVIEW; SOLO fallback only when consistent with user intent.
+- Plan/task-only instruction: stop at that boundary; neither seven-stage wording nor readiness authorizes later tasks, commit/push/PR or runtime mutation.
+
+These are source-based walkthroughs by the same agent, not live model trials or independent review. Native discovery/validation and full unittest discovery remain NOT RUN under the no-other-harness constraint; scanners and guard retain the unchanged passing T01 baseline and were not rerun because no related files changed. Remaining uncertainty is model compliance and integration with the still-unmodified consumers. T03 is the next task and requires a new instruction; T02 commit/push/PR is now authorized by a subsequent instruction; merge remains unauthorized. The T02 PR targets `feat/hybrid-ai-workflow` while T01 PR #9 is pending, so its diff excludes T01; retarget to `main` after T01 merges.

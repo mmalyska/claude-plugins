@@ -35,9 +35,9 @@ See [shared workflow compatibility and maintenance](docs/codex.md) for differenc
 ## Plugins
 
 | Plugin | Description |
-|---|---|
+| --- | --- |
 | `git-workflows` | Worktree-first enforcement (ships a hook), PR creation, commit conventions |
-| `development-lifecycle` | Spec→Plan→Build→Test→Review→Simplify→Ship workflow |
+| `development-lifecycle` | [Spec→Plan→Build→Test→Review→Simplify→Ship](plugins/development-lifecycle/rules/common/workflow.md); STANDARD + SOLO by default |
 | `dotnet` | .NET/C# agents and coding rules |
 | `frontend` | React/Next.js and TypeScript rules |
 | `renovate` | Renovate config authoring skills |

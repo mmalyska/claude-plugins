@@ -5,7 +5,20 @@ for Claude Code and Codex. External workflow plugins are optional.
 
 ## Lifecycle
 
-`spec` → implementation and `test` → `review` → `simplify` → `ship`
+[Spec → Plan → Build → Test → Review → Simplify → Ship](rules/common/workflow.md)
+
+The [workflow contract](rules/common/workflow.md) defines independent execution
+profiles QUICK/STANDARD/DEEP and topologies SOLO/HANDOFF/PARALLEL/REVIEW. The
+default is STANDARD + SOLO. Other topologies require explicit user authorization;
+DEEP alone does not authorize delegation. Plan and Build are stages performed
+through existing procedures, not new command names. Ship assesses readiness and
+performs only authorized delivery actions.
+
+Load the contract through `development-lifecycle-rules`; rules are on demand,
+not automatic interception of every user request. This contract is the first
+implementation increment. Existing procedure diagrams, unconditional testing
+requirements, actor triggers and delivery defaults remain to be aligned in the
+planned T03–T08 tasks; full workflow conformance is not claimed yet.
 
 Claude's existing command entrypoints link to the shared skill procedures. In
 Codex invoke the same skill names, for example `$development-lifecycle:spec`, `$development-lifecycle:test fix: login bug`,
