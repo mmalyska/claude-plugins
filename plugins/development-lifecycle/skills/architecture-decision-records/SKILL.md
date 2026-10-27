@@ -17,6 +17,16 @@ Capture architectural decisions as they happen during coding sessions. Instead o
 - User asks "why did we choose X?" (read existing ADRs)
 - During planning phases when architectural trade-offs are discussed
 
+## Portable workflow notes
+
+For a bounded task decision, the optional [decision note](../../resources/workflow/decision.md)
+records context, alternatives, choice, consequences and a revisit condition.
+Use this existing ADR process for architectural decisions; link an existing ADR
+instead of copying it into multiple formats. Preserve existing project decision
+paths before the default `docs/adr/` structure below. Apply current explicit
+write authorization; reuse approval already covering the exact action rather
+than asking again. A proposed note does not grant implementation or runtime scope.
+
 ## ADR Format
 
 Use the lightweight ADR format proposed by Michael Nygard, adapted for AI-assisted development:

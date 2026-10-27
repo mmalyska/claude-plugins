@@ -8,12 +8,12 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: T01–T07 merged; T08 COMPLETE locally with native checks NOT RUN. T09–T11 NOT STARTED; no complete workflow conformance claim.
-- Current authority: T08 optional-provider, adapter documentation and maintainer-test changes with planned paired manifest versions, local verification in DEEP + SOLO. The subsequent user instruction authorizes T08 commit/push/PR; T09+, merge, deployment, subagent, second harness, service, scheduler and orchestrator launch remain unauthorized.
-- T08 baseline: `7298c93ecfd9642f0980afdc82dd5626072402b3` (`main` after merged T07 PR #15).
-- T08 branch/worktree: `fix/hybrid-ai-workflow-optional-providers`, `/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-optional-providers`.
+- Status: T01–T08 merged; T09 COMPLETE locally with native checks NOT RUN. T10–T11 NOT STARTED; no complete workflow conformance claim.
+- Current authority: T09 portable resources, existing skill/rule integration, maintainer tests and local evidence in DEEP + SOLO. The subsequent user instruction authorizes T09 commit/push/PR and planned paired manifest increments; T10+, merge, deployment, subagent, second harness, service, scheduler and orchestrator launch remain unauthorized.
+- T09 baseline: `187b745f5d6fa11709087b640aa5c30b36e3697f` (`main` after merged T08 PR #16).
+- T09 branch/worktree: `feat/hybrid-ai-workflow-artifacts`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-artifacts`.
 - Previous worktrees and historical evidence remain preserved. Primary stays clean on main.
-- Next action: publish T08 under the current PR instruction, then await explicit T09 instruction. Native installation/discovery and behavioral evidence still block final release acceptance.
+- Next action: publish T09 under the current PR instruction, then await explicit T10 instruction. Native installation/discovery, installed-resource consumption and behavioral evidence still block final release acceptance.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.

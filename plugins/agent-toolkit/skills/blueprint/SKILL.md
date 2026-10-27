@@ -57,6 +57,21 @@ not another engineering lifecycle.
    within accepted write scope; a Markdown state file is not automatic memory
    loading. Do not invent a new user-level memory location or background service.
 
+## Optional portable resources
+
+When lifecycle is installed, discover `development-lifecycle-rules` through the
+host's exposed skill inventory and follow its plugin-local links to plan, tasks,
+handoff and decision resources. Resolve the actual installed location; do not
+assume a repository path, host cache layout or cross-plugin relative link. Do not
+clone these resources into toolkit. If unavailable, use this skill's plain-plan
+field contract above; the optional provider is not a planning prerequisite.
+Record actor authorization scope, missing permissions and PASS/FAIL/NOT RUN/NOT
+APPLICABLE evidence with revision/tool/date. For an authorized cold transfer,
+include from/to (or unassigned), completed changes/files, decisions, risks and
+exact next step. A receiver verifies actual base/branch/worktree, ownership,
+current authority and stale evidence before dependent writes. Unassigned receivers
+and stale bases require reconciliation, not automatic dispatch or rebase.
+
 ## Isolation and missing tools
 
 Inspect existing isolation before writing a plan. Reuse a suitable linked worktree,

@@ -15,7 +15,7 @@ import tempfile
 import re
 import unittest
 
-from test_codex_manifests import frontmatter, links
+from test_codex_manifests import frontmatter, links, plugin_link_errors, markdown_anchors
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / 'plugins/development-lifecycle'
@@ -879,6 +879,204 @@ class OptionalProviderCompatibilityTest(unittest.TestCase):
                 method = getattr(native.HostDiscoveryTest, name)
                 self.assertTrue(method.__unittest_skip__)
                 self.assertIn('NOT RUN', method.__unittest_skip_why__)
+
+
+ARTIFACT_RESOURCES = PLUGIN / 'resources/workflow'
+ARTIFACT_SECTIONS = {
+    'plan': ('Resume state', 'Objective and non-goals', 'Architecture and decisions',
+             'Scope and ownership', 'Tasks and dependencies', 'Quality gates and evidence',
+             'Authorization and runtime impact', 'Rollout and rollback', 'Status and next action'),
+    'tasks': ('Task TNN — bounded outcome',),
+    'handoff': ('Transfer state', 'Completed changes and affected files', 'Decisions and context',
+                'Tests and results', 'Risks and missing permissions', 'Exact next step', 'Receiver preflight'),
+    'decision': ('Identity and status', 'Context', 'Options', 'Choice and rationale',
+                 'Consequences', 'Revisit condition'),
+}
+TASK_FIELDS = ('Status', 'Exact files', 'Intended change', 'Dependencies', 'Owner / integrator',
+               'Authority and missing permissions', 'Tests and checks', 'Expected result',
+               'Actual evidence', 'Completion criterion', 'Risks', 'Rollback', 'Next action')
+
+
+def artifact_shape_errors(kind, text):
+    """Test-only template schema checks, not a runtime plan parser."""
+    errors = {f'section:{name}' for name in ARTIFACT_SECTIONS[kind]
+              if not sections(text).get(name, '').strip()}
+    if kind in ('plan', 'handoff'):
+        keys = ('task', 'profile', 'topology', 'base_sha', 'branch', 'worktree', 'status')
+        keys += ('owner', 'integrator', 'next_action') if kind == 'plan' else ('from', 'to')
+        for key in keys:
+            if not re.search(rf'^{key}: \S.+$', text, re.MULTILINE):
+                errors.add(f'field:{key}')
+    if kind == 'tasks':
+        for field in TASK_FIELDS:
+            if f'- {field}: ' not in text:
+                errors.add(f'field:{field}')
+    return errors
+
+
+def cold_resume_fixture_errors(snapshot, current):
+    """S06/S13 static fixture assertions; never executes a next action or policy."""
+    errors = set()
+    for field in ('base_sha', 'branch', 'worktree'):
+        if snapshot[field] != current[field]:
+            errors.add(f'drift:{field}')
+    if snapshot['to'] == 'unassigned' or snapshot['to'] != current['actor']:
+        errors.add('receiver')
+    if snapshot['authority'] != current['authority']:
+        errors.add('authority')
+    if snapshot['missing_permissions']:
+        errors.add('missing-permission')
+    if any(gate['required'] and gate['result'] != 'PASS' for gate in snapshot['gates']):
+        errors.add('required-gate')
+    return errors
+
+
+class PortableArtifactTest(unittest.TestCase):
+    def test_resource_schema_and_missing_field_mutations(self):
+        self.assertEqual({p.stem for p in ARTIFACT_RESOURCES.glob('*.md')}, set(ARTIFACT_SECTIONS))
+        for kind, required in ARTIFACT_SECTIONS.items():
+            text = (ARTIFACT_RESOURCES / f'{kind}.md').read_text()
+            with self.subTest(kind=kind):
+                self.assertEqual(artifact_shape_errors(kind, text), set())
+                for heading in required:
+                    mutated = text.replace(f'## {heading}', '## Missing section', 1)
+                    self.assertIn(f'section:{heading}', artifact_shape_errors(kind, mutated))
+                if kind in ('plan', 'handoff'):
+                    keys = ('task', 'profile', 'topology', 'base_sha', 'branch', 'worktree', 'status')
+                    keys += ('owner', 'integrator', 'next_action') if kind == 'plan' else ('from', 'to')
+                    for key in keys:
+                        mutated = re.sub(rf'^{key}: .+\n', '', text, flags=re.MULTILINE)
+                        self.assertIn(f'field:{key}', artifact_shape_errors(kind, mutated))
+                if kind == 'tasks':
+                    for field in TASK_FIELDS:
+                        mutated = text.replace(f'- {field}: ', '- Missing: ', 1)
+                        self.assertIn(f'field:{field}', artifact_shape_errors(kind, mutated))
+
+    def test_resources_are_reachable_from_existing_entrypoints(self):
+        seeds = [CONTRACT, PLUGIN / 'skills/spec/SKILL.md', PLUGIN / 'skills/architect/SKILL.md',
+                 PLUGIN / 'skills/architecture-decision-records/SKILL.md']
+        for seed in seeds:
+            pending, visited = [seed.resolve()], set()
+            while pending:
+                document = pending.pop()
+                if document in visited:
+                    continue
+                visited.add(document)
+                self.assertEqual(plugin_link_errors(document, PLUGIN), [])
+                for relative in links(document.read_text()):
+                    if '://' not in relative:
+                        target = (document.parent / relative.split('#')[0]).resolve()
+                        if target.is_file() and target.suffix == '.md':
+                            pending.append(target)
+            self.assertTrue({p.resolve() for p in ARTIFACT_RESOURCES.glob('*.md')} <= visited, seed)
+
+    def test_resource_links_reject_missing_fragment_path_and_plugin_escape(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            plugin = root / 'plugin'
+            documents = plugin / 'resources/workflow'
+            documents.mkdir(parents=True)
+            target = documents / 'target.md'
+            target.write_text('# Target\n\n## Receiver preflight\n\n## Receiver preflight\n')
+            source = documents / 'source.md'
+            for relative, error in (('target.md#receiver-preflight', None),
+                                    ('target.md#receiver-preflight-1', None),
+                                    ('target.md#missing', 'missing-fragment'),
+                                    ('missing.md', 'missing-target'),
+                                    ('../../../outside.md', 'outside-plugin'),
+                                    ('../../../docs/plan.md', 'outside-plugin')):
+                source.write_text(f'[link]({relative})\n')
+                found = plugin_link_errors(source, plugin)
+                self.assertEqual([kind for kind, _ in found], [error] if error else [])
+            outside = root / 'outside.md'
+            outside.write_text('# Outside\n')
+            (documents / 'escape.md').symlink_to(outside)
+            source.write_text('[escape](escape.md)\n')
+            self.assertEqual(plugin_link_errors(source, plugin)[0][0], 'outside-plugin')
+            self.assertEqual(markdown_anchors('```md\n# Phantom\n```\n# Actual\n'), {'actual'})
+
+    def test_installed_resource_validation_without_launching_a_host(self):
+        from test_host_discovery import HostDiscoveryTest
+        check = HostDiscoveryTest('test_claude_accepts_marketplace_and_plugin_contents')
+        with tempfile.TemporaryDirectory() as temporary:
+            installed = Path(temporary) / 'development-lifecycle'
+            shutil.copytree(PLUGIN, installed)
+            expected = check.assert_installed_content('development-lifecycle', installed)
+            self.assertTrue(expected)
+            (installed / 'resources/workflow/handoff.md').unlink()
+            with self.assertRaises(AssertionError):
+                check.assert_installed_content('development-lifecycle', installed)
+        # This is a filesystem fixture only, never evidence of a native install.
+
+    def test_optional_blueprint_uses_discovery_without_copying_resources(self):
+        toolkit = ROOT / 'plugins/agent-toolkit'
+        text = (toolkit / 'skills/blueprint/SKILL.md').read_text()
+        for boundary in ('development-lifecycle-rules', 'actual installed location',
+                         'Do not\nclone', 'plain-plan', 'Unassigned receivers', 'NOT RUN'):
+            self.assertIn(boundary, text)
+        self.assertNotIn('../../resources/workflow/', text)
+        self.assertFalse((toolkit / 'resources/workflow').exists())
+
+    def test_templates_preserve_artifacts_and_do_not_grant_authority(self):
+        for kind in ('plan', 'tasks', 'handoff'):
+            text = (ARTIFACT_RESOURCES / f'{kind}.md').read_text()
+            for declaration in ('existing project directories and formats', 'Superpowers/PRP',
+                                'QUICK may', 'DEEP multi-session', 'PASS', 'NOT RUN'):
+                self.assertIn(declaration, text)
+        plan = (ARTIFACT_RESOURCES / 'plan.md').read_text()
+        self.assertIn('not a new grant', plan)
+        self.assertIn('STANDARD + SOLO', plan)
+        handoff = (ARTIFACT_RESOURCES / 'handoff.md').read_text()
+        self.assertIn('to: unassigned', handoff)
+        self.assertIn('snapshot grants no permission', handoff)
+        self.assertIn('no dispatch follows', handoff)
+        adr = (PLUGIN / 'skills/architecture-decision-records/SKILL.md').read_text()
+        self.assertIn('reuse approval already covering the exact action', adr)
+
+    def test_cold_resume_s06_stale_base_receiver_authority_and_not_run(self):
+        snapshot = {'base_sha': 'a' * 40, 'branch': 'feat/example', 'worktree': '/tmp/example',
+                    'to': 'authorized-receiver', 'authority': 'bounded-read-only-review',
+                    'missing_permissions': [], 'gates': [{'required': True, 'result': 'PASS'}]}
+        current = {**snapshot, 'actor': 'authorized-receiver'}
+        self.assertEqual(cold_resume_fixture_errors(snapshot, current), set())
+        for field, replacement in (('base_sha', 'b' * 40), ('branch', 'main'),
+                                   ('worktree', '/tmp/other')):
+            self.assertIn(f'drift:{field}', cold_resume_fixture_errors(snapshot, {**current, field: replacement}))
+        self.assertIn('receiver', cold_resume_fixture_errors({**snapshot, 'to': 'unassigned'}, current))
+        self.assertIn('authority', cold_resume_fixture_errors(snapshot, {**current, 'authority': 'revoked'}))
+        self.assertIn('missing-permission', cold_resume_fixture_errors(
+            {**snapshot, 'missing_permissions': ['delivery']}, current))
+        for result in ('NOT RUN', 'FAIL', 'NOT APPLICABLE'):
+            self.assertIn('required-gate', cold_resume_fixture_errors(
+                {**snapshot, 'gates': [{'required': True, 'result': result}]}, current))
+        # Simulated records only; real actor behavior remains a release gate.
+
+    def test_s13_cold_snapshot_roundtrip_preserves_established_paths(self):
+        template = (ARTIFACT_RESOURCES / 'handoff.md').read_text()
+        for folder in ('.plans/established', '.archive/.plans/old',
+                       'docs/superpowers/plans', '.claude/prp-plans'):
+            # Render a cold snapshot; source plan format is not transformed.
+            snapshot = template.replace('<id/slug>', 'T13').replace('<verified full SHA>', 'a' * 40)
+            snapshot = snapshot.replace('<actual branch>', 'feat/example')
+            snapshot = snapshot.replace('<absolute verified path>', '/tmp/isolated')
+            snapshot = snapshot.replace('to: unassigned', 'to: authorized-receiver')
+            snapshot = snapshot.replace('topology: solo', 'topology: handoff')
+            snapshot = snapshot.replace('profile: standard', 'profile: deep')
+            snapshot = snapshot.replace('(plan.md)', f'({folder}/plan.md)')
+            snapshot = snapshot.replace('(tasks.md)', f'({folder}/tasks.md)')
+            with tempfile.TemporaryDirectory() as temporary:
+                handoff = Path(temporary) / 'handoff.md'
+                handoff.write_text(snapshot)
+                resumed = handoff.read_text()
+            fields = dict(re.findall(r'^(\w+): (.+)$', resumed, flags=re.MULTILINE))
+            self.assertEqual(fields['base_sha'], 'a' * 40)
+            self.assertEqual(fields['worktree'], '/tmp/isolated')
+            self.assertEqual(fields['to'], 'authorized-receiver')
+            self.assertEqual((fields['profile'], fields['topology']), ('deep', 'handoff'))
+            self.assertIn(f'{folder}/plan.md', resumed)
+            self.assertIn(f'{folder}/tasks.md', resumed)
+            self.assertIn('NOT RUN', resumed)
+            self.assertEqual(artifact_shape_errors('handoff', resumed), set())
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import re
+from urllib.parse import unquote, urlsplit
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -147,6 +148,49 @@ def links(text):
     return re.findall(r'\]\(([^)\n]+)\)', '\n'.join(lines))
 
 
+def markdown_anchors(text):
+    """GitHub-style heading fragments, ignoring fenced examples."""
+    anchors, counts = set(), {}
+    fence = None
+    for line in text.splitlines():
+        match = re.match(r'^\s*(`{3,}|~{3,})', line)
+        if match:
+            marker = match[1]
+            if fence is None:
+                fence = marker
+            elif marker[0] == fence[0] and len(marker) >= len(fence):
+                fence = None
+            continue
+        if fence is not None:
+            continue
+        heading = re.match(r'^#{1,6}\s+(.+?)\s*#*$', line)
+        if heading:
+            slug = re.sub(r'[^\w\- ]', '', heading[1].lower()).replace(' ', '-')
+            number = counts.get(slug, 0)
+            counts[slug] = number + 1
+            anchors.add(f'{slug}-{number}' if number else slug)
+    return anchors
+
+
+def plugin_link_errors(document, plugin):
+    """Resolve local resource links/fragments within an installed plugin root."""
+    errors = []
+    for raw in links(document.read_text()):
+        relative = raw.strip('<>')
+        parsed = urlsplit(relative)
+        if parsed.scheme or parsed.netloc:
+            continue
+        target = (document.parent / unquote(parsed.path)).resolve() if parsed.path else document.resolve()
+        if not target.is_relative_to(plugin.resolve()):
+            errors.append(('outside-plugin', raw))
+        elif not target.is_file():
+            errors.append(('missing-target', raw))
+        elif parsed.fragment and (target.suffix != '.md' or
+                                  unquote(parsed.fragment) not in markdown_anchors(target.read_text())):
+            errors.append(('missing-fragment', raw))
+    return errors
+
+
 def hard_workflow_provider(manifest):
     """Inspect declared dependencies only, not optional prose/keywords/history."""
     return bool(re.search(r'(?i)superpowers', json.dumps(manifest.get('dependencies', []))))
@@ -192,16 +236,15 @@ class SharedPluginTest(unittest.TestCase):
             documents = list(plugin.glob('skills/**/*.md'))
             documents += list(plugin.glob('commands/*.md')) + list(plugin.glob('agents/*.md'))
             documents += list(plugin.glob('rules/**/*.md'))
+            documents += list(plugin.glob('resources/**/*.md'))
             for document in documents:
+                with self.subTest(document=document):
+                    self.assertEqual(plugin_link_errors(document, plugin), [])
                 for relative in links(document.read_text()):
-                    relative = relative.strip('<>')
-                    if relative.startswith(('#', '/', 'mailto:')) or '://' in relative:
-                        continue
-                    target = (document.parent / relative.split('#')[0]).resolve()
-                    with self.subTest(source=document, link=relative):
-                        self.assertTrue(target.is_relative_to(resolved))
-                        self.assertTrue(target.is_file(), target)
-                    referenced.add(target)
+                    parsed = urlsplit(relative.strip('<>'))
+                    if not parsed.scheme and not parsed.netloc:
+                        referenced.add((document.parent / unquote(parsed.path)).resolve()
+                                       if parsed.path else document.resolve())
             for entrypoint in list(plugin.glob('commands/*.md')) + list(plugin.glob('agents/*.md')):
                 expected = plugin / 'skills' / entrypoint.stem / 'SKILL.md'
                 self.assertIn(expected.resolve(), referenced)

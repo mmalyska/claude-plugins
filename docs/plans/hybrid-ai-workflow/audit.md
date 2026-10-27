@@ -1251,3 +1251,107 @@ no-delivery statements describe the initial local implementation boundary. Paire
 versions are already 1.2.4 for lifecycle and 1.3.3 for git-workflows; no additional
 version increment is needed. Native checks stay NOT RUN; T09+, merge, release and
 other harness execution remain outside this instruction.
+
+## T09 portable artifact resources evidence
+
+T08 PR #16 is merged. Primary was clean on main and updated using fast-forward
+only to `187b745f5d6fa11709087b640aa5c30b36e3697f`. T09 uses branch
+`feat/hybrid-ai-workflow-artifacts` and verified linked worktree
+`/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow-artifacts`.
+Owner/integrator is this session in DEEP + SOLO. No other actor, harness, model
+turn, scheduler, service or orchestrator was launched. Existing worktrees remain.
+
+### Exact T09 scope and behavior
+
+- Created `plugins/development-lifecycle/resources/workflow/plan.md`: goal/non-goals,
+  acceptance, normalized profile/topology, owner/integrator, base/branch/worktree,
+  design/decisions, file ownership, tasks/DAG, evidence/gates, authority/runtime,
+  rollout/rollback, status and exact next action.
+- Created `plugins/development-lifecycle/resources/workflow/tasks.md`: exact files,
+  change, dependencies, owner, permissions, tests/expected/actual results, done,
+  risks, rollback and next step. Required unrun gates stay visible and blocking.
+- Created `plugins/development-lifecycle/resources/workflow/handoff.md`: all spec
+  §11.2 metadata plus changes/files/decisions/evidence/risks/missing permissions/
+  next action and receiver preflight. Default receiver is unassigned and topology
+  stays SOLO absent actual transfer authorization. Snapshot text grants no scope.
+- Created `plugins/development-lifecycle/resources/workflow/decision.md`: small
+  optional context/options/choice/consequences/revisit note linked to the existing
+  ADR process. No new skill, dispatcher, parser or lifecycle was introduced.
+- Updated `plugins/development-lifecycle/skills/spec/SKILL.md`,
+  `plugins/development-lifecycle/skills/architect/SKILL.md`,
+  `plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md` and
+  `plugins/development-lifecycle/rules/common/workflow.md`: local reachability,
+  existing location/format precedence, QUICK session-only option and DEEP durable
+  multi-session state. ADR approval already covering the action is reused;
+  no existing ADR or historical format is rewritten. Handoffs belong in an active
+  plan folder, with `.ai/handoffs/` only as fallback without an active plan.
+- Updated `plugins/agent-toolkit/skills/blueprint/SKILL.md`: discover optional
+  `development-lifecycle-rules` and installed local resources using actual exposed
+  capability. No cross-plugin link/cache assumption/template copy. Absent provider
+  retains the existing plain-plan field contract and safe SOLO behavior.
+- Updated `tests/test_codex_manifests.py`: scan resources and their outgoing links,
+  resolve local fragments (including duplicate headings), reject missing paths,
+  fragments and root escapes. Existing catalog/identity/version tests stay active.
+- Updated `tests/test_host_discovery.py`: prepared native installed-resource set,
+  byte equality and plugin-contained link/fragment checks, retaining explicit
+  opt-in and all three native skip gates. No native test was executed.
+- Updated `tests/test_workflow_contract.py`: eight static/fixture tests for required
+  fields and destructive mutations, existing-entrypoint graph reachability,
+  invalid fragment/path/symlink escapes, copied installed-content completeness,
+  optional provider/no copies, authority/defaults and S06/S13 cold snapshots.
+- Updated `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: current state and
+  this evidence, without rewriting prior baseline records.
+
+The resource copy fixture directly exercises the shared native-content assertion
+without starting a host; removing the copied handoff fails it. This is filesystem
+fixture evidence, not proof of a CLI install. Cold-resume fixtures reject stale
+base/branch/worktree, unassigned/wrong receivers, changed/revoked authority, missing
+permissions and required NOT RUN/FAIL gates. S13 renders and reads snapshot fields
+with established `.plans`, archived plans, Superpowers and PRP path references;
+it proves representation/field preservation only, not autonomous model behavior.
+No existing project artifact is migrated, and QUICK gets no mandatory new file.
+
+### T09 verification and remaining gates
+
+| Check | Result |
+| --- | --- |
+| Pre-edit baseline with `WORKFLOW_NATIVE_TESTS=0` | 51 PASS; 3 SKIPPED / NOT RUN |
+| Final workflow contract tests | 51 PASS, including eight new T09 tests |
+| Manifest/source discovery tests | 6 PASS, frozen 12/70/23 identities intact |
+| Rule scanner tests | 2 PASS |
+| Native host tests with opt-in disabled | 3 SKIPPED / NOT RUN; zero host subprocesses |
+| New resources and other changed Markdown lint, MD013 disabled | PASS |
+| Existing ADR skill lint compared to base | 13 inherited findings; zero new findings |
+| Local links/fragments, exact task scope, primary state and whitespace | PASS |
+
+Static suite command: `WORKFLOW_NATIVE_TESTS=0 python3 -B -m unittest discover -s tests`.
+Markdown lint uses the already installed markdownlint-cli; no tool installation.
+The ADR's inherited formatting is retained rather than bundled with this task.
+A separate local review checked reachability, field coverage, authorization drift,
+provider absence, backwards-compatible paths and the native-evidence boundary.
+
+No manifest, native wrapper, hook, marketplace, sibling repository or historical
+plan changed. Lifecycle/toolkit paired patch increments belong to the later
+explicitly authorized delivery boundary; no extra version bump is made locally.
+Hook Bash evidence remains historical because hook code is untouched. Real native
+installation/discovery, installed-resource access by each host, S06/S13 live
+behavior and other final acceptance gates remain NOT RUN, blocking release claims.
+No full workflow conformance is claimed.
+
+### Rollback and next action
+
+Revert these four resources, referring guidance and test changes together; rerun
+static and authorized native checks. Preserve all user plans/handoffs/decisions
+and existing host configuration. No runtime operation occurred or is reversed by
+such a revert. T09 is complete locally and uncommitted with native limitations;
+await explicit delivery or T10 instruction. Do not start T10/T11, commit/push/PR,
+merge or release under this bounded T09 implementation instruction.
+
+### T09 PR preparation update
+
+The subsequent user instruction authorizes T09 commit/push/PR to main and the
+planned patch increments for changed plugin packages: lifecycle 1.2.5 and toolkit
+1.1.3, aligned across Claude and Codex manifests. Earlier no-manifest/no-delivery
+statements describe initial local implementation. Revalidated static checks do
+not replace native evidence: all three native tests remain NOT RUN. T10+, merge,
+release and additional harness execution are outside this delivery instruction.
