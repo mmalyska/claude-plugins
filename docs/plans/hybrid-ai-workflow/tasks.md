@@ -1,6 +1,6 @@
 # Implementation tasks — Hybrid AI Engineering Workflow
 
-Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01–T04 merged; T05 COMPLETE locally on `fix/hybrid-ai-workflow-isolation` at `d39e0b0e477b50c6b8246d8a238cc3714e955809`; T06–T11 NOT STARTED. The latest PR instruction authorizes T05 commit/push/PR and the planned paired git-workflows version increment only; later tasks and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
+Read [plan.md](plan.md), [audit.md](audit.md), and [the specification](../../workflow/specification.md) first. Base: `b43bedd9347fe8b9806895a5e35416beb3250dae`. These are proposed future tasks, not authorization to execute Build or Ship. Current status: T01–T05 merged; T06 COMPLETE locally on `fix/hybrid-ai-workflow-delivery` at `e3857a62ffc1f8ddbcf53dd8123c707381ab7bb2`; T07–T11 NOT STARTED. The latest PR instruction authorizes T06 commit/push/PR and planned paired version increments only; later tasks and merge remain unauthorized. Execution stays DEEP + SOLO unless the user explicitly changes it; no other harness/subagent/orchestrator may be started under the current instruction.
 
 All file paths are repository-relative. A task's listed files are its allowed proposed scope; do not add unrelated cleanup. Every task must record changed paths, exact commands, exit status, results/limitations, unresolved findings, and next action before checking its box. Native discovery/behavioral trials below are future maintainer gates and require a session in which launching the target CLI is permitted. Static instruction review is not a live model trial.
 
@@ -176,7 +176,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T06 — Separate readiness, delivery and runtime mutation
 
-- [ ] Complete T06.
+- [x] Complete T06.
 
 **PR:** 2. **Dependencies:** T05.
 
@@ -196,6 +196,8 @@ The full suite validates all marketplace plugins through the existing discovery 
 **Tests/expected:** S09/S15 static/manual decision table includes readiness-only, commit-only, create-PR, review-without-publish, explicit publication, refused merge, unauthorized destructive action and preauthorized delivery. Capture zero forbidden actions; do not actually push or mutate runtime in fixture scenarios. Current diff, docs-only gate and NOT RUN test behavior are represented.
 
 **Done:** identical authorization boundaries from every delivery entrypoint, with no surprise commits or repeated permission request for the same authorized action.
+
+**Evidence:** [T06 delivery boundaries](audit.md#t06-delivery-boundary-evidence). 33 workflow tests (7 new), 3 manifest/reference and 2 scanner tests PASS. S09/S15 static decision rows, boundary mutations and same-agent walkthroughs cover readiness, commit, PR, review publication, denied merge/destructive scope and existing authority without external side effects. Markdown/links/scope PASS; no hook changes. The subsequent PR instruction authorizes T06 delivery and paired version increments only. Stop before T07.
 
 **Rollback:** revert complete delivery boundary change with tests; preserve existing artifacts and worktrees.
 
@@ -343,7 +345,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 ## Completion and current execution record
 
 The original Plan stage created only plan/tasks/audit documents in SOLO. Subsequent
-T01–T04 are merged; T05 is locally complete and uncommitted. Primary is clean on
-main. The next implementation task is T06 and requires a subsequent instruction.
-T05 commit/push/PR is now authorized; other worktrees and user state remain
+T01–T05 are merged; T06 is locally complete and uncommitted. Primary is clean on
+main. The next implementation task is T07 and requires a subsequent instruction.
+T06 commit/push/PR is now authorized; other worktrees and user state remain
 preserved.

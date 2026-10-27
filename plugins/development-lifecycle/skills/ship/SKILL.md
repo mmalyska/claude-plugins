@@ -3,225 +3,105 @@ name: ship
 description: "Review delivery readiness, verify checks, and perform the authorized commit, PR, or branch-finishing workflow"
 ---
 
-Use the current user request as input. In a Claude command invocation, `$ARGUMENTS` carries that input; in Codex, use the text accompanying the skill.
-Command-style examples below name workflows: in Codex select the corresponding
-installed skill (`$plugin:skill`); do not execute slash commands in a shell.
+# Ship — Readiness and Authorized Delivery
 
-# /ship - Delivery Gate
+Read [the workflow contract](../../rules/common/workflow.md) first. Ship is the
+final stage of the single lifecycle, not an automatic commit/push/PR pipeline.
+Default STANDARD + SOLO; QUICK/DEEP change depth, not actors or permissions.
+Use the current request as input (`$ARGUMENTS` in a Claude command, accompanying
+skill text in Codex). Existing names remain; do not execute slash names in a shell.
 
-The final stage of the development lifecycle. Ship runs a pre-flight check, dispatches three parallel review passes (code quality, security, test completeness), produces a GO/NO-GO decision, and if approved, commits changes, pushes to a branch, and creates a PR.
+## Step 1: Establish action and scope
 
----
+Read the current request, accepted task state and applicable project policy.
+List the exact authorized actions and exclusions before any side effect.
+Readiness alone authorizes no commit, push, PR, review publication, merge or runtime mutation.
+A generic “ship” or GO recommendation is readiness-only unless the request or
+existing accepted delivery scope names an action. Reuse explicit authorization
+for that action and scope; do not ask again for an already authorized action.
+If an action is missing authority, finish the reviewable readiness result first,
+then request only the missing decision. No compulsory Proceed/Override menu.
 
-## Phase 1 — PRE-FLIGHT
-
-### Show Current Status
-
-Run `git status` to display staged, unstaged, and untracked files:
-
-```bash
-git status
-```
-
-Output:
-
-> Current branch status:
-> [output of git status]
-
-### Run Full Test Suite
-
-Detect the project's test command:
-
-1. If `package.json` exists: look for `test`, `vitest`, or `jest` in scripts
-2. If `pytest.ini`, `setup.cfg`, or `pyproject.toml` exist: use `pytest`
-3. If `go.mod` exists: use `go test ./...`
-4. If `Cargo.toml` exists: use `cargo test`
-5. If `Makefile` exists with test target: use `make test`
-
-If no test command detected, ask the user:
-
-> What command runs your tests in this project?
->
-> Examples: `npm test`, `pytest`, `go test ./...`, `cargo test`
-
-Run the full test suite:
+Inspect branch/isolation, unstaged/staged changes and task-relevant untracked
+files. Honor an explicit target first; when clean use the actual task-base diff,
+not an unrelated last commit. Review current changes without staging them:
 
 ```bash
-{test_command}
+git status --short
+git diff --name-only
+git diff --cached --name-only
+git ls-files --others --exclude-standard
 ```
 
-### Gate on Test Failures
+Preserve unrelated work, including staged changes. Do not automatically include untracked files.
+Readiness does not require staging or committing. If task boundaries or staged
+content are ambiguous, report them before dependent delivery operations.
 
-If any tests fail, **STOP immediately**:
+## Step 2: Verify evidence appropriate to the change
 
-> Tests are failing. Fix them before shipping. Run `/test` to debug.
->
-> Failures:
-> {failure_output}
+Reuse valid Test/Review evidence for the same content, scope and configuration.
+New changes invalidate affected evidence; rerun those checks, not every check by
+ritual. QUICK uses the smallest meaningful check, STANDARD appropriate automated
+checks/project gates, and DEEP layered risk-based evidence plus rollout/rollback.
+Docs-only work may use Markdown/link checks; do not invent a code-test requirement.
+Mandatory project security/coverage gates still apply in every profile.
 
-Do not proceed to Phase 2.
+Discover installed project commands from instructions, tests and configuration,
+including a repository unittest suite (`python3 -B -m unittest discover -s tests`).
+Inspect runner side effects before running: some discovery tests launch other
+harnesses. Run only permitted applicable checks, no implicit installs or forbidden
+CLI/service launches. A required but unavailable check is NOT RUN and limits
+readiness; an unrelated check is NOT APPLICABLE with a reason. Record commands,
+exit codes and actual results; never fabricate a green suite or scanner outcome.
 
-### Confirm All Changes Are Ready
+## Step 3: Review and readiness decision
 
-**GATE**: Ask the user to confirm:
+Use [review](../review/SKILL.md), [code-review](../code-review/SKILL.md) or the local
+review role as appropriate. Assess correctness/readability, relevant security and
+test completeness at the selected depth; reuse valid prior review evidence.
+SOLO performs review passes sequentially in the current session. A separate
+reviewer or parallel passes require explicit authorized topology and exposed
+capability; do not launch another agent merely because Ship was selected.
+Disclose when review is not independent. Review changes need fix scope and reruns
+of affected checks; a no-op Simplify assessment is valid.
 
-> Are all changes committed or staged? Show what will be shipped:
->
-> - Check `git status` above
-> - Staged changes will be committed in Phase 4
-> - Untracked files will be included if you confirm
->
-> Proceed to review? (yes/no)
+GO means required gates for the assessed scope passed and no blocking findings
+remain; it grants no additional authority. NO-GO identifies failures, unrun
+required checks and missing decisions. No blanket override may bypass mandatory safety or project gates.
+A justified finding reassessment needs evidence; calling it an override is not
+permission to ship a vulnerability or waive required verification.
 
-Wait for explicit confirmation.
+Report scope/content revision, selected profile/topology, evidence reused/rerun,
+readiness, impact/rollback, outstanding limitations and the exact action set.
+When no action is authorized, stop with that report and preserve the worktree.
 
----
+## Step 4: Execute only the authorized action
 
-## Phase 2 — PARALLEL REVIEW
+Keep commit, push, PR creation, external review publication, local/remote merge,
+runtime mutation and discard distinct. A PR request may cover its necessary
+branch push; a task commit is allowed only when the request/accepted delivery
+scope includes committing those changes. Explicit exclusions always constrain it.
+Commit-only does not authorize push/PR. Creating or approving a PR does not
+authorize merge. Review-only does not authorize publication.
 
-Dispatch three independent review passes. Each review focuses on a specific dimension and reports only [CRITICAL] and [HIGH] issues.
+Use the existing commit/pr/finishing procedures when installed, otherwise follow
+these same scoped checks with actual host tools. No hard provider dependency or
+new skill is required. Stage only task scope and protect the default branch;
+never push directly to main/default as part of ordinary task delivery. Do not
+silently rebase or force-push after divergence; those need explicit history-change
+authority. Preserve prior staged/untracked content and external worktree ownership.
+Cleanup/discard requires its own exact target authority and provenance.
 
-Use available authorized delegation for independent reviews. If delegation is
-unavailable, perform the three passes sequentially and disclose that the review
-was not independent. Collect all findings before Phase 3.
+A GitOps/HCP auto-apply merge is runtime mutation and needs separate fresh explicit authorization with impact and rollback.
+The same applies to destructive actions and credential rotation. Plan approval,
+GO, commit/PR authority or delegation permission is not runtime consent. Prepare
+all reviewable work before asking for missing authority, then stop until it arrives.
 
-### Review 1 — Code Quality and Correctness
+## Step 5: Verify and report
 
-Run the code quality review:
-
-- Re-run the **Correctness** axis from `/review`
-- Re-run the **Readability** axis from `/review`
-- Focus on logic bugs, type mismatches, null handling, variable naming, and function length
-
-Output format:
-
-```md
-## Review 1 — Code Quality
-
-### Correctness
-[findings or "No issues found"]
-
-### Readability
-[findings or "No issues found"]
-
-### Severity: [GO / NO-GO]
-```
-
-If any [CRITICAL] or [HIGH] findings exist, mark this review as NO-GO.
-
-### Review 2 — Security Audit
-
-Run a deep security review:
-
-- Re-run the **Security** axis from `/review` with extra depth
-- Check for: hardcoded secrets (API keys, passwords, tokens), injection vectors, auth bypasses, CSRF/SSRF risks, path traversal, XSS vulnerabilities
-- Additionally, run `git diff HEAD~1..HEAD` (or `git diff --cached` if no recent commit) and search for patterns like `password`, `secret`, `api_key`, `token`, `credential`, `.env`:
-
-```bash
-git diff HEAD~1..HEAD 2>/dev/null | grep -iE '(password|secret|api_key|token|credential|\.env|key\s*=)' || true
-```
-
-Report only [CRITICAL] and [HIGH] issues.
-
-Output format:
-
-```md
-## Review 2 — Security Audit
-
-[findings or "No security issues found"]
-
-### Severity: [GO / NO-GO]
-```
-
-If any [CRITICAL] or [HIGH] findings exist, mark this review as NO-GO.
-
-### Review 3 — Test Completeness
-
-Verify test coverage:
-
-- Check that every public function/method in changed files has at least one test
-- Run the project's coverage tool if available:
-  - Node: `npm run coverage` or similar
-  - Python: `coverage run -m pytest && coverage report`
-  - Go: `go test -cover ./...`
-  - Rust: `cargo tarpaulin` or `cargo llvm-cov`
-- Confirm the project's established coverage target is met, if one exists
-- Report any untested public interfaces as [HIGH]
-
-Output format:
-
-```md
-## Review 3 — Test Completeness
-
-Coverage: [%] (target: project policy)
-
-[findings or "All public interfaces are tested"]
-
-### Severity: [GO / NO-GO]
-```
-
-If any [HIGH] findings exist (untested public interfaces) or coverage is below the project's established target, mark this review as NO-GO.
-
----
-
-## Phase 3 — GO/NO-GO DECISION
-
-Synthesize all three reviews into a decision summary:
-
-```md
-## Ship Readiness
-
-### Review 1 — Code Quality: [GO / NO-GO]
-[summary or "No blocking issues"]
-
-### Review 2 — Security: [GO / NO-GO]
-[summary or "No blocking issues"]
-
-### Review 3 — Tests: [GO / NO-GO]
-[summary or "All public interfaces tested, project coverage target met"]
-
-### Overall Decision: [GO / NO-GO]
-```
-
-**Rules for Overall Decision:**
-
-- If ANY review is NO-GO: overall decision is **NO-GO**
-- If all reviews are GO: overall decision is **GO**
-
-### Decision Gate
-
-Present the decision and wait for the user's choice:
-
-> **Decision: [GO / NO-GO]**
->
-> Choose one:
->
-> - **Proceed** → Commit, push, and create PR (if decision is GO)
-> - **Fix and re-ship** → Address the findings, run `/test` and `/review`, then `/ship` again
-> - **Override** → Ship anyway, bypassing the NO-GO decision (not recommended)
-
-**GATE**: Confirm any delivery action not already authorized by the user.
-Existing explicit authorization can satisfy the gate; do not ask again for the
-same action after preparing the reviewable result.
-
----
-
-## Phase 4 — SHIP (if GO or Override)
-
-If the user chooses **Proceed** (GO) or **Override** (NO-GO), use the installed
-`finishing-a-development-branch` skill when available. Otherwise verify tests,
-inspect the branch and diff, and execute only the selected authorized delivery
-action: commit/push/PR, local merge, or keep the branch. Do not discard work or
-remove worktrees without explicit authorization.
-
-That skill handles: verify tests → detect environment → present merge/PR/keep/discard options → execute → clean up worktree.
-
----
-
-## Lifecycle Position
-
-```text
-/spec → implementation → /ship
-```
-
-`/ship` is the final stage. After shipping, run `/spec` to start the next feature.
+Read back the actual resulting SHA/branch/PR/review identifier when an action was
+performed, and compare it with the approved target and content. Report unexpected
+results and stop dependent actions. Do not claim an external operation from a
+prepared command, and do not mutate primary or remove a worktree to tidy status.
+Preserve artifacts for resumption. Plugin/document rollback cannot undo runtime
+changes; any runtime rollback requires its own scope and authorization.

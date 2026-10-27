@@ -8,12 +8,12 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: T01–T04 merged; T05 COMPLETE locally. T06–T11 NOT STARTED; no complete workflow conformance claim.
-- Current authority: T05 worktree procedure implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes T05 commit/push/PR and the planned paired git-workflows version increment; T06+, merge, deployment, subagent, second harness and orchestrator remain unauthorized. Earlier delivery authority applied only to already-merged PRs.
-- T05 baseline: `d39e0b0e477b50c6b8246d8a238cc3714e955809` (`main` after merged T04 PR #12).
-- T05 branch/worktree: `fix/hybrid-ai-workflow-isolation`, `/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-isolation`.
+- Status: T01–T05 merged; T06 COMPLETE locally. T07–T11 NOT STARTED; no complete workflow conformance claim.
+- Current authority: T06 delivery-boundary implementation and local verification in DEEP + SOLO only. The subsequent PR instruction authorizes T06 commit/push/PR and planned paired version increments; T07+, merge, deployment, subagent, second harness and orchestrator remain unauthorized. Earlier delivery authority applied only to already-merged PRs.
+- T06 baseline: `e3857a62ffc1f8ddbcf53dd8123c707381ab7bb2` (`main` after merged T05 PR #13).
+- T06 branch/worktree: `fix/hybrid-ai-workflow-delivery`, `/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-delivery`.
 - Previous worktrees and inventory snapshots remain preserved; earlier evidence describes historical baselines.
-- Next action: publish T05 under the current PR instruction, then await T06 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T05.
+- Next action: publish T06 under the current PR instruction, then await T07 implementation instruction in [tasks.md](tasks.md); neither is implicit in completing T06.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.
@@ -268,3 +268,20 @@ scope/whitespace checks pass. Bash 3.2/macOS and native/model trials remain NOT 
 and S08/S12/S16 local walkthroughs. No new skill, hook implementation or sibling-repository change. At the authorized
 PR boundary, only git-workflows version fields are incremented to 1.3.1 in both
 host manifests. Publish T05 only; stop before T06.
+
+## T06 completion update
+
+Ship now defaults to readiness, reuses valid Test/Review evidence and runs local
+sequential review under SOLO. Commit, push, PR, external review, merge, runtime and
+discard are distinct scopes. Commit selection excludes unrelated index/untracked
+content; PR divergence does not authorize automatic rebase/force-push. Prior
+specific authority is reused without another permission menu; no blanket override
+can waive mandatory gates. Runtime-triggering merge needs separate fresh impact/
+rollback permission. Safety-guard remains procedural. Seven added tests cover
+these declarations, negative mutations, git-local policy reachability and distinct
+action rows. Workflow 33/33, manifest/reference 3/3 and scanner 2/2 tests pass;
+Markdown (MD013 disabled), links and scope/whitespace checks pass. S09/S15 source
+walkthroughs are recorded in [T06 evidence](audit.md#t06-delivery-boundary-evidence),
+not claimed as live action trials. No runtime mutation, hook, native adapter, new skill or sibling-repository change.
+At the authorized PR boundary, only version fields in the three changed plugins
+are incremented in both host manifests. Publish T06 only; stop before T07.

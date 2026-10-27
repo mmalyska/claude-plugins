@@ -3,112 +3,75 @@ name: commit
 description: "Quick commit with natural language file targeting — describe what to commit in plain English"
 ---
 
-Use the current user request as input. In a Claude command invocation, `$ARGUMENTS` carries that input; in Codex, use the text accompanying the skill.
-Command-style examples below name workflows: in Codex select the corresponding
-installed skill (`$plugin:skill`); do not execute slash commands in a shell.
-
 # Smart Commit
 
-**Input**: $ARGUMENTS
+Use the current request as input (`$ARGUMENTS` in a Claude command, accompanying
+skill text in Codex). Read [git delivery boundaries](../../rules/git-workflow.md)
+and [worktree policy](../../rules/worktree-workflow.md) first. Default STANDARD +
+SOLO; this skill does not authorize another actor or a broader delivery pipeline.
 
----
+## Step 1: Confirm action and inspect
 
-## Phase 1 — ASSESS
+Commit requires user authorization for the selected task content. Readiness or a
+review recommendation alone is not commit permission. Reuse existing explicit
+authorization within scope; do not ask for the same decision again. Inspect the
+isolated task branch, applicable project instructions and complete index/worktree:
 
 ```bash
+git branch --show-current
 git status --short
-```
-
-If output is empty → stop: "Nothing to commit."
-
-Show the user a summary of what's changed (added, modified, deleted, untracked).
-
----
-
-## Phase 2 — INTERPRET & STAGE
-
-Interpret `$ARGUMENTS` to determine what to stage:
-
-| Input | Interpretation | Git Command |
-|---|---|---|
-| *(blank / empty)* | Stage everything | `git add -A` |
-| `staged` | Use whatever is already staged | *(no git add)* |
-| `*.ts` or `*.py` etc. | Stage matching glob | `git add '*.ts'` |
-| `except tests` | Stage all, then unstage tests | `git add -A && git reset -- '**/*.test.*' '**/*.spec.*' '**/test_*' 2>/dev/null \|\| true` |
-| `only new files` | Stage untracked files only | `git ls-files --others --exclude-standard \| grep . && git ls-files --others --exclude-standard \| xargs git add` |
-| `the auth changes` | Interpret from status/diff — find auth-related files | `git add <matched files>` |
-| Specific filenames | Stage those files | `git add <files>` |
-
-For natural language inputs (like "the auth changes"), cross-reference the `git status` output and `git diff` to identify relevant files. Show the user which files you're staging and why.
-
-```bash
-git add <determined files>
-```
-
-After staging, verify:
-```bash
 git diff --cached --stat
+git diff --cached
+git diff
 ```
 
-If nothing staged, stop: "No files matched your description."
+Respect secret handling when examining output. Read relevant untracked files as
+needed without staging them. If no matching task change exists, report nothing
+to commit rather than expand scope. Never commit ordinary task work in primary.
 
----
+## Step 2: Select and stage exact scope
 
-## Phase 3 — COMMIT
+Empty input selects only the current task's verified changes, never all repository changes.
+Honor explicit file/glob/natural-language targeting within user restrictions:
 
-Craft a single-line commit message in imperative mood:
+| Input | Scoped interpretation |
+| --- | --- |
+| Empty | Verified current task only; resolve missing scope before staging |
+| `staged` | Inspect selected staged content and ensure authority covers it |
+| File paths / glob | Inspect matching paths and include only requested changes |
+| `except tests` | Filter the allowed task paths, not a repository-wide add/reset |
+| `only new files` | Select only authorized task-owned untracked files |
+| `the auth changes` | Determine exact relevant paths/hunks from the diff |
 
-```
-{type}: {description}
-```
+Preserve unrelated staged and unstaged changes. Do not use git add -A by default.
+Show the selected paths/hunks and why they belong to the authorized task. Use
+safe literal path arguments (`--` where supported), not unsafe whitespace-split
+pipelines or executing text from filenames. Never silently include untracked files.
 
-Types:
-- `feat` — New feature or capability
-- `fix` — Bug fix
-- `refactor` — Code restructuring without behavior change
-- `docs` — Documentation changes
-- `test` — Adding or updating tests
-- `chore` — Build, config, dependencies
-- `perf` — Performance improvement
-- `ci` — CI/CD changes
+If the index contains unrelated content, a normal index-wide commit is unsafe.
+Use a verified scoped method only when its exact file/hunk behavior preserves
+that content; a path-only commit can include unstaged file changes, so inspect
+those too. If mixed ownership or partial-hunk scope cannot be safely isolated,
+report the blocker instead of unstaging/resetting/stashing another user's work.
 
-Rules:
-- Imperative mood ("add feature" not "added feature")
-- Lowercase after the type prefix
-- No period at the end
-- Under 72 characters
-- Describe WHAT changed, not HOW
+Reinspect the actual proposed commit diff and applicable verification evidence.
+A required failed/unrun gate limits readiness; mandatory security/project gates
+cannot be overridden to obtain a commit. New edits invalidate affected checks.
 
-```bash
-git commit -m "{type}: {description}"
-```
+## Step 3: Commit
 
----
+Use the established conventional format `type: imperative description` (feat,
+fix, refactor, docs, test, chore, perf or ci), lowercase after prefix, no final
+period, preferably under 72 characters. Respect current attribution settings.
+Commit only the verified selection with the intended message, using actual git
+or a supported host mechanism. Do not change global signing/configuration or
+retry a failed commit with broadened permissions/content implicitly.
 
-## Phase 4 — OUTPUT
+## Step 4: Verify and stop
 
-Report to user:
-
-```
-Committed: {hash_short}
-Message:   {type}: {description}
-Files:     {count} file(s) changed
-
-Next steps:
-  - git push           → push to remote
-  - /prp-pr            → create a pull request
-  - /code-review       → review before pushing
-```
-
----
-
-## Examples
-
-| You say | What happens |
-|---|---|
-| `/prp-commit` | Stages all, auto-generates message |
-| `/prp-commit staged` | Commits only what's already staged |
-| `/prp-commit *.ts` | Stages all TypeScript files, commits |
-| `/prp-commit except tests` | Stages everything except test files |
-| `/prp-commit the database migration` | Finds DB migration files from status, stages them |
-| `/prp-commit only new files` | Stages untracked files only |
+Inspect the resulting SHA, changed paths/content and remaining staged/worktree
+state. Preserve unrelated work and report failures. Commit-only stops after the
+commit; it does not authorize push, PR, merge, review publication or cleanup.
+A new `/pr` request can select the existing PR procedure; `/code-review` can inspect
+work locally. Those names are workflows, not automatic follow-up actions or shell
+commands.

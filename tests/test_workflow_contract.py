@@ -639,5 +639,100 @@ class WorktreeIsolationTest(unittest.TestCase):
             self.assertEqual(isolation_creation_errors(WORKTREE_CREATION.read_text()), set())
 
 
+DELIVERY_POLICIES = (
+    'plugins/development-lifecycle/skills/ship/SKILL.md',
+    'plugins/development-lifecycle/skills/code-review/SKILL.md',
+    'plugins/git-workflows/rules/git-workflow.md',
+    'plugins/agent-toolkit/skills/safety-guard/SKILL.md',
+)
+DELIVERY_BOUNDARIES = {
+    'readiness': 'Readiness alone authorizes no commit, push, PR, review publication, merge or runtime mutation.',
+    'required-gates': 'No blanket override may bypass mandatory safety or project gates.',
+    'runtime': 'A GitOps/HCP auto-apply merge is runtime mutation and needs separate fresh explicit authorization with impact and rollback.',
+}
+
+
+def delivery_policy_errors(document):
+    prose = active_prose(document)
+    return {code for code, declaration in DELIVERY_BOUNDARIES.items() if declaration not in prose}
+
+
+class DeliveryAuthorizationTest(unittest.TestCase):
+    def test_delivery_owners_preserve_readiness_project_and_runtime_boundaries(self):
+        for path in DELIVERY_POLICIES:
+            with self.subTest(path=path):
+                self.assertEqual(delivery_policy_errors((ROOT / path).read_text()), set())
+
+    def test_missing_action_gate_or_runtime_authority_is_rejected(self):
+        text = active_prose((GIT_PLUGIN / 'rules/git-workflow.md').read_text())
+        for code, declaration in DELIVERY_BOUNDARIES.items():
+            with self.subTest(boundary=code):
+                self.assertIn(declaration, text)
+                sample = text.replace(declaration, 'GO authorizes every delivery action.', 1)
+                self.assertIn(code, delivery_policy_errors(sample))
+
+    def test_commit_scope_preserves_unrelated_index_and_untracked_files(self):
+        text = active_prose((GIT_PLUGIN / 'skills/commit/SKILL.md').read_text())
+        for declaration in (
+            "Empty input selects only the current task's verified changes, never all repository changes.",
+            'Preserve unrelated staged and unstaged changes.',
+            'Do not use git add -A by default.',
+            'Never silently include untracked files.',
+            'Commit-only stops after the commit;',
+        ):
+            self.assertIn(declaration, text)
+        self.assertNotIn('Stage everything', text)
+
+    def test_pr_divergence_does_not_authorize_rebase_or_force_push(self):
+        text = active_prose((GIT_PLUGIN / 'skills/pr/SKILL.md').read_text())
+        for declaration in (
+            'Do not automatically rebase, reset, merge or force-push after divergence.',
+            'A request to create a PR authorizes that PR and its necessary task-branch push.',
+            'PR creation does not authorize merge, review publication, deployment or cleanup.',
+            'If the branch contains unrelated commits, report the scope problem before push or PR;',
+        ):
+            self.assertIn(declaration, text)
+        for name in ('commit', 'pr'):
+            self.assertNotRegex((GIT_PLUGIN / f'skills/{name}/SKILL.md').read_text(), r'/prp-(?:commit|pr)')
+
+    def test_git_entrypoints_reach_common_policy_without_cross_plugin_links(self):
+        policy = (GIT_PLUGIN / 'rules/git-workflow.md').resolve()
+        for name in ('commit', 'pr', 'finishing-a-development-branch'):
+            path = GIT_PLUGIN / f'skills/{name}/SKILL.md'
+            with self.subTest(entrypoint=name):
+                targets = [(path.parent / link.split('#')[0]).resolve()
+                           for link in links(path.read_text()) if '://' not in link]
+                self.assertIn(policy, targets)
+                self.assertTrue(all(target.is_relative_to(GIT_PLUGIN.resolve()) for target in targets))
+
+    def test_ship_reuses_evidence_and_defaults_to_local_sequential_review(self):
+        text = active_prose((PLUGIN / 'skills/ship/SKILL.md').read_text())
+        for declaration in (
+            'SOLO performs review passes sequentially in the current session.',
+            'New changes invalidate affected evidence;',
+            'do not ask again for an already authorized action.',
+            'including a repository unittest suite',
+            'Docs-only work may use Markdown/link checks;',
+        ):
+            self.assertIn(declaration, text)
+        self.assertNotIn('dispatches three parallel review passes', text)
+        review = (PLUGIN / 'skills/code-review/SKILL.md').read_text()
+        self.assertLess(review.index('Only publish when'), review.index('gh pr review'))
+        self.assertIn('--body-file', review)
+
+    def test_readiness_commit_pr_publication_and_merge_have_distinct_rows(self):
+        text = (GIT_PLUGIN / 'rules/git-workflow.md').read_text()
+        rows = table_rows(sections(text)['Action authorization'])[2:]
+        self.assertEqual(tuple(row[0] for row in rows),
+                         ('Readiness', 'Commit', 'Push', 'PR', 'Review publication',
+                          'Local/remote merge', 'Runtime/destructive mutation'))
+        self.assertTrue(all(len(row) == 3 and all(row) for row in rows))
+        self.assertIn('Push, PR', rows[1][2])
+        self.assertIn('necessary task-branch push', rows[3][1])
+        self.assertIn('merge', rows[3][2])
+        self.assertIn('merge', rows[4][2])
+        self.assertIn('Separate fresh permission', rows[6][1])
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -931,3 +931,109 @@ change in its Claude/Codex manifests; names, discovery paths, hooks and dependen
 remain unchanged. Earlier no-manifest/no-delivery statements describe initial
 implementation. T06+, merge and release remain unauthorized. Revalidate tests,
 links, Markdown and scope before publishing.
+
+## T06 delivery boundary evidence
+
+T06 completed locally in DEEP + SOLO on `fix/hybrid-ai-workflow-delivery`, worktree
+`/workspaces/claude-plugins/.worktrees/fix/hybrid-ai-workflow-delivery`, based on
+`e3857a62ffc1f8ddbcf53dd8123c707381ab7bb2` (merged T05 PR #13). Primary was clean and updated fast-forward before
+worktree creation. No subagent, second harness, orchestrator, real commit/push/PR,
+external review publication, merge, cleanup or runtime mutation was performed as
+part of T06 verification. Disposable git-init/hook fixtures remain local tests.
+
+### Exact T06 implementation paths
+
+- `plugins/development-lifecycle/skills/ship/SKILL.md`: replaces automatic three
+  parallel reviews and Proceed/Override delivery bundle with exact authorized
+  action set, profile-sized checks, content-valid evidence reuse/invalidation,
+  SOLO sequential review and honest readiness report. Includes unittest command
+  discovery, docs-only checks and no fabricated PASS for NOT RUN requirements.
+- `plugins/development-lifecycle/skills/code-review/SKILL.md`: local report and
+  external publication are distinct; an explicit post/approve/request-changes
+  request for the verified target can supply authority, while PR number/readiness
+  alone cannot. Use accepted authority, body-file publication and actual result
+  reporting; no implied merge or mandatory-gate override.
+- `plugins/git-workflows/skills/commit/SKILL.md`: empty input means verified task
+  changes, never stage-all; preserve unrelated index/worktree/untracked state.
+  Check file/hunk behavior of scoped commit methods, report ambiguous selection,
+  retain conventional names and stop after commit-only. No stale prp aliases.
+- `plugins/git-workflows/skills/pr/SKILL.md`: verify task/base/repo and all task
+  commits, preserve unrelated local state, existing PR and explicit exclusions.
+  Required branch push may be within PR scope; a task commit needs accepted commit
+  scope. No automatic rebase/reset/merge/force-push on divergence. Prepare concrete
+  title/body before missing permission; read back actual result without cleanup.
+- `plugins/git-workflows/skills/finishing-a-development-branch/SKILL.md`: consumes
+  the same git action policy and carries evidence/content/staging boundaries into
+  finishing; T05 provenance/primary/isolation safeguards remain intact.
+- `plugins/git-workflows/rules/git-workflow.md`: local common action table separates
+  readiness, commit, push, PR, review publication, merge and runtime/destructive
+  actions. Records project gates, default-branch protection, scoped history-change
+  authority and runtime-triggering merge permission. No cross-plugin hard link.
+- `plugins/agent-toolkit/skills/safety-guard/SKILL.md`: same authority boundaries
+  for freeze/careful/guard/off without claiming enforcement, logging or hooks.
+- `tests/test_workflow_contract.py`: seven additional tests for concrete boundary
+  declarations, three negative permission/gate mutations, staged/untracked scope,
+  PR divergence, git-local references, sequential review/evidence reuse and the
+  seven distinct action-table rows. It inspects guidance, not a new action engine.
+- `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: status/evidence/next task.
+
+No manifests/versions, hooks, native adapters, skill names or sibling repositories
+changed. Commit/pr/ship command names remain; detailed stage/role tests from prior
+tasks still pass. Remaining optional orchestration paths are T07, not hidden work
+in this increment. Version increments await an authorized delivery/PR boundary.
+
+### T06 commands and observed results
+
+| Command / check | Exit | Observed result |
+| --- | --- | --- |
+| `python3 -B -m unittest discover -s tests -p test_workflow_contract.py -v` | 0 | 33 tests PASS including 7 new T06 tests; prior missing-jq/provenance cases still pass |
+| `python3 -B -m unittest discover -s tests -p test_codex_manifests.py -v` | 0 | 3 tests PASS; discovery identities, wrappers and resource containment intact |
+| `python3 -B -m unittest discover -s tests -p test_rule_scanners.py -v` | 0 | 2 tests PASS |
+| Installed markdownlint-cli, changed Markdown with MD013 disabled | 0 | PASS; no additional rule disabled |
+| Local links/fragments, exact task scope, current state and `git diff --check` | 0 | PASS; clean primary main, T07 unchecked, no staged/untracked product changes |
+
+The unchanged guard fixture suite was not rerun because no hook implementation
+changed; the missing-jq executable regression still ran in the workflow suite.
+Historical T05 58/58 guard results are not represented as a new T06 run. Native
+CLI validation/full unittest discovery, live model/actor trials, external publish
+and runtime effects remain NOT RUN under the no-other-harness and task-scope
+constraints. A static permission declaration is not proof of model obedience.
+
+### S09/S15 source walkthrough decision cases
+
+| Case | Allowed under the stated request | Forbidden / required stop |
+| --- | --- | --- |
+| Readiness-only or generic Ship | Scoped inspection, checks and report | No commit/push/PR/review publish/merge/runtime |
+| Commit-only task | Verify exact selected content, preserve unrelated index, commit and verify result | No push/PR/merge/cleanup |
+| Create PR of accepted task content | Prepare scoped result; required task-branch push and PR within accepted scope | No unrelated commits, implicit history rewrite, review publication, merge or cleanup |
+| Existing commits only / do not commit or push | Respect exclusions while preparing report/requested permitted operation | Missing prerequisite does not override an exclusion |
+| Review PR number without publish request | Fetch/read permitted context, assess and save local artifact | No review POST/approve/comment from number or GO alone |
+| Explicit publication of verified review | Prepared event/target/content, accepted authority, actual result readback | No new code edits, merge or runtime side effects |
+| Merge refused or absent from authority | Preserve branch and report readiness | No integration despite GO, created PR or approval |
+| Unauthorized destructive/runtime operation | Prepare impact/rollback and missing decision | Stop before mutation; general plan/delegation/delivery is insufficient |
+| Already-authorized delivery | Finish reviewable result, execute exact accepted scope and verify | No repeated permission menu or broader bundled actions |
+| GitOps/HCP auto-apply merge | Impact/rollback analysis and fresh explicit operation permission | Without it, merge remains blocked even if ordinary PR gates pass |
+
+These are source-based same-agent walkthroughs tied to actual policy text and
+negative samples, not executed external actions. Local checks observed no push,
+publication, real task commit, merge or runtime mutation. Documentation-only
+checks can be meaningful without a fabricated code test; required NOT RUN checks
+are not GO, and new content invalidates affected prior evidence. Opposing staged/
+unstaged and task-owned untracked files are reviewed before selection; unrelated
+index content must survive, and path-only commit caveats are explicit.
+
+No user approval menu is added for an action already authorized. Missing authority
+is requested only after concrete reviewable preparation; the operation waits for
+that decision. Mandatory safety/project gates have no blanket override. T06 is
+complete locally and uncommitted; stop before T07 and delivery. Full workflow
+conformance is not claimed while T07–T11 and native evidence remain pending.
+
+### T06 PR preparation update
+
+The subsequent user instruction authorizes T06 commit/push/PR. Apply planned paired
+patch version increments: development-lifecycle 1.2.1 → 1.2.2, git-workflows
+1.3.1 → 1.3.2, agent-toolkit 1.1.0 → 1.1.1. Only version fields change in the six
+Claude/Codex manifests; identities, discovery, hooks and dependencies remain
+unchanged. Earlier no-manifest/no-delivery statements describe initial T06
+implementation. T07+, merge and release remain unauthorized. Revalidate tests,
+Markdown, links and scope before publishing.
