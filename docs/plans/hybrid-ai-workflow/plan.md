@@ -8,9 +8,11 @@
 - Planning branch: `docs/workflow-implementation-plan`.
 - Planning worktree: `/workspaces/claude-plugins/.worktrees/docs/workflow-implementation-plan`.
 - Profile: DEEP. Topology: SOLO. Owner and integrator: the current session's agent.
-- Status: PLAN READY FOR USER REVIEW; implementation has not started.
-- Authority: repository inspection, isolated worktree creation, writing and validating these plan documents. The user subsequently authorized committing and pushing these documents and opening a plan-only PR to `main`. No production edits, manifest edits, implementation, merge, deployment, subagent, second harness, or orchestrator is authorized.
-- Next action: obtain an implementation instruction, then perform T01 in [tasks.md](tasks.md). Plan approval alone does not authorize delivery or runtime mutations.
+- Status: T01 COMPLETE; baseline and compatibility inventory refreshed. T02–T11 NOT STARTED; no product implementation has changed.
+- Authority: repository inspection, isolated worktree creation, writing and validating these plan documents. The user subsequently authorized committing and pushing these documents and opening a plan-only PR to `main`. The subsequent T01 instruction authorizes baseline verification and plan-evidence updates in a separate implementation worktree only. No product edits, manifest edits, T02+, merge, deployment, subagent, second harness, or orchestrator is authorized; the latest user instruction separately authorizes committing/pushing T01 evidence and opening its documentation-only PR.
+- Implementation baseline: `2194b9ad587963dd75a8d6b4fa320b963ee88f9a` (`main` after merged plan PR #8).
+- Implementation branch/worktree: `feat/hybrid-ai-workflow`, `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow`.
+- Next action: await an instruction for T02 in [tasks.md](tasks.md). T01 evidence may be committed/pushed and submitted as a PR under the latest user instruction; T02, merge and runtime mutation remain unauthorized.
 - Read [audit.md](audit.md) for evidence and the complete scoped inventory. All paths below are repository-relative; line references in the audit apply to the base SHA, not a future branch.
 
 A new session must read these three documents and the specification, inspect applicable instructions and current diff, verify isolation and base changes, and reconcile any drift before starting a task. Preserve user work; do not reset, stash, clean, delete branches, or restore files implicitly. Task checkboxes remain unchecked until actual implementation evidence exists.
@@ -204,3 +206,7 @@ Planning completion means only these three documents have been created in the pl
 ## Plan-stage validation record
 
 Markdown lint passed for all three documents with only MD013 (line length) disabled for wide tables. Local Markdown links, referenced existing paths versus explicitly planned new paths, whitespace, task dependencies/test/exit/rollback fields, and write scope were checked. At completion of the initial Plan stage, exactly these three untracked plan documents existed in the planning worktree; no tracked/staged implementation or manifest changes, commit or PR had been produced. The subsequent user instruction authorizes publishing these documents as a plan-only PR. Primary checkout was verified clean on `main` at the audited base. A separate local self-review expanded T04 to include the same mandatory/proactive role-trigger conflict in four domain plugin pairs; it did not launch an independent reviewer.
+
+## T01 completion update
+
+Baseline refreshed at `2194b9ad587963dd75a8d6b4fa320b963ee88f9a`; original audit findings and later task scopes are unchanged because only plan documents changed between bases. Manifest/reference tests 3/3 and scanner tests 2/2 passed. Guard passed 58/58 with fixture-only signing disabled after the default invocation reproduced the missing signing-agent failure (57/58). Full commands, environment limits, all plugin versions, skill identities, native entrypoint mappings and content fingerprint are recorded in [the T01 audit evidence](audit.md#t01-baseline-refresh-and-frozen-compatibility-inventory). Native harness checks remain NOT RUN. T01 is complete; stop before T02.

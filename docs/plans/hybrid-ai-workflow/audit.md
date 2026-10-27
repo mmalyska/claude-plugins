@@ -374,3 +374,194 @@ Static manifest/reference tests 3/3 and scanner tests 2/2 passed. Guard fixture 
 Audit completed without production changes. Recommended implementation starts with T01 and then T02; all other tasks remain unchecked. Any future implementation must revalidate evidence against its new base rather than assume these line numbers still identify the same clauses.
 
 Domain metadata evidence: `plugins/dotnet/agents/csharp-reviewer.md:3` and `plugins/dotnet/skills/csharp-reviewer/SKILL.md:3` require MUST BE USED for C# projects. Backend database reviewer and renovate/devcontainer auditor native/shared descriptions use PROACTIVELY at line 3 (renovate/devcontainer native adapters at line 2). These are the same metadata-level issue as F05, not an exemption from global SOLO.
+
+## T01 baseline refresh and frozen compatibility inventory
+
+T01 completed on 2026-10-27 in DEEP + SOLO. Product implementation has not started; T02 is not authorized by the T01 request. This section records the current baseline rather than replacing historical evidence above.
+
+- Current base and primary `main`: `2194b9ad587963dd75a8d6b4fa320b963ee88f9a` (merged plan PR #8).
+- Original audit base: `b43bedd9347fe8b9806895a5e35416beb3250dae`, verified ancestor of current base.
+- Drift: exactly the three added plan documents; `plugins/`, `tests/`, marketplace, root README, `docs/codex.md` and source specification are byte-identical across bases. Original conflict evidence and T02–T11 file scopes remain valid.
+- Execution branch: `feat/hybrid-ai-workflow`.
+- Execution worktree: `/workspaces/claude-plugins/.worktrees/feat/hybrid-ai-workflow`.
+- Git dir: `/workspaces/claude-plugins/.git/worktrees/hybrid-ai-workflow`; common dir: `/workspaces/claude-plugins/.git`. They differ; superproject path is empty.
+- Primary was clean on `main` before/after setup; implementation worktree had no staged, unstaged or untracked changes before tests. `.worktrees/` is locally excluded. Planning worktree remains preserved.
+- No tracked `AGENTS.md` or `CLAUDE.md` was introduced. Existing repo instructions were inspected; no new instruction drift.
+- Environment: Git 2.56.0; Python 3.15.0; Bash 5.3.20 (Linux x86_64); jq 1.8.2. These version checks invoked no AI harness.
+
+### Commands, results and limitations
+
+| Command / inspection | Exit | Observed result |
+| --- | --- | --- |
+| `git fetch origin main` then `git merge --ff-only origin/main` in clean primary | 0 | Fast-forward from original base to merged-plan base; no local edits |
+| `git worktree add -b feat/hybrid-ai-workflow .worktrees/feat/hybrid-ai-workflow main` | 0 | New isolated worktree at current base |
+| `git rev-parse --absolute-git-dir`, `git rev-parse --path-format=absolute --git-common-dir`, `git rev-parse --show-superproject-working-tree` | 0 | Linked worktree, no submodule confusion |
+| `git merge-base --is-ancestor b43bedd9347fe8b9806895a5e35416beb3250dae HEAD` | 0 | Audit baseline is ancestor |
+| `git diff b43bedd9347fe8b9806895a5e35416beb3250dae..HEAD --name-status` | 0 | Only plan.md, tasks.md, audit.md added |
+| `python3 -B -m unittest discover -s tests -p test_codex_manifests.py -v` | 0 | 3 tests PASS: identity/version/frontmatter, contained references/wrappers, both-host install instructions |
+| `python3 -B -m unittest discover -s tests -p test_rule_scanners.py -v` | 0 | 2 tests PASS: both host dirs/overrides; rules file/directory and empty/missing paths |
+| `bash plugins/git-workflows/hooks/test-guard.sh` | 1 | 57 pass / 1 fail; fixture seed commits could not sign (missing agent socket), so submodule fixture was invalid |
+| Same guard command with child-process-only `commit.gpgsign=false` | 0 | 58 pass / 0 fail; fixture/environment failure, no product regression |
+| `git diff --check`, pre-test `git status --porcelain` | 0 | No whitespace errors, clean before evidence edits |
+
+The successful guard rerun used this exact wrapper. It preserves any existing process Git config entries and changes no repository/global Git configuration:
+
+```python
+import os, subprocess
+settings = dict(os.environ)
+count = int(settings.get('GIT_CONFIG_COUNT', '0'))
+settings.update({
+    'GIT_CONFIG_COUNT': str(count + 1),
+    f'GIT_CONFIG_KEY_{count}': 'commit.gpgsign',
+    f'GIT_CONFIG_VALUE_{count}': 'false',
+})
+result = subprocess.run(
+    ['bash', 'plugins/git-workflows/hooks/test-guard.sh'],
+    env=settings, text=True, capture_output=True,
+)
+print(result.stdout)
+raise SystemExit(result.returncode)
+```
+
+Native CLI discovery/validation and harness version calls remain NOT RUN because other harness launches are prohibited. The full unittest suite was not invoked: `test_host_discovery.py` starts Claude/Codex processes. Live scenarios, optional services, Bash 3.2/macOS and consumer environments are also NOT RUN. No native installation, enabled user configuration, live hooks, scheduling, delegation or runtime capability is inferred from repository declarations. No model calls or real repository commits were performed; test commits exist only in disposable fixtures.
+
+### Catalog identities and paired versions
+
+Snapshot is repository-declared discovery at the base above, not a claim of a live user installation. Marketplace identity: `mmalyska-claude-plugins`. Native metadata and full file bytes are reproducible with `git show <base>:<path>`.
+
+| Catalog identity | Catalog source | Claude version | Codex version | Codex skill discovery | Codex hooks | Declared Claude dependency |
+| --- | --- | --- | --- | --- | --- | --- |
+| `personal-essentials` | `./plugins/personal-essentials` | `1.0.1` | `1.0.1` | `./skills/` | `[]` | `none` |
+| `git-workflows` | `./plugins/git-workflows` | `1.2.1` | `1.2.1` | `./skills/` | `[]` | `none` |
+| `development-lifecycle` | `./plugins/development-lifecycle` | `1.1.1` | `1.1.1` | `./skills/` | `[]` | `superpowers@claude-plugins-official` |
+| `dotnet` | `./plugins/dotnet` | `1.0.1` | `1.0.1` | `./skills/` | `[]` | `none` |
+| `frontend` | `./plugins/frontend` | `1.0.1` | `1.0.1` | `./skills/` | `[]` | `none` |
+| `backend` | `./plugins/backend` | `1.0.1` | `1.0.1` | `./skills/` | `[]` | `none` |
+| `devops` | `./plugins/devops` | `1.0.1` | `1.0.1` | `./skills/` | `[]` | `none` |
+| `security` | `./plugins/security` | `1.0.1` | `1.0.1` | `./skills/` | `[]` | `none` |
+| `agent-toolkit` | `./plugins/agent-toolkit` | `1.0.1` | `1.0.1` | `./skills/` | `[]` | `none` |
+| `renovate` | `./plugins/renovate` | `0.1.1` | `0.1.1` | `./skills/` | `[]` | `none` |
+| `devcontainer` | `./plugins/devcontainer` | `0.1.1` | `0.1.1` | `./skills/` | `[]` | `none` |
+| `android` | `./plugins/android` | `0.1.0` | `0.1.0` | `absent` | `[]` | `none` |
+
+For every row, exact manifest paths are `<catalog source>/.claude-plugin/plugin.json` and `<catalog source>/.codex-plugin/plugin.json`. Identity and version equality was verified, with Codex hooks empty throughout. Android intentionally has no skills. Superpowers is still a declared lifecycle Claude dependency: F11 remains open, removal belongs to T08. All seven plugins potentially changed by later policy work have their current versions captured, including backend/dotnet/renovate/devcontainer.
+
+### All existing shared skill identities
+
+| Installed identity | Shared source and frontmatter name |
+| --- | --- |
+| `$personal-essentials:personal-setup` | `plugins/personal-essentials/skills/personal-setup/SKILL.md`; `name: personal-setup` |
+| `$git-workflows:commit` | `plugins/git-workflows/skills/commit/SKILL.md`; `name: commit` |
+| `$git-workflows:finishing-a-development-branch` | `plugins/git-workflows/skills/finishing-a-development-branch/SKILL.md`; `name: finishing-a-development-branch` |
+| `$git-workflows:git-workflows-rules` | `plugins/git-workflows/skills/git-workflows-rules/SKILL.md`; `name: git-workflows-rules` |
+| `$git-workflows:pr` | `plugins/git-workflows/skills/pr/SKILL.md`; `name: pr` |
+| `$git-workflows:using-git-worktrees` | `plugins/git-workflows/skills/using-git-worktrees/SKILL.md`; `name: using-git-worktrees` |
+| `$development-lifecycle:ai-regression-testing` | `plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md`; `name: ai-regression-testing` |
+| `$development-lifecycle:architect` | `plugins/development-lifecycle/skills/architect/SKILL.md`; `name: architect` |
+| `$development-lifecycle:architecture-decision-records` | `plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md`; `name: architecture-decision-records` |
+| `$development-lifecycle:aside` | `plugins/development-lifecycle/skills/aside/SKILL.md`; `name: aside` |
+| `$development-lifecycle:build-error-resolver` | `plugins/development-lifecycle/skills/build-error-resolver/SKILL.md`; `name: build-error-resolver` |
+| `$development-lifecycle:claude-devfleet` | `plugins/development-lifecycle/skills/claude-devfleet/SKILL.md`; `name: claude-devfleet` |
+| `$development-lifecycle:code-review` | `plugins/development-lifecycle/skills/code-review/SKILL.md`; `name: code-review` |
+| `$development-lifecycle:code-reviewer` | `plugins/development-lifecycle/skills/code-reviewer/SKILL.md`; `name: code-reviewer` |
+| `$development-lifecycle:development-lifecycle-rules` | `plugins/development-lifecycle/skills/development-lifecycle-rules/SKILL.md`; `name: development-lifecycle-rules` |
+| `$development-lifecycle:doc-updater` | `plugins/development-lifecycle/skills/doc-updater/SKILL.md`; `name: doc-updater` |
+| `$development-lifecycle:docs-lookup` | `plugins/development-lifecycle/skills/docs-lookup/SKILL.md`; `name: docs-lookup` |
+| `$development-lifecycle:e2e-testing` | `plugins/development-lifecycle/skills/e2e-testing/SKILL.md`; `name: e2e-testing` |
+| `$development-lifecycle:learn-eval` | `plugins/development-lifecycle/skills/learn-eval/SKILL.md`; `name: learn-eval` |
+| `$development-lifecycle:review` | `plugins/development-lifecycle/skills/review/SKILL.md`; `name: review` |
+| `$development-lifecycle:ship` | `plugins/development-lifecycle/skills/ship/SKILL.md`; `name: ship` |
+| `$development-lifecycle:simplify` | `plugins/development-lifecycle/skills/simplify/SKILL.md`; `name: simplify` |
+| `$development-lifecycle:skill-create` | `plugins/development-lifecycle/skills/skill-create/SKILL.md`; `name: skill-create` |
+| `$development-lifecycle:spec` | `plugins/development-lifecycle/skills/spec/SKILL.md`; `name: spec` |
+| `$development-lifecycle:tdd-guide` | `plugins/development-lifecycle/skills/tdd-guide/SKILL.md`; `name: tdd-guide` |
+| `$development-lifecycle:test` | `plugins/development-lifecycle/skills/test/SKILL.md`; `name: test` |
+| `$development-lifecycle:update-codemaps` | `plugins/development-lifecycle/skills/update-codemaps/SKILL.md`; `name: update-codemaps` |
+| `$development-lifecycle:update-docs` | `plugins/development-lifecycle/skills/update-docs/SKILL.md`; `name: update-docs` |
+| `$dotnet:csharp-reviewer` | `plugins/dotnet/skills/csharp-reviewer/SKILL.md`; `name: csharp-reviewer` |
+| `$dotnet:csharp-testing` | `plugins/dotnet/skills/csharp-testing/SKILL.md`; `name: csharp-testing` |
+| `$dotnet:dotnet-patterns` | `plugins/dotnet/skills/dotnet-patterns/SKILL.md`; `name: dotnet-patterns` |
+| `$dotnet:dotnet-rules` | `plugins/dotnet/skills/dotnet-rules/SKILL.md`; `name: dotnet-rules` |
+| `$frontend:design-system` | `plugins/frontend/skills/design-system/SKILL.md`; `name: design-system` |
+| `$frontend:frontend-patterns` | `plugins/frontend/skills/frontend-patterns/SKILL.md`; `name: frontend-patterns` |
+| `$frontend:frontend-rules` | `plugins/frontend/skills/frontend-rules/SKILL.md`; `name: frontend-rules` |
+| `$frontend:nextjs-turbopack` | `plugins/frontend/skills/nextjs-turbopack/SKILL.md`; `name: nextjs-turbopack` |
+| `$backend:api-design` | `plugins/backend/skills/api-design/SKILL.md`; `name: api-design` |
+| `$backend:backend-patterns` | `plugins/backend/skills/backend-patterns/SKILL.md`; `name: backend-patterns` |
+| `$backend:database-migrations` | `plugins/backend/skills/database-migrations/SKILL.md`; `name: database-migrations` |
+| `$backend:database-reviewer` | `plugins/backend/skills/database-reviewer/SKILL.md`; `name: database-reviewer` |
+| `$backend:hexagonal-architecture` | `plugins/backend/skills/hexagonal-architecture/SKILL.md`; `name: hexagonal-architecture` |
+| `$backend:mcp-server-patterns` | `plugins/backend/skills/mcp-server-patterns/SKILL.md`; `name: mcp-server-patterns` |
+| `$backend:nestjs-patterns` | `plugins/backend/skills/nestjs-patterns/SKILL.md`; `name: nestjs-patterns` |
+| `$backend:postgres-patterns` | `plugins/backend/skills/postgres-patterns/SKILL.md`; `name: postgres-patterns` |
+| `$devops:deployment-patterns` | `plugins/devops/skills/deployment-patterns/SKILL.md`; `name: deployment-patterns` |
+| `$devops:docker-patterns` | `plugins/devops/skills/docker-patterns/SKILL.md`; `name: docker-patterns` |
+| `$security:security-review` | `plugins/security/skills/security-review/SKILL.md`; `name: security-review` |
+| `$security:security-scan` | `plugins/security/skills/security-scan/SKILL.md`; `name: security-scan` |
+| `$agent-toolkit:autonomous-agent-harness` | `plugins/agent-toolkit/skills/autonomous-agent-harness/SKILL.md`; `name: autonomous-agent-harness` |
+| `$agent-toolkit:blueprint` | `plugins/agent-toolkit/skills/blueprint/SKILL.md`; `name: blueprint` |
+| `$agent-toolkit:context-budget` | `plugins/agent-toolkit/skills/context-budget/SKILL.md`; `name: context-budget` |
+| `$agent-toolkit:continuous-agent-loop` | `plugins/agent-toolkit/skills/continuous-agent-loop/SKILL.md`; `name: continuous-agent-loop` |
+| `$agent-toolkit:eval-harness` | `plugins/agent-toolkit/skills/eval-harness/SKILL.md`; `name: eval-harness` |
+| `$agent-toolkit:iterative-retrieval` | `plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md`; `name: iterative-retrieval` |
+| `$agent-toolkit:rules-distill` | `plugins/agent-toolkit/skills/rules-distill/SKILL.md`; `name: rules-distill` |
+| `$agent-toolkit:safety-guard` | `plugins/agent-toolkit/skills/safety-guard/SKILL.md`; `name: safety-guard` |
+| `$agent-toolkit:search-first` | `plugins/agent-toolkit/skills/search-first/SKILL.md`; `name: search-first` |
+| `$agent-toolkit:subagent-driven-development` | `plugins/agent-toolkit/skills/subagent-driven-development/SKILL.md`; `name: subagent-driven-development` |
+| `$agent-toolkit:team-builder` | `plugins/agent-toolkit/skills/team-builder/SKILL.md`; `name: team-builder` |
+| `$agent-toolkit:verification-loop` | `plugins/agent-toolkit/skills/verification-loop/SKILL.md`; `name: verification-loop` |
+| `$agent-toolkit:workspace-surface-audit` | `plugins/agent-toolkit/skills/workspace-surface-audit/SKILL.md`; `name: workspace-surface-audit` |
+| `$agent-toolkit:writing-skills` | `plugins/agent-toolkit/skills/writing-skills/SKILL.md`; `name: writing-skills` |
+| `$renovate:renovate-auditor` | `plugins/renovate/skills/renovate-auditor/SKILL.md`; `name: renovate-auditor` |
+| `$renovate:renovate-automerge-rules` | `plugins/renovate/skills/renovate-automerge-rules/SKILL.md`; `name: renovate-automerge-rules` |
+| `$renovate:renovate-custom-regex-managers` | `plugins/renovate/skills/renovate-custom-regex-managers/SKILL.md`; `name: renovate-custom-regex-managers` |
+| `$renovate:renovate-extending-presets` | `plugins/renovate/skills/renovate-extending-presets/SKILL.md`; `name: renovate-extending-presets` |
+| `$devcontainer:devcontainer-auditor` | `plugins/devcontainer/skills/devcontainer-auditor/SKILL.md`; `name: devcontainer-auditor` |
+| `$devcontainer:devcontainer-ghcr-image-pipeline` | `plugins/devcontainer/skills/devcontainer-ghcr-image-pipeline/SKILL.md`; `name: devcontainer-ghcr-image-pipeline` |
+| `$devcontainer:devcontainer-renovate-digest-pinning` | `plugins/devcontainer/skills/devcontainer-renovate-digest-pinning/SKILL.md`; `name: devcontainer-renovate-digest-pinning` |
+| `$devcontainer:devcontainer-secrets-injection` | `plugins/devcontainer/skills/devcontainer-secrets-injection/SKILL.md`; `name: devcontainer-secrets-injection` |
+
+Frozen count: 70 shared skills with 70 unique frontmatter names; every name matches its directory. No new names or duplicate host skill catalogs were introduced.
+
+### Native command and agent to shared-skill pairs
+
+Native identity is the adapter basename; an explicit `name` is shown when present. Tools/model stay host-specific. The listed mappings plus the pinned base freeze the exact compatibility surface, including descriptive metadata not duplicated here.
+
+| Native adapter | Shared target | Native name / tools / model |
+| --- | --- | --- |
+| `plugins/personal-essentials/commands/personal-setup.md` | `plugins/personal-essentials/skills/personal-setup/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/git-workflows/commands/commit.md` | `plugins/git-workflows/skills/commit/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/git-workflows/commands/pr.md` | `plugins/git-workflows/skills/pr/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/aside.md` | `plugins/development-lifecycle/skills/aside/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/code-review.md` | `plugins/development-lifecycle/skills/code-review/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/learn-eval.md` | `plugins/development-lifecycle/skills/learn-eval/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/review.md` | `plugins/development-lifecycle/skills/review/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/ship.md` | `plugins/development-lifecycle/skills/ship/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/skill-create.md` | `plugins/development-lifecycle/skills/skill-create/SKILL.md` | `name=skill-create` |
+| `plugins/development-lifecycle/commands/spec.md` | `plugins/development-lifecycle/skills/spec/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/test.md` | `plugins/development-lifecycle/skills/test/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/update-codemaps.md` | `plugins/development-lifecycle/skills/update-codemaps/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/commands/update-docs.md` | `plugins/development-lifecycle/skills/update-docs/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/development-lifecycle/agents/architect.md` | `plugins/development-lifecycle/skills/architect/SKILL.md` | `name=architect; tools=["Read", "Grep", "Glob"]; model=opus` |
+| `plugins/development-lifecycle/agents/build-error-resolver.md` | `plugins/development-lifecycle/skills/build-error-resolver/SKILL.md` | `name=build-error-resolver; tools=["Read", "Write", "Edit", "Bash", "Grep", "Glob"]; model=sonnet` |
+| `plugins/development-lifecycle/agents/code-reviewer.md` | `plugins/development-lifecycle/skills/code-reviewer/SKILL.md` | `name=code-reviewer; tools=["Read", "Grep", "Glob", "Bash"]; model=sonnet` |
+| `plugins/development-lifecycle/agents/doc-updater.md` | `plugins/development-lifecycle/skills/doc-updater/SKILL.md` | `name=doc-updater; tools=["Read", "Write", "Edit", "Bash", "Grep", "Glob"]; model=haiku` |
+| `plugins/development-lifecycle/agents/docs-lookup.md` | `plugins/development-lifecycle/skills/docs-lookup/SKILL.md` | `name=docs-lookup; tools=["Read", "Grep", "Glob", "WebSearch", "WebFetch", "mcp__context7__resolve-library-id", "mcp__context7__query-docs"]; model=sonnet` |
+| `plugins/development-lifecycle/agents/tdd-guide.md` | `plugins/development-lifecycle/skills/tdd-guide/SKILL.md` | `name=tdd-guide; tools=["Read", "Write", "Edit", "Bash", "Grep"]; model=sonnet` |
+| `plugins/dotnet/agents/csharp-reviewer.md` | `plugins/dotnet/skills/csharp-reviewer/SKILL.md` | `name=csharp-reviewer; tools=["Read", "Grep", "Glob", "Bash"]; model=sonnet` |
+| `plugins/backend/agents/database-reviewer.md` | `plugins/backend/skills/database-reviewer/SKILL.md` | `name=database-reviewer; tools=["Read", "Write", "Edit", "Bash", "Grep", "Glob"]; model=sonnet` |
+| `plugins/renovate/agents/renovate-auditor.md` | `plugins/renovate/skills/renovate-auditor/SKILL.md` | `implicit basename; no tools/model override` |
+| `plugins/devcontainer/agents/devcontainer-auditor.md` | `plugins/devcontainer/skills/devcontainer-auditor/SKILL.md` | `implicit basename; no tools/model override` |
+
+Frozen count: 13 commands and 10 native agents; every shared target exists and each thin adapter links to it.
+
+### Declaration and content fingerprint
+
+To make later compatibility comparisons unambiguous, the digest below covers sorted repository-relative paths and SHA-256 content digests of every tracked file under `plugins/`, `tests/`, plus `.claude-plugin/marketplace.json`. It is evidence only, not a new runtime format or test implementation.
+
+- Files: 169. Combined SHA-256: `1b7303fe02a0986a84c3b97c8a9748fd58e2e89633cb21f16558072985563a35`.
+- Digest recipe: for each sorted tracked path, concatenate `path + NUL + sha256(file bytes).hexdigest() + newline`; SHA-256 the UTF-8 concatenation.
+- Read-only inspection included the source specification, plan, current README/Codex guidance, existing test modules, and the audited manifest/adapter/rule/skill/hook paths. Source drift comparison is empty; historical line evidence stays valid.
+- Remaining findings F01–F20 are unchanged and deliberately unresolved by T01. No task scope or dependency adjustment is needed.
+- Changed paths for T01 are only this plan's `plan.md`, `tasks.md`, `audit.md`; no plugin, manifest or test was edited.
+- Next action: stop after T01. T02 (normative contract plus initial regression checks) needs a subsequent instruction; the subsequent user instruction authorizes commit/push/PR of these T01 documents only; merge and release remain unauthorized.
