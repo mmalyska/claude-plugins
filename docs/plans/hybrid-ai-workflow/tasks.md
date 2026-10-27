@@ -299,7 +299,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T10 — Publish capability and deferred-consumer strategy
 
-- [ ] Complete T10.
+- [x] Complete T10 locally; native OpenCode and consumer migration remain deferred, not verified by this documentation.
 
 **PR:** 3. **Dependencies:** T09.
 
@@ -347,10 +347,9 @@ The full suite validates all marketplace plugins through the existing discovery 
 ## Completion and current execution record
 
 The original Plan stage created only plan/tasks/audit documents in SOLO.
-T01–T08 are merged; T09 is locally complete and uncommitted. Primary is clean on
-main. Native installation/discovery and behavioral checks remain NOT RUN, including
-installed-resource consumption; preparation is not release acceptance. T10–T11
-remain pending. The subsequent PR instruction authorizes T09 commit/push/PR;
-T10 needs a new instruction. Previous
-worktrees and user state remain preserved; no other harness, actor, service or
-scheduler was started. See the T09 evidence in [audit.md](audit.md).
+T01–T09 are merged; T10 is locally complete and uncommitted. Primary is clean on
+main. T11 remains pending. Native installation/discovery, installed-resource and
+behavioral checks remain NOT RUN; consumer-only AC12/AC14/AC18 and native OpenCode
+are deferred, not completed here. The subsequent PR instruction authorizes T10
+commit/push/PR; T11 needs a new instruction. Prior worktrees and user state remain preserved; no other harness,
+actor, service or scheduler was started. See T10 evidence in [audit.md](audit.md).

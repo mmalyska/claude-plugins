@@ -55,23 +55,26 @@ topologies. Default STANDARD + SOLO applies; availability, DEEP or a plan alone
 never authorizes another actor. Existing explicit scope is reused without repeated
 permission menus. Readiness, delivery, external publication and runtime are distinct.
 
-| Capability | Claude Code | Codex | Missing capability / boundary |
-| --- | --- | --- | --- |
-| Shared procedures | Same `skills/` bodies, native command links | Same bodies via `$plugin:skill` | Local/manual guidance; no second catalog or build generator |
-| Agent roles | Native definitions keep name/tools/model | Markdown files do not register native Codex agents | Local SOLO role passes; separate actors require authorization and actual exposed tools |
-| Rule loading | On demand; existing git SessionStart injects worktree rule | On-demand rule skills, no automatic injection | Installing Markdown cannot intercept every arbitrary prompt |
-| Worktree enforcement | Existing best-effort PreToolUse guard | Explicit procedural preflight; manifests keep `hooks: []` | Blocked isolation stops writes; missing jq cannot waive the invariant |
-| Scheduling / persistent memory | Only actually exposed configured features | Only actually exposed configured features | Manual run/state files, no invented schedule or auto-loaded memory |
-| Scanner / DevFleet | Optional tools/service, not installed by a skill | Same optional service; DevFleet workers remain Claude workers | Prerequisite or compatible local path, no fake scan/dispatch success |
-| Superpowers | Optional discovered technique provider | No mandatory provider/prefix | Local Spec/Plan/Build/Test/Review/Simplify/Ship paths remain available |
-| Runtime / delivery | Exact accepted action scope | Same authority boundaries | Fresh runtime consent for GitOps/HCP-triggering merge; no blanket override |
+The [capability matrix and deferred-consumer strategy](workflow/compatibility.md)
+consolidates host behavior and evidence. Codex manifests retain `hooks: []`;
+shared procedures and native Claude definitions do not imply equal enforcement
+or automatically registered Codex agents. No duplicate host adapter catalog is
+maintained. Read applicable rule skills explicitly; missing tools remain reported
+prerequisites or compatible local paths, never fake background success.
 
 Prefer applicable shared `AGENTS.md` policy in either host, then host adapters;
 report conflicts before dependent actions. When auditing configuration, inspect the
 requested host's real settings without rewriting paths for the running host.
 Preserve established artifact locations; new reports can use `.reports/agent-workflows/`
-and durable plans without a project convention use `.plans/<slug>/`. Templates and
-full OpenCode/consumer strategy remain later work, not an installed native adapter.
+and durable plans without a project convention use `.plans/<slug>/`. Portable
+[plan](../plugins/development-lifecycle/resources/workflow/plan.md),
+[tasks](../plugins/development-lifecycle/resources/workflow/tasks.md),
+[handoff](../plugins/development-lifecycle/resources/workflow/handoff.md) and
+[decision](../plugins/development-lifecycle/resources/workflow/decision.md) resources
+are available through existing lifecycle skills; blueprint discovers them optionally.
+Native integration and execution of the full OpenCode/consumer strategy remain later work;
+the [checklist](workflow/compatibility.md#opencode-manual-path-and-future-spike)
+provides the manual path and future acceptance work, not an installed native adapter.
 
 Superpowers is not a declared dependency. Removing the declaration does not uninstall
 an existing user's provider, alter their host settings or rewrite historical plans.

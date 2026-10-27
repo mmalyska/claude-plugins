@@ -17,7 +17,8 @@ performs only authorized delivery actions.
 Load the contract through `development-lifecycle-rules`; rules are on demand,
 not automatic interception of every user request. T03–T08 align profile-sized
 procedures, actor/delivery authorization and optional-provider packaging. Portable
-artifact resources and complete compatibility/scenario evidence remain T09–T11;
+artifact resources are packaged under `resources/workflow/`; compatibility is
+documented and final scenario/native evidence remains T11;
 full workflow conformance is not claimed yet. Native discovery/installation checks
 require separate authorized execution, not merely a passing static suite.
 
@@ -78,6 +79,16 @@ worktree preflight are procedural. Neither host may infer permission from an age
 being present. Scheduling, memory, scanners and DevFleet need actual capability
 and authority; missing features yield honest prerequisites or compatible local
 paths. Native OpenCode parity is deferred, not provided by another adapter copy.
+
+## Compatibility and portable resources
+
+Existing skills link to [plan](resources/workflow/plan.md),
+[tasks](resources/workflow/tasks.md), [handoff](resources/workflow/handoff.md) and
+[decision](resources/workflow/decision.md) structures. Preserve project conventions;
+no extra file is required for every QUICK task. Snapshot text grants no authority.
+The repository's [capability matrix and follow-up strategy](https://github.com/mmalyska/claude-plugins/blob/main/docs/workflow/compatibility.md)
+documents manual OpenCode, deferred consumers and release gates. This external
+maintainer reference is not a local runtime dependency of the installed plugin.
 
 ## Install
 

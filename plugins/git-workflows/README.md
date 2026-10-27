@@ -24,6 +24,16 @@ installation alone cannot intercept every arbitrary prompt. Missing delegation,
 scanner, scheduler or service is a limitation to report, not permission to install
 it, start another harness or claim successful background work.
 
+## Compatibility and delivery scope
+
+The repository's [capability matrix and consumer strategy](https://github.com/mmalyska/claude-plugins/blob/main/docs/workflow/compatibility.md)
+records host loading/enforcement limits, manual OpenCode and deferred migrations.
+This external maintainer reference adds no runtime dependency. Existing command
+names below stay unchanged. Readiness grants no delivery permission; a GitOps/HCP
+merge with runtime effects needs fresh explicit impact/rollback authorization.
+Native verification and consumer fresh/reapply evidence remain separate release
+acceptance gates; installing shared procedures does not satisfy them.
+
 ## What installing this does in Claude Code
 
 **This plugin installs a hook that runs before every file write and every git mutation, in every repo you use Claude Code in.** The agent-toolkit plugin also includes optional inventory scripts.
