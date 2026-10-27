@@ -137,12 +137,23 @@ convention exists, use `.plans/<slug>/plan.md` and `tasks.md` for a new durable
 plan. Do not migrate `.plans`, `.archive/.plans`, Superpowers or PRP history.
 No artifact file is mandatory for every QUICK task.
 
+Packaged optional structures: [plan](../../resources/workflow/plan.md),
+[tasks](../../resources/workflow/tasks.md),
+[handoff](../../resources/workflow/handoff.md#receiver-preflight) and
+[decision](../../resources/workflow/decision.md). Reuse the existing ADR process;
+these are resources, not new skills. Template values grant no authority. Persist
+profile/topology in lowercase; explicit current instructions still take precedence.
+An unassigned receiver cannot claim a transfer or launch a worker.
+
 A durable plan records objective/non-goals, acceptance, profile/topology,
 owner/integrator, base SHA, branch/worktree, decisions, exact scopes and ownership,
 tasks/dependencies, gates, permission/runtime impact, rollout/rollback, status and
 next action. Each task names files, intended change, dependencies, verification,
 expected result and completion criterion. Decision records include alternatives,
 choice, consequences and a revisit condition.
+
+Keep handoffs in the active plan folder; `.ai/handoffs/` is the fallback only
+for tasks without an active plan, preserving established project locations.
 
 A handoff is a snapshot: task, from/to (or unassigned), base SHA, branch/worktree,
 profile/topology/status, completed changes, decisions, affected files, test

@@ -42,6 +42,16 @@ produce a full system design for every edit. No new planner skill is needed.
 A SOLO session applies this role locally and records a distinct local review pass;
 role applicability is not authority to launch another actor.
 
+## Portable planning resources
+
+Use the existing [plan](../../resources/workflow/plan.md) and
+[task records](../../resources/workflow/tasks.md) for durable state; use the
+[handoff preflight](../../resources/workflow/handoff.md#receiver-preflight) only
+within authorized transfer scope. Preserve project paths and formats. Record
+stale base, missing permissions and NOT RUN gates before dependent writes.
+Use the [decision note](../../resources/workflow/decision.md) or the existing
+[ADR process](../architecture-decision-records/SKILL.md) without duplicating it.
+
 ## Architecture Review Process
 
 ### 1. Current State Analysis

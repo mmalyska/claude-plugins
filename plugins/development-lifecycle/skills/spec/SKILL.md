@@ -41,6 +41,15 @@ procedures. A Spec-only instruction stops here; it does not authorize Build.
 **Save path:** Preserve an existing project spec location. Otherwise use
 `.reports/agent-workflows/specs/YYYY-MM-DD-<kebab-case-topic>.md`.
 
+## Portable planning resources
+
+When a durable Plan is authorized, reuse the [plan](../../resources/workflow/plan.md),
+[task records](../../resources/workflow/tasks.md) and, for an authorized transfer,
+[handoff](../../resources/workflow/handoff.md#receiver-preflight). Keep the existing
+spec/plan locations and formats; `.plans/<slug>/` is only a fallback without a
+project convention. QUICK does not require a file; DEEP multi-session state must
+be durable. These resources do not authorize Build, another actor or delivery.
+
 ## Spec Template
 
 ```md

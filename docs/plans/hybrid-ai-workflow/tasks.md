@@ -270,7 +270,7 @@ The full suite validates all marketplace plugins through the existing discovery 
 
 ## T09 — Introduce portable artifact resources through existing skills
 
-- [ ] Complete T09.
+- [x] Complete T09 locally; native installed-resource and behavior checks NOT RUN, blocking release acceptance.
 
 **PR:** 3. **Dependencies:** T08.
 
@@ -347,8 +347,10 @@ The full suite validates all marketplace plugins through the existing discovery 
 ## Completion and current execution record
 
 The original Plan stage created only plan/tasks/audit documents in SOLO.
-T01–T07 are merged; T08 is locally complete and uncommitted, with native
-installation/discovery explicitly NOT RUN. Primary is clean on main. T09–T11
-remain pending. The subsequent PR instruction authorizes T08 commit/push/PR; T09 requires a new instruction. Previous
+T01–T08 are merged; T09 is locally complete and uncommitted. Primary is clean on
+main. Native installation/discovery and behavioral checks remain NOT RUN, including
+installed-resource consumption; preparation is not release acceptance. T10–T11
+remain pending. The subsequent PR instruction authorizes T09 commit/push/PR;
+T10 needs a new instruction. Previous
 worktrees and user state remain preserved; no other harness, actor, service or
-scheduler was started. See the T08 evidence in [audit.md](audit.md).
+scheduler was started. See the T09 evidence in [audit.md](audit.md).

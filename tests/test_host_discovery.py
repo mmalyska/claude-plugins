@@ -16,7 +16,7 @@ import threading
 import time
 import unittest
 
-from test_codex_manifests import FROZEN_T01_CATALOG, FROZEN_T01_SKILLS, FROZEN_T01_WRAPPERS
+from test_codex_manifests import FROZEN_T01_CATALOG, FROZEN_T01_SKILLS, FROZEN_T01_WRAPPERS, plugin_link_errors
 
 ROOT = Path(__file__).resolve().parents[1]
 NATIVE_ENABLED = os.environ.get('WORKFLOW_NATIVE_TESTS') == '1'
@@ -53,8 +53,15 @@ class HostDiscoveryTest(unittest.TestCase):
             relative = Path(path).relative_to(f'plugins/{name}')
             self.assertEqual((installed / relative).read_bytes(), (ROOT / path).read_bytes())
             self.assertTrue((installed / Path(target).relative_to(f'plugins/{name}')).is_file())
-        for path in source.glob('rules/**/*.md'):
-            self.assertEqual((installed / path.relative_to(source)).read_bytes(), path.read_bytes())
+        for kind in ('rules', 'resources'):
+            expected_files = {path.relative_to(source) for path in source.glob(f'{kind}/**/*.md')}
+            actual_files = {path.relative_to(installed) for path in installed.glob(f'{kind}/**/*.md')}
+            self.assertEqual(actual_files, expected_files)
+            for relative in expected_files:
+                self.assertEqual((installed / relative).read_bytes(), (source / relative).read_bytes())
+        for kind in ('skills', 'commands', 'agents', 'rules', 'resources'):
+            for document in installed.glob(f'{kind}/**/*.md'):
+                self.assertEqual(plugin_link_errors(document, installed), [])
         for host in ('.claude-plugin', '.codex-plugin'):
             manifest = json.loads((installed / host / 'plugin.json').read_text())
             self.assertEqual(manifest, json.loads((source / host / 'plugin.json').read_text()))
