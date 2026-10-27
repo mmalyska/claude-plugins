@@ -18,6 +18,16 @@ project artifact conventions, isolation and mandatory gates. Background work or
 independent review is a claim that needs real evidence. DevFleet is optional and
 must have verified inert planning and bounded manual launch/merge controls.
 
+## Compatibility and artifacts
+
+Blueprint discovers lifecycle resources through `development-lifecycle-rules` when
+available and otherwise uses its existing plain-plan contract. Keep established
+artifact paths; a handoff does not grant actor, delivery or runtime permission.
+See the repository's [capability matrix and deferred-consumer strategy](https://github.com/mmalyska/claude-plugins/blob/main/docs/workflow/compatibility.md)
+for loading limits, manual OpenCode, release evidence and orchestrator prerequisites.
+This external maintainer reference adds no installed-plugin dependency. Native
+integration and consumer migration remain deferred; no pilot is started by install.
+
 ## Skills
 
 | Skill | Description |

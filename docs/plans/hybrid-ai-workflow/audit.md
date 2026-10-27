@@ -1355,3 +1355,103 @@ planned patch increments for changed plugin packages: lifecycle 1.2.5 and toolki
 statements describe initial local implementation. Revalidated static checks do
 not replace native evidence: all three native tests remain NOT RUN. T10+, merge,
 release and additional harness execution are outside this delivery instruction.
+
+## T10 compatibility and deferred-consumer strategy evidence
+
+T09 PR #17 is merged. Primary was clean on main and advanced fast-forward only to
+`8a0ef66605cf8c1de8dfada4489e3601781a7e4a`. T10 uses branch
+`docs/hybrid-ai-workflow-compatibility`, linked worktree
+`/workspaces/claude-plugins/.worktrees/docs/hybrid-ai-workflow-compatibility`.
+Owner/integrator remains this session, DEEP + SOLO; no additional actor, harness,
+model turn, service, scheduler or orchestrator was launched. Existing worktrees
+remain preserved. No sibling repository was inspected, edited or migrated.
+
+### Exact T10 changes
+
+- Created `docs/workflow/compatibility.md`: consolidated host capability/evidence
+  matrix linked to the packaged normative contract. Covers on-demand rules,
+  best-effort Claude guard, Codex empty hooks/procedural preflight, roles versus
+  native actors, optional tools/Superpowers, portable artifacts and authorization.
+- The same document records a manual-only OpenCode route and unchecked future
+  spike: pinned release/version, instruction precedence, discovery/resource install,
+  permission mapping/hooks, subagents, worktrees, QUICK + SOLO, STANDARD + HANDOFF,
+  authorized REVIEW and an evidence-based manual/native packaging decision. No
+  native adapter, parity claim or OpenCode process was introduced.
+- Consumer checklist explicitly defers home-ops shared `AGENTS.md`/`CLAUDE.md`/`.ai`
+  policy, project skills/platform drift, archive links, domain gates, Cloudflare/HCP,
+  secrets and fresh runtime authorization. Dotfiles follow-up covers core/extended
+  profiles, Codex setup and the fresh/repeated chezmoi apply matrix. Consumer-only
+  AC12/AC14/AC18 remain unverified; AC1 OpenCode is manual guidance and AC19 is a
+  documented minimal route, not a native behavior PASS.
+- Release sequence requires actual acceptance evidence and an explicitly authorized
+  verified release/tag before consumer dependence, without inventing pinning flags.
+  The optional orchestrator checklist retains three real manual HANDOFF/PARALLEL
+  tasks, partial-execution failure evidence and D9's real parallel-pilot evidence.
+  It supplies no credentials, service connection, auto-launch or normal dependency.
+- Updated `docs/codex.md`: replaces its duplicate matrix with a compatibility link,
+  retains install/invocation/maintainer commands and caveats, and links T09 resources.
+  OpenCode strategy is documented now; implementation and native trials stay deferred.
+- Updated `README.md`: links maintenance and compatibility, discloses manual OpenCode,
+  STANDARD + SOLO and outstanding native/conformance evidence. Existing commands stay.
+- Updated `plugins/development-lifecycle/README.md`: corrects stale T09 pending state,
+  links packaged resources and retains the explicit incomplete-conformance notice.
+- Updated `plugins/agent-toolkit/README.md`: documents optional resource discovery and
+  plain-plan fallback plus the external compatibility/consumer reference.
+- Updated `plugins/git-workflows/README.md`: links the host/consumer strategy and
+  reiterates exact delivery scope and runtime-effect merge authority. Hook details,
+  native commands and install snippets are retained unchanged.
+- Updated `docs/plans/hybrid-ai-workflow/{plan,tasks,audit}.md`: resume, task and
+  evidence state; historical findings remain pinned to their original bases.
+
+Plugin README compatibility links use repository HTTPS URLs, rather than filesystem
+links escaping the installed plugin to repository docs. They are external maintainer
+references, not runtime dependencies. New repository targets/fragments are checked
+against this worktree; the new main-branch page becomes available after delivery
+and merge, so no live-publication check is claimed before publication. Existing
+third-party documentation URLs and host CLI snippets were not changed or revalidated.
+
+### T10 verification and limits
+
+| Check | Result |
+| --- | --- |
+| Pre-edit baseline static suite, native opt-in off | 59 PASS; 3 SKIPPED / NOT RUN |
+| Post-edit same suite | 59 PASS; 3 SKIPPED / NOT RUN |
+| Markdown lint for all changed Markdown, MD013 disabled | PASS |
+| Local and own-repository link/fragment targets | PASS against this worktree |
+| Existing install/native command snippets, manifest and source-spec scope | Preserved |
+| Exact task paths, primary state and `git diff --check` | PASS |
+
+Suite command: `WORKFLOW_NATIVE_TESTS=0 python3 -B -m unittest discover -s tests`.
+Lint uses the existing local markdownlint-cli; no tool installation, host launch
+or new tests were needed for this documentation change. Separate local review
+checked manual-versus-native claims, all consumer checklist items, release order,
+optional provider/orchestrator scope and consistency with the packaged contract.
+No skill body, manifest, hook, native wrapper, source specification or sibling
+repository changed. Later explicit PR delivery may include planned paired patch
+versions for plugins whose packaged README changes; none is incremented locally.
+
+T11 final fixtures/evidence remain pending. Actual host installation/discovery,
+installed-resource consumption, live S01–S16 behavior, platform/guard checks and
+consumer idempotence are not established by these docs or static tests. Native
+checks remain NOT RUN and required missing evidence blocks the corresponding
+release/conformance claim. No release/tag, consumer PR or OpenCode integration
+is created or declared complete.
+
+### T10 rollback and next action
+
+Revert compatibility documentation and referring README/maintenance links together;
+rerun lint, links and static checks. There is no user-data/consumer migration or
+runtime action to reverse. Any later consumer/runtime rollback needs its own
+accepted scope and domain gates. T10 is complete locally and uncommitted; await
+explicit delivery or T11 instruction. No commit/push/PR, merge or release is
+performed under this bounded implementation instruction.
+
+### T10 PR preparation update
+
+The subsequent user instruction authorizes T10 commit/push/PR to main and planned
+paired patch increments for packaged README changes: lifecycle 1.2.6, toolkit
+1.1.4 and git-workflows 1.3.4, aligned across Claude/Codex manifests. Earlier
+no-manifest/no-delivery statements describe the local implementation boundary.
+Static verification remains distinct from native evidence: three native tests
+stay NOT RUN. T11, merge, release, consumer migration and additional harness
+execution remain outside this instruction.

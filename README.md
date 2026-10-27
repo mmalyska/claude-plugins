@@ -30,7 +30,12 @@ Invoke workflows as skills, for example `$git-workflows:commit`,
 `$development-lifecycle:spec`, or `$frontend:frontend-patterns`. Agent roles are
 also exposed as skills, such as `$development-lifecycle:architect`.
 
-See [shared workflow compatibility and maintenance](docs/codex.md) for differences and updates.
+See [installation and maintenance](docs/codex.md) and the
+[host capability matrix and consumer strategy](docs/workflow/compatibility.md).
+OpenCode has a documented manual path; native integration is deferred. STANDARD +
+SOLO is the workflow default; other actor topologies require explicit authorization.
+Native installation/discovery and live acceptance evidence remain NOT RUN in this
+implementation session; no full workflow conformance or release readiness is claimed.
 
 ## Plugins
 
