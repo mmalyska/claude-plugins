@@ -852,5 +852,34 @@ class ToolkitAuthorizationTest(unittest.TestCase):
         self.assertIn('without copying skills or requiring Superpowers', readme)
 
 
+class OptionalProviderCompatibilityTest(unittest.TestCase):
+    def test_local_paths_cover_every_stage_without_new_skills(self):
+        prose = (ROOT / 'plugins/development-lifecycle/README.md').read_text()
+        for stage in ('Spec', 'Plan', 'Build', 'Test', 'Review', 'Simplify', 'Ship'):
+            self.assertIn(f'| {stage} |', prose)
+        self.assertIn('not new commands/skills', prose)
+        self.assertIn('does not uninstall or disable', prose)
+        self.assertIn('not required for this plugin to work', prose)
+
+    def test_host_limits_and_native_evidence_are_explicit(self):
+        prose = (ROOT / 'docs/codex.md').read_text()
+        for boundary in ('STANDARD + SOLO', 'hooks: []', 'No duplicate host adapter catalog',
+                         'not PASS', 'WORKFLOW_NATIVE_TESTS=1', 'remain release gates',
+                         'No provider is installed'):
+            self.assertIn(boundary, prose)
+        self.assertIn('full OpenCode/consumer strategy remain later work', prose)
+
+    def test_native_tests_require_explicit_opt_in(self):
+        import test_host_discovery as native
+        self.assertEqual(len(native.OWNER_CASES), 4)
+        if not native.NATIVE_ENABLED:
+            names = unittest.defaultTestLoader.getTestCaseNames(native.HostDiscoveryTest)
+            self.assertEqual(len(names), 3)
+            for name in names:
+                method = getattr(native.HostDiscoveryTest, name)
+                self.assertTrue(method.__unittest_skip__)
+                self.assertIn('NOT RUN', method.__unittest_skip_why__)
+
+
 if __name__ == '__main__':
     unittest.main()

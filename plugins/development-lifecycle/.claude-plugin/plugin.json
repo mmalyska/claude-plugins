@@ -1,15 +1,12 @@
 {
   "name": "development-lifecycle",
   "description": "Shared specification, testing, review, and delivery workflows for Claude Code and Codex.",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": {
     "name": "Michał Małyska"
   },
   "homepage": "https://github.com/mmalyska/claude-plugins",
   "repository": "https://github.com/mmalyska/claude-plugins",
   "license": "MIT",
-  "keywords": ["tdd", "planning", "code-review", "agents", "workflow", "lifecycle"],
-  "dependencies": [
-    "superpowers@claude-plugins-official"
-  ]
+  "keywords": ["tdd", "planning", "code-review", "agents", "workflow", "lifecycle"]
 }

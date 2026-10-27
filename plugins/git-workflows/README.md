@@ -9,6 +9,21 @@ hooks: worktree rules are procedural guidance there. The hook behavior below
 applies to Claude Code only. Rules are also available on demand through the
 `git-workflows-rules` skill.
 
+## Default and optional providers
+
+Default STANDARD + SOLO applies to the shared engineering workflow. Other actor
+topologies require explicit user authorization before capability checks. This
+plugin works alone: worktree creation/finishing, commit and PR procedures have
+local checks and manual paths, without a required lifecycle or Superpowers plugin.
+Existing command names and shared skill directories remain unchanged.
+
+Claude's native entrypoints/hooks and Codex's shared-skill discovery do not create
+equal enforcement: Codex has `hooks: []` and no automatic rule injection. A native
+agent definition is not a registered Codex agent. Read the relevant rule skill;
+installation alone cannot intercept every arbitrary prompt. Missing delegation,
+scanner, scheduler or service is a limitation to report, not permission to install
+it, start another harness or claim successful background work.
+
 ## What installing this does in Claude Code
 
 **This plugin installs a hook that runs before every file write and every git mutation, in every repo you use Claude Code in.** The agent-toolkit plugin also includes optional inventory scripts.
