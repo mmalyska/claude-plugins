@@ -5,7 +5,12 @@ description: "Define the problem before writing code — interactive spec with v
 
 # Spec Command
 
-Read [the workflow contract](../../rules/common/workflow.md) first. Select profile
+Read [the workflow contract](../../rules/common/workflow.md) in full before
+defining requirements. Resolve it relative to this installed skill file, not the
+project cwd or a global search. Read every section, including loading and delivery
+boundaries; if the tool truncates output, continue until the entire file is read.
+Do not use a head-only excerpt or substitute a fallback spec when required
+guidance is unavailable; report the blocker and stop dependent work. Select profile
 and topology independently; default STANDARD + SOLO. Apply mandatory project
 policy in every profile. This procedure does not authorize another actor or
 work beyond the requested stage.

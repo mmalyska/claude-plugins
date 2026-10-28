@@ -78,6 +78,16 @@ def contract_errors(document):
         'isolation': (
             'Safety and worktree-first',
             'never silently fall back to editing primary'),
+        'first-write-preflight': (
+            'Safety and worktree-first',
+            'Before the first edit, including in an existing worktree'),
+        'actual-primary': (
+            'Safety and worktree-first', 'check its actual branch, HEAD and status'),
+        'full-initial-load': (
+            'Loading and host limitations', 'Load the complete contract on first use'),
+        'missing-guidance-stop': (
+            'Loading and host limitations',
+            'If required guidance is unavailable, stop dependent work'),
         'stage-scope': (
             'Stage and delivery boundaries', 'Stop after the requested stage;'),
         'runtime-permission': (
@@ -193,6 +203,18 @@ class WorkflowContractTest(unittest.TestCase):
             ('missing stage boundary', self.document.replace('Stop after\nthe requested stage;',
                                                              'Continue automatically;', 1),
              'stage-scope'),
+            ('missing first-write preflight', self.document.replace(
+                'Before the first edit, including in an existing worktree',
+                'Directory names establish isolation', 1), 'first-write-preflight'),
+            ('missing actual primary check', self.document.replace(
+                'check its actual branch, HEAD and status', 'assume primary is clean', 1),
+             'actual-primary'),
+            ('missing full initial load', self.document.replace(
+                'Load the complete contract on first use', 'Read a short excerpt', 1),
+             'full-initial-load'),
+            ('missing loading blocker', self.document.replace(
+                'If required guidance is unavailable, stop dependent work',
+                'Use an invented fallback', 1), 'missing-guidance-stop'),
             ('empty document', '', 'section:Lifecycle'),
         ]
         for name, sample, expected in cases:

@@ -14,6 +14,15 @@ is BLOCKED by required failed/unrun gates.** No full workflow conformance is cla
 A successful static suite, local walkthrough or copied filesystem is not proof of
 native installation, model obedience, independent review or runtime safety.
 
+## Live-trial repair candidate — 2026-10-28
+
+The [repair record](evidence/2026-10-28-live-trial-fixes.md) describes observed
+Claude loading/pre-write failures and the proposed guidance/adapter changes.
+Static regression checks pass; actual Claude/Codex reruns are deferred until
+merge at the user's request. These findings remain open pending live evidence;
+this PR does not establish release acceptance. Earlier snapshots below retain
+their original candidate and evidence scope.
+
 ## Post-merge native metadata update
 
 The user subsequently authorized isolated Claude/Codex CLI installation and

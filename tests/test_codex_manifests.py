@@ -177,8 +177,11 @@ def markdown_anchors(text):
 def plugin_link_errors(document, plugin):
     """Resolve local resource links/fragments within an installed plugin root."""
     errors = []
-    for raw in links(document.read_text()):
+    text = document.read_text()
+    native_files = re.findall(r'@([\$]\{CLAUDE_PLUGIN_ROOT\}/[^\s`]+)', text)
+    for raw in links(text) + native_files:
         relative = raw.strip('<>')
+        relative = relative.replace('${CLAUDE_PLUGIN_ROOT}/', str(plugin.resolve()) + '/')
         parsed = urlsplit(relative)
         if parsed.scheme or parsed.netloc:
             continue
@@ -324,11 +327,37 @@ class SharedPluginTest(unittest.TestCase):
                 shared_fields, _ = frontmatter(target)
                 actual[str(source.relative_to(ROOT))] = str(target.relative_to(ROOT))
                 self.assertIn(f'../skills/{source.stem}/SKILL.md', body)
+                if kind == 'commands':
+                    self.assertIn(f'@${{CLAUDE_PLUGIN_ROOT}}/skills/{source.stem}/SKILL.md', body)
+                    self.assertIn('$ARGUMENTS', body)
+                    self.assertIn('stop dependent work', body)
                 def value(raw):
                     return json.loads(raw) if raw.startswith('"') else raw
                 self.assertEqual(value(fields['description']), value(shared_fields['description']))
         self.assertEqual(len(FROZEN_T01_WRAPPERS), 23)
         self.assertEqual(actual, FROZEN_T01_WRAPPERS)
+
+    def test_native_file_references_are_contained_and_exist_in_installation(self):
+        # A standalone installation with spaces, no source-checkout-relative cwd.
+        # These are packaging checks, not proof of native interpolation/model reads.
+        with tempfile.TemporaryDirectory(prefix='installed plugin ') as temporary:
+            root = Path(temporary)
+            plugin = root / 'plugin'
+            command = plugin / 'commands/spec.md'
+            target = plugin / 'skills/spec/SKILL.md'
+            command.parent.mkdir(parents=True)
+            target.parent.mkdir(parents=True)
+            target.write_text('# Canonical spec\n')
+            command.write_text('@${CLAUDE_PLUGIN_ROOT}/skills/spec/SKILL.md\n')
+            self.assertEqual(plugin_link_errors(command, plugin), [])
+            target.unlink()
+            # A similarly named consumer file cannot satisfy a missing installed target.
+            decoy = root / 'skills/spec/SKILL.md'
+            decoy.parent.mkdir(parents=True)
+            decoy.write_text('# Wrong copy\n')
+            self.assertEqual(plugin_link_errors(command, plugin)[0][0], 'missing-target')
+            command.write_text('@${CLAUDE_PLUGIN_ROOT}/../skills/spec/SKILL.md\n')
+            self.assertEqual(plugin_link_errors(command, plugin)[0][0], 'outside-plugin')
 
     def test_external_workflow_provider_is_optional_in_both_manifests(self):
         for plugin in (ROOT / 'plugins').iterdir():

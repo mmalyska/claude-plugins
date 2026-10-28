@@ -31,6 +31,16 @@ capability after authority; do not start another CLI to bypass a restriction.
 These are isolation rules, not delegation permission. The integrator owns final
 integration and gates; failed/partial work must be reported honestly.
 
+## Before the first write
+
+Use Step 0 of this plugin's [using-git-worktrees skill](../skills/using-git-worktrees/SKILL.md)
+even when already in a feature worktree. Inspect actual Git/common directories,
+superproject, worktree metadata and writer state; locate primary and verify its
+actual branch, HEAD and clean status against the accepted base/default policy.
+A `.worktrees` path, feature branch, preconfigured fixture or silent guard is not
+proof of isolation. Record the verified facts before editing. Missing or ambiguous
+checks block dependent writes; preserve user state instead of repairing it.
+
 ## Isolation failure and primary state
 
 If isolation is blocked, stop writes and report the permission prerequisite.

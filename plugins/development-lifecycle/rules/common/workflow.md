@@ -123,6 +123,39 @@ permission prerequisite; never silently fall back to editing primary. Explicitly
 authorized primary maintenance is a separate operation, not a sandbox workaround.
 Do not reset, stash, clean or remove another owner's work to obtain a clean state.
 
+Before the first edit, including in an existing worktree, establish these facts
+from actual Git output rather than a directory name or branch-name convention:
+
+```sh
+git rev-parse --show-toplevel
+git rev-parse --absolute-git-dir
+git rev-parse --git-common-dir
+git rev-parse --show-superproject-working-tree
+git branch --show-current
+git status --porcelain
+git worktree list --porcelain
+```
+
+Resolve Git/common directories to absolute physical paths. Use the worktree
+metadata to locate primary; check its actual branch, HEAD and status with
+`git -C <verified-primary> branch --show-current`, `rev-parse HEAD` and
+`status --porcelain`. Check the writer HEAD and accepted task base too. A path
+containing `.worktrees`, a feature branch, a hook's silence or controller setup
+is not evidence that these checks ran. Do not treat a submodule as a linked
+worktree; verify its superproject's isolation and ownership before mutation.
+
+Resolve the default from origin/HEAD or verified project policy. In a no-remote
+fixture without default policy, report that no remote default is available and
+record the verified actual primary branch as the local task base when consistent
+with the task. `init.defaultBranch` is only a creation preference, not proof of
+an existing repository's default. Missing origin/HEAD alone need not block work
+when that local base and isolation are verified. Ambiguous isolation/base, dirty
+or non-default primary means stop dependent writes and report the discrepancy;
+never repair it by switching, resetting, stashing or cleaning user state. Record
+the verified primary, writer and base briefly in session or existing task state.
+The existing git-workflows worktree skill supplies setup/creation details; these
+checks apply even when no worktree needs creating.
+
 Apply shared project policy from applicable `AGENTS.md`, host adapters and project
 documentation; surface conflicts rather than choose different policies by host.
 Do not copy a consumer's cluster-specific rules into global skills. Keep secrets
@@ -189,7 +222,11 @@ user artifacts and do not discard work or remove worktrees without authorization
 ## Loading and host limitations
 
 Read this contract through the existing `development-lifecycle-rules` skill when
-following this collection's workflow. It is plugin-local guidance, not a new
+following this collection's workflow. Load the complete contract on first use,
+resolving links from the active installed skill. Continue truncated reads through
+the final section; summaries and head-only excerpts do not satisfy initial
+loading. If required guidance is unavailable, stop dependent work and report it;
+do not replace it with an invented procedure. It is plugin-local guidance, not a new
 skill, command, scheduler or execution engine. Existing commands and role
 entrypoints keep their names and share the same procedure files across hosts.
 
