@@ -14,6 +14,14 @@ is BLOCKED by required failed/unrun gates.** No full workflow conformance is cla
 A successful static suite, local walkthrough or copied filesystem is not proof of
 native installation, model obedience, independent review or runtime safety.
 
+## Test runner status repair — pending LIVE verification
+
+The [exit-status repair record](evidence/2026-10-28-test-exit-status-fix.md)
+documents LIVE-F03's remaining shell-exit ambiguity and the local correction.
+The core contract now carries the requirement, with a tested explicit-return
+example. Unit/static checks pass; model behavior has not been rerun on this repair.
+This is not LIVE-F03 closure or release acceptance.
+
 ## Live-trial repair candidate — 2026-10-28
 
 The [repair record](evidence/2026-10-28-live-trial-fixes.md) describes observed
