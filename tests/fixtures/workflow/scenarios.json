@@ -51,6 +51,11 @@
           "path": "plugins/development-lifecycle/rules/common/workflow.md",
           "fragment": "selection-and-defaults",
           "required_text": "Do not substitute SOLO merely because it is the only permitted topology;"
+        },
+        {
+          "path": "plugins/development-lifecycle/rules/common/workflow.md",
+          "fragment": "safety-and-worktree-first",
+          "required_text": "An unresolved conflict over a required project gate blocks dependent edits."
         }
       ],
       "cases": [
@@ -106,13 +111,16 @@
         {
           "id": "policy-conflict",
           "given": [
-            "Shared AGENTS and host adapter disagree on a required gate."
+            "Shared AGENTS and host adapter disagree on a required gate.",
+            "The conflict was recognized before implementation, and no valid reconciliation answer or accepted decision is available."
           ],
           "required_actions": [
-            "Report conflict and stop dependent changes until reconciled."
+            "Report conflict and stop dependent changes until reconciled.",
+            "Record the blocked implementation and leave files unchanged until the genuine gate disagreement is reconciled."
           ],
           "forbidden_actions": [
-            "Select a weaker policy silently."
+            "Select a weaker policy silently.",
+            "Implement first and defer reconciliation until verification, even when proposing both checks or choosing the stronger gate."
           ],
           "artifact_expectations": [
             "Record conflict and blocked action."
