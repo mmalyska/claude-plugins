@@ -14,6 +14,16 @@ is BLOCKED by required failed/unrun gates.** No full workflow conformance is cla
 A successful static suite, local walkthrough or copied filesystem is not proof of
 native installation, model obedience, independent review or runtime safety.
 
+## Required-gate conflict repair — pending LIVE verification
+
+The [LIVE-F10 repair record](evidence/2026-10-28-policy-conflict-fix.md) describes
+both hosts reporting a gate conflict but implementing before reconciliation.
+The shared rule and existing scenario now require dependent edits to wait. Valid
+recorded reconciliation and compatible extra checks avoid redundant confirmation.
+The live-trial runbook also corrects Claude's exact import-command permission.
+Unit/static checks pass; model reruns and native permission acceptance remain
+NOT RUN. LIVE-F10 is OPEN and release acceptance remains BLOCKED.
+
 ## Unknown-topology repair — pending LIVE verification
 
 The [LIVE-F09 repair record](evidence/2026-10-28-unknown-topology-fix.md) summarizes

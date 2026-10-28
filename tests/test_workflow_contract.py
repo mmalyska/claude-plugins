@@ -76,6 +76,9 @@ def contract_errors(document):
         'unknown-topology-no-substitution': (
             'Selection and defaults',
             'Do not substitute SOLO merely because it is the only permitted topology;'),
+        'gate-conflict-blocks-edits': (
+            'Safety and worktree-first',
+            'An unresolved conflict over a required project gate blocks dependent edits.'),
         'authority-before-capability': (
             'Authorization and capabilities', 'Check authority before capability.'),
         'isolation': (
@@ -228,6 +231,10 @@ class WorkflowContractTest(unittest.TestCase):
                 'Do not substitute SOLO merely because it is the only permitted topology;',
                 'Choose SOLO automatically when it is the only permitted topology;', 1),
              'unknown-topology-no-substitution'),
+            ('gate conflict deferred until verification', self.document.replace(
+                'An unresolved conflict over a required project gate blocks dependent edits.',
+                'Implement first and reconcile the required gate before shipping.', 1),
+             'gate-conflict-blocks-edits'),
             ('empty document', '', 'section:Lifecycle'),
         ]
         for name, sample, expected in cases:

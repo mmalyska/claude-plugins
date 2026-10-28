@@ -167,6 +167,15 @@ checks apply even when no worktree needs creating.
 
 Apply shared project policy from applicable `AGENTS.md`, host adapters and project
 documentation; surface conflicts rather than choose different policies by host.
+An unresolved conflict over a required project gate blocks dependent edits.
+Report the disagreement and the blocked implementation before changing files;
+do not defer reconciliation until Test, verification or Ship. Choosing the
+stronger gate or proposing to run both checks does not by itself reconcile
+contradictory instructions. Independent read-only diagnosis may continue within
+scope. Reuse a valid recorded reconciliation checked against current authority;
+ask only when the genuine disagreement remains unresolved. Clearly compatible
+additional checks and an already reconciled policy need no extra confirmation.
+
 Do not copy a consumer's cluster-specific rules into global skills. Keep secrets
 out of prompts, artifacts, logs, test fixtures and PRs; use references, not values.
 Use existing project tools and required checks; report unavailable checks and
