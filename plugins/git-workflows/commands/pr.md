@@ -3,4 +3,15 @@ description: "Create a GitHub PR from current branch with unpushed commits — d
 argument-hint: [base-branch] (default: main)
 ---
 
-Read [the shared pr workflow](../skills/pr/SKILL.md) and follow it for this task.
+Load the canonical procedure from the active installation before doing this task:
+
+@${CLAUDE_PLUGIN_ROOT}/skills/pr/SKILL.md
+
+Source navigation: [shared pr workflow](../skills/pr/SKILL.md).
+
+Resolve runtime files from `${CLAUDE_PLUGIN_ROOT}`, never from the project cwd or a filesystem-wide first
+match. If the root or required file is unavailable, report the loading blocker
+and stop dependent work; do not substitute a fallback procedure. Follow the
+loaded procedure with this input:
+
+$ARGUMENTS

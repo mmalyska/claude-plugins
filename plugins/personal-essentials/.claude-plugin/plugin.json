@@ -1,7 +1,7 @@
 {
   "name": "personal-essentials",
   "description": "Install the development plugin collection through the shared personal-setup workflow.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": {
     "name": "Michał Małyska"
   },

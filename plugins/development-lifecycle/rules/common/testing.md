@@ -39,3 +39,9 @@ Inspect test isolation, mocks, actual behavior and requirement expectations.
 Fix implementation defects rather than weaken valid tests. Correct a wrong test
 only with evidence of its requirement mismatch. Record commands, real exit status,
 PASS/FAIL/NOT RUN/NOT APPLICABLE and remaining uncertainty.
+
+For short checks, run the command directly and retain its complete output and
+exit status. A pipeline such as `unittest ... | tail` normally reports tail's
+status, not the test runner's. If filtering is necessary, capture the original
+runner exit code and full log before displaying an excerpt; never infer a test
+PASS from the last pipeline command succeeding.

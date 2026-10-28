@@ -5,9 +5,13 @@ description: "Consult development-lifecycle coding and workflow conventions when
 
 # Development Lifecycle Rules
 
-Read [the workflow contract](../../rules/common/workflow.md) first for lifecycle,
+Read [the workflow contract](../../rules/common/workflow.md) in full first for lifecycle,
 profile/topology selection, defaults and authorization boundaries. Then read only
-the additional rules relevant to the task. This is on-demand guidance, not
+the additional rules relevant to the task. Resolve the contract relative to this
+installed skill file, not the project cwd or a filesystem-wide first match.
+Continue any truncated read until all sections are loaded; a head-only excerpt
+is incomplete. If required guidance cannot be read, report the blocker and stop
+dependent work rather than invent a fallback. This is on-demand guidance, not
 automatic session injection. Where a generic technique below conflicts with
 the contract, apply the contract while preserving mandatory project policy.
 
