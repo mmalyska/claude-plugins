@@ -145,6 +145,10 @@ the existing real missing-jq shell fixture remains part of the static test suite
 
 ## Evidence protocol for a separately authorized session
 
+For executable preparation, operator task inputs for all 34 cases, scoring and
+evidence templates, use the [live-trial guide](live-trials.md). It adds no execution
+authority and records no live results.
+
 Do not run this protocol under the current no-other-harness restriction. A future
 maintainer must obtain actual authority for host processes and separately for
 model turns or HANDOFF/PARALLEL/REVIEW actors; a metadata-test opt-in is not actor
