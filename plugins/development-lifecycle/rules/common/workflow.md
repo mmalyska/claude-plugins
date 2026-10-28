@@ -116,6 +116,13 @@ able to call a tool. Reuse authorization already provided for the same action an
 scope; do not repeatedly request it. Record the owner, scopes, integrator where
 needed, allowed side effects and restrictions without storing secrets.
 
+When asked to consider specialists, assess the benefit and coordination cost.
+A reasoned SOLO conclusion is valid; do not invent specialist work for a small task.
+If recommending specialists, describe bounded candidate scopes, expected benefit
+and any missing actor authorization as a proposal only. Keep execution within current
+authority; a proposal does not authorize dispatch or require pausing unrelated
+authorized SOLO work to request workers.
+
 Check authority before capability. Then inspect actual exposed tools and schemas
 for delegation, hooks, isolation, scheduling, memory or external services. A CLI,
 Markdown agent file or installed plugin is not proof of an exposed capability.

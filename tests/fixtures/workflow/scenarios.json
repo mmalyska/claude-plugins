@@ -379,6 +379,16 @@
         },
         {
           "path": "plugins/development-lifecycle/rules/common/workflow.md",
+          "fragment": "authorization-and-capabilities",
+          "required_text": "A reasoned SOLO conclusion is valid; do not invent specialist work for a small task."
+        },
+        {
+          "path": "plugins/development-lifecycle/rules/common/workflow.md",
+          "fragment": "authorization-and-capabilities",
+          "required_text": "If recommending specialists, describe bounded candidate scopes, expected benefit and any missing actor authorization as a proposal only."
+        },
+        {
+          "path": "plugins/development-lifecycle/rules/common/workflow.md",
           "fragment": "selection-and-defaults",
           "required_text": "cannot override a restriction or revoked consent."
         }
@@ -390,14 +400,15 @@
             "Tool inventory includes delegation."
           ],
           "required_actions": [
-            "Describe bounded candidate scopes as a proposal only.",
+            "Assess specialist benefit and coordination cost; a reasoned SOLO conclusion is valid without invented candidate work.",
+            "If recommending specialists, describe bounded candidate scopes and expected benefit as a proposal only, identifying missing actor authorization.",
             "Continue only authorized SOLO work."
           ],
           "forbidden_actions": [
             "Call a delegation or second-CLI tool."
           ],
           "artifact_expectations": [
-            "Proposal states missing actor scope."
+            "Record the topology assessment and current actor restriction; a specialist proposal, when made, states missing actor scope."
           ]
         },
         {
