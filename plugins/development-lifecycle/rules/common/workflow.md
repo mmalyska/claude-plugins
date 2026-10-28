@@ -78,6 +78,21 @@ selected or required by project policy. A no-op Simplify assessment is valid.
 DEEP + SOLO uses local role passes, including a distinct review pass; disclose
 that self-review is not independent review by another actor.
 
+For DEEP multi-session work, review the completed plan draft in a distinct local
+pass before marking Plan complete. Inspect the actual drafted artifacts and tasks,
+then record their scope/revision, findings and corrections or a reasoned no-change
+result, with evidence and limits. A completion sentence, line count or future code
+Review task alone does not establish this pass. This is plan validation inside
+Plan, not authority for Build, the later product Review stage or another actor.
+If the pass is incomplete, record NOT RUN and keep the plan draft/incomplete.
+
+Reconcile task write/output paths, dependencies, decision-conditional branches,
+check commands, expected results, done/rollback criteria, ownership/base/worktree,
+authority and next action against that draft. A task that records a decision or
+findings must name the durable output path; Files none means no file mutation.
+Keep proposed decisions distinguishable from accepted ones and carry unverified
+research as uncertainty. QUICK remains a brief session plan without a dossier.
+
 ## Execution topologies
 
 | Topology | Actor contract |

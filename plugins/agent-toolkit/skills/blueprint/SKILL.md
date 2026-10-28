@@ -50,9 +50,22 @@ not another engineering lifecycle.
    plans or create another catalog of procedure copies. Record objective/non-goals,
    acceptance, profile/topology, owner, base SHA, branch/worktree, permissions,
    decisions, status, actual evidence and exact next action.
-4. Review completeness, dependencies, overlapping writers, missing authority,
-   mandatory gates and rollback in a separate local pass. Independent review
-   needs explicit actor authority and suitable capability; disclose self-review.
+4. Review completeness, dependencies, authority, project gates and rollback at the
+   selected profile's depth; QUICK can use a brief session check. For DEEP
+   multi-session work, inspect the completed draft artifacts in a distinct
+   local plan-validation pass before reporting Plan complete. Check task write and
+   durable output paths, dependencies, decision branches, commands/expected results,
+   done/rollback, ownership/base/worktree, authority and next action for consistency.
+   Files none is valid only for tasks with no file mutation: recording decisions or
+   findings requires the actual output path. Record the reviewed draft scope/revision,
+   concrete findings and corrections or a reasoned no-change result, plus evidence
+   and limits. Do not replace content inspection with line counts, a completion
+   assertion or a future code Review task. If review is unfinished, mark it NOT RUN
+   and retain draft/incomplete status. This pass stays inside Plan; it grants no
+   Build, later product Review stage or worker authority. Independent review needs
+   explicit actor authority and suitable capability; disclose local self-review.
+   Reuse accepted decisions, keep proposals/uncertainty explicit and avoid ceremonial
+   repeated reads or extra approval when the current draft is already validated.
 5. Write a resume brief. Update an existing memory index only if configured and
    within accepted write scope; a Markdown state file is not automatic memory
    loading. Do not invent a new user-level memory location or background service.

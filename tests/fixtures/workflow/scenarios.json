@@ -301,22 +301,36 @@
           "path": "plugins/development-lifecycle/rules/common/workflow.md",
           "fragment": "execution-topologies",
           "required_text": "Local sequential role passes are not independent agents."
+        },
+        {
+          "path": "plugins/development-lifecycle/rules/common/workflow.md",
+          "fragment": "execution-profiles",
+          "required_text": "If the pass is incomplete, record NOT RUN and keep the plan draft/incomplete."
+        },
+        {
+          "path": "plugins/agent-toolkit/skills/blueprint/SKILL.md",
+          "fragment": "prepare-a-resumable-plan",
+          "required_text": "Files none is valid only for tasks with no file mutation:"
         }
       ],
       "cases": [
         {
           "id": "plan-only",
           "given": [
-            "Multi-session architectural work with design alternatives."
+            "Multi-session architectural work with design alternatives.",
+            "The plan draft has been written; a future implementation Review task is not a completed plan review."
           ],
           "required_actions": [
             "Write durable repository-grounded plan/tasks/decisions.",
             "Apply separate deliberate local review pass.",
-            "Stop at Plan."
+            "Stop at Plan.",
+            "Inspect the completed draft in a distinct local Plan-validation pass and record concrete findings/corrections or a reasoned no-change result with scope and evidence.",
+            "Reconcile exact task write/output paths, dependencies, conditional decisions, checks, expected/done/rollback and authority before marking the plan complete."
           ],
           "forbidden_actions": [
             "Treat DEEP as authorization to delegate.",
-            "Implement the proposed production change."
+            "Implement the proposed production change.",
+            "Mark review complete from a prose assertion or line-count check without draft-content inspection."
           ],
           "artifact_expectations": [
             "Exact paths, dependencies, checks, expected result/done/rollback, owner/base/worktree, authority and next action."

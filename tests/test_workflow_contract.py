@@ -79,6 +79,12 @@ def contract_errors(document):
         'gate-conflict-blocks-edits': (
             'Safety and worktree-first',
             'An unresolved conflict over a required project gate blocks dependent edits.'),
+        'deep-plan-review-status': (
+            'Execution profiles',
+            'If the pass is incomplete, record NOT RUN and keep the plan draft/incomplete.'),
+        'deep-plan-output-paths': (
+            'Execution profiles',
+            'A task that records a decision or findings must name the durable output path;'),
         'authority-before-capability': (
             'Authorization and capabilities', 'Check authority before capability.'),
         'isolation': (
@@ -235,6 +241,12 @@ class WorkflowContractTest(unittest.TestCase):
                 'An unresolved conflict over a required project gate blocks dependent edits.',
                 'Implement first and reconcile the required gate before shipping.', 1),
              'gate-conflict-blocks-edits'),
+            ('plan review asserted without execution', self.document.replace(
+                'If the pass is incomplete, record NOT RUN and keep the plan draft/incomplete.',
+                'A review completion sentence is sufficient.', 1), 'deep-plan-review-status'),
+            ('missing durable task output', self.document.replace(
+                'A task that records a decision or\nfindings must name the durable output path;',
+                'Task output locations may remain unspecified;', 1), 'deep-plan-output-paths'),
             ('empty document', '', 'section:Lifecycle'),
         ]
         for name, sample, expected in cases:
