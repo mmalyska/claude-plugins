@@ -14,6 +14,16 @@ is BLOCKED by required failed/unrun gates.** No full workflow conformance is cla
 A successful static suite, local walkthrough or copied filesystem is not proof of
 native installation, model obedience, independent review or runtime safety.
 
+## DEEP plan validation repair — pending LIVE verification
+
+The [LIVE-F11 repair record](evidence/2026-10-28-deep-plan-validation-fix.md)
+describes both hosts preserving Plan-only/source boundaries while lacking separate
+current-draft review evidence. The common contract and existing blueprint now
+require content-grounded local validation and consistent task/output scopes.
+Profile-sized planning and accepted decisions remain supported without ceremony.
+Unit/static checks pass; actual post-merge model behavior is NOT RUN. LIVE-F11
+stays OPEN and release acceptance remains BLOCKED by required remaining gates.
+
 ## Required-gate conflict repair — pending LIVE verification
 
 The [LIVE-F10 repair record](evidence/2026-10-28-policy-conflict-fix.md) describes
