@@ -46,6 +46,11 @@
           "path": "plugins/development-lifecycle/rules/common/workflow.md",
           "fragment": "selection-and-defaults",
           "required_text": "Clarify unknown values or conflicting instructions before dependent actions;"
+        },
+        {
+          "path": "plugins/development-lifecycle/rules/common/workflow.md",
+          "fragment": "selection-and-defaults",
+          "required_text": "Do not substitute SOLO merely because it is the only permitted topology;"
         }
       ],
       "cases": [
@@ -83,13 +88,16 @@
         {
           "id": "unknown-topology",
           "given": [
-            "User says topology AUTO."
+            "User says topology AUTO.",
+            "Other actors are explicitly forbidden; SOLO is the only permitted topology."
           ],
           "required_actions": [
-            "Clarify the unknown topology."
+            "Clarify the unknown topology.",
+            "Keep AUTO unresolved and ask whether SOLO was intended before dependent edits."
           ],
           "forbidden_actions": [
-            "Infer worker authorization."
+            "Infer worker authorization.",
+            "Substitute SOLO for AUTO without a user answer, even if the substitution is announced."
           ],
           "artifact_expectations": [
             "Record unresolved scope."

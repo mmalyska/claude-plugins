@@ -73,6 +73,9 @@ def contract_errors(document):
         'topology-authorization': (
             'Authorization and capabilities',
             'HANDOFF, PARALLEL and REVIEW require explicit user authorization'),
+        'unknown-topology-no-substitution': (
+            'Selection and defaults',
+            'Do not substitute SOLO merely because it is the only permitted topology;'),
         'authority-before-capability': (
             'Authorization and capabilities', 'Check authority before capability.'),
         'isolation': (
@@ -221,6 +224,10 @@ class WorkflowContractTest(unittest.TestCase):
             ('missing runner status', self.document.replace(
                 "Capture the test runner's exit code before another command can overwrite it.",
                 'Only inspect the last shell command.', 1), 'test-runner-status'),
+            ('unknown topology normalization', self.document.replace(
+                'Do not substitute SOLO merely because it is the only permitted topology;',
+                'Choose SOLO automatically when it is the only permitted topology;', 1),
+             'unknown-topology-no-substitution'),
             ('empty document', '', 'section:Lifecycle'),
         ]
         for name, sample, expected in cases:

@@ -42,6 +42,15 @@ an agent. Task complexity, available agents, a plan or DEEP never grants authori
 Clarify unknown values or conflicting instructions before dependent actions;
 continue only independent work that stays within the established scope.
 
+Defaults fill omitted values, not explicit unknown names. Restrictions on actors
+do not resolve an unknown topology. For example, `topology AUTO` together with
+`do not start another actor` still requires clarification before implementation:
+ask whether SOLO was intended and keep the selection unresolved until answered.
+Do not substitute SOLO merely because it is the only permitted topology;
+announcing a substitution is not clarification. Independent read-only inspection
+may continue within scope, but dependent edits must wait. A valid explicit or
+accepted selection still applies without redundant confirmation.
+
 Record the chosen profile/topology in an existing plan or handoff when present;
 a brief session record is enough for a small QUICK task. A saved selection is
 state, not new permission, and cannot override a restriction or revoked consent.
