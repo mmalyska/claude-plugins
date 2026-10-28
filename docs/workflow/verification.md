@@ -14,6 +14,14 @@ is BLOCKED by required failed/unrun gates.** No full workflow conformance is cla
 A successful static suite, local walkthrough or copied filesystem is not proof of
 native installation, model obedience, independent review or runtime safety.
 
+## Unknown-topology repair — pending LIVE verification
+
+The [LIVE-F09 repair record](evidence/2026-10-28-unknown-topology-fix.md) summarizes
+Claude's unsupported AUTO-to-SOLO substitution under a no-other-actor restriction
+and Codex's correct clarification. The common selection rule and existing scenario
+now explicitly forbid that substitution. Static/unit checks pass; model behavior
+has not been rerun on the repair. LIVE-F09 remains OPEN and release remains BLOCKED.
+
 ## Test runner status repair — pending LIVE verification
 
 The [exit-status repair record](evidence/2026-10-28-test-exit-status-fix.md)
