@@ -88,6 +88,9 @@ def contract_errors(document):
         'missing-guidance-stop': (
             'Loading and host limitations',
             'If required guidance is unavailable, stop dependent work'),
+        'test-runner-status': (
+            'Artifacts and evidence',
+            "Capture the test runner's exit code before another command can overwrite it."),
         'stage-scope': (
             'Stage and delivery boundaries', 'Stop after the requested stage;'),
         'runtime-permission': (
@@ -215,12 +218,37 @@ class WorkflowContractTest(unittest.TestCase):
             ('missing loading blocker', self.document.replace(
                 'If required guidance is unavailable, stop dependent work',
                 'Use an invented fallback', 1), 'missing-guidance-stop'),
+            ('missing runner status', self.document.replace(
+                "Capture the test runner's exit code before another command can overwrite it.",
+                'Only inspect the last shell command.', 1), 'test-runner-status'),
             ('empty document', '', 'section:Lifecycle'),
         ]
         for name, sample, expected in cases:
             with self.subTest(case=name):
                 self.assertNotEqual(sample, self.document)
                 self.assertIn(expected, contract_errors(sample))
+
+    def test_documented_runner_status_survives_reporting_and_errexit(self):
+        section = self.document.split('### Check exit status\n', 1)[1]
+        example = re.search(r'```sh\n(.*?)\n```', section, re.DOTALL)[1]
+        # Execute the documented pattern against actual passing/failing unittest
+        # fixtures. printf succeeds in both cases; it must not mask a RED exit.
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            tests = root / 'tests'
+            tests.mkdir()
+            for expected in (0, 1):
+                (tests / 'test_sample.py').write_text(
+                    'import unittest\nclass Sample(unittest.TestCase):\n'
+                    f'    def test_result(self): self.assertEqual({expected}, 0)\n')
+                for errexit in (False, True):
+                    with self.subTest(test_exit=expected, errexit=errexit):
+                        arguments = ['sh', *(['-e'] if errexit else []), '-c', example]
+                        result = subprocess.run(arguments, cwd=root, capture_output=True,
+                                                text=True, timeout=15)
+                        self.assertEqual(result.returncode, expected, result.stderr)
+                        self.assertIn(f'unittest exit: {expected}', result.stdout)
+                        self.assertIn('Ran 1 test', result.stderr)
 
     def test_each_required_section_is_checked(self):
         for name in SECTIONS:

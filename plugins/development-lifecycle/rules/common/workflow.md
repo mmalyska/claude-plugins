@@ -198,6 +198,33 @@ Record checks as PASS, FAIL, NOT RUN or NOT APPLICABLE with reasons and actual
 commands/results. Distinguish static checks, local scenario walkthroughs and live
 harness trials. Do not claim independent, native or runtime evidence from prose.
 
+### Check exit status
+
+Capture the test runner's exit code before another command can overwrite it.
+This evidence requirement applies in every profile, even when the on-demand
+[testing rules](testing.md) have not been loaded. Run each short check in its own
+tool call with complete output and its own exit status. Run Git diagnostics in a
+separate call. Apply this to both expected RED failures and GREEN verification.
+
+Do not infer test success from `tests | tail`, `tests | tee`, or
+`tests; git status`: the shell may return the filter's or final command's status.
+If a wrapper is needed, preserve and return the runner status explicitly. For
+this repository's unittest-style checks, this shell pattern also works with
+`set -e` enabled:
+
+```sh
+check_status=0
+python3 -B -m unittest discover -s tests -v || check_status=$?
+printf 'unittest exit: %s\n' "$check_status"
+exit "$check_status"
+```
+
+Use the actual project's check command. For large output, keep a complete log in
+an authorized location and capture the runner exit code before displaying an
+excerpt. A successful filter or later diagnostic cannot turn a failed test into
+a PASS. If the runner status was lost, rerun the check with proper capture before
+claiming verified success; otherwise report the missing evidence explicitly.
+
 ## Stage and delivery boundaries
 
 An instruction for a stage or task authorizes that bounded work only. Stop after
