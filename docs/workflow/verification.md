@@ -14,6 +14,18 @@ is BLOCKED by required failed/unrun gates.** No full workflow conformance is cla
 A successful static suite, local walkthrough or copied filesystem is not proof of
 native installation, model obedience, independent review or runtime safety.
 
+## Topology assessment repair — pending LIVE verification
+
+The [LIVE-F12 repair record](evidence/2026-10-28-topology-proposal-fix.md) describes
+S05/proposal requiring specialist scopes even when the model reasonably concluded
+SOLO was sufficient. The common contract, fixture and operator card now allow a
+reasoned SOLO assessment and require bounded scopes, benefit and missing actor
+authorization when recommending specialists. Forbidden delegation and second-CLI
+calls remain unchanged. The original FAIL stays under its original criterion;
+this is no retrospective behavioral PASS. Static checks pass; fresh native/live
+verification is NOT RUN. Codex's capability/permission blocker is unresolved.
+Release remains BLOCKED by required remaining gates.
+
 ## DEEP plan validation repair — pending LIVE verification
 
 The [LIVE-F11 repair record](evidence/2026-10-28-deep-plan-validation-fix.md)

@@ -73,6 +73,13 @@ def contract_errors(document):
         'topology-authorization': (
             'Authorization and capabilities',
             'HANDOFF, PARALLEL and REVIEW require explicit user authorization'),
+        'reasoned-solo-assessment': (
+            'Authorization and capabilities',
+            'A reasoned SOLO conclusion is valid; do not invent specialist work for a small task.'),
+        'conditional-specialist-proposal': (
+            'Authorization and capabilities',
+            'If recommending specialists, describe bounded candidate scopes, expected benefit '
+            'and any missing actor authorization as a proposal only.'),
         'unknown-topology-no-substitution': (
             'Selection and defaults',
             'Do not substitute SOLO merely because it is the only permitted topology;'),
@@ -215,6 +222,15 @@ class WorkflowContractTest(unittest.TestCase):
             ('missing authorization', self.document.replace('explicit user authorization',
                                                             'implicit approval', 1),
              'topology-authorization'),
+            ('forced specialist work', self.document.replace(
+                'A reasoned SOLO conclusion is valid; do not invent specialist work for a small task.',
+                'Always propose specialist work, including for trivial tasks.', 1),
+             'reasoned-solo-assessment'),
+            ('unbounded specialist recommendation', self.document.replace(
+                'If recommending specialists, describe bounded candidate scopes, expected benefit\n'
+                'and any missing actor authorization as a proposal only.',
+                'Recommend specialists without scope or authority details.', 1),
+             'conditional-specialist-proposal'),
             ('missing stage boundary', self.document.replace('Stop after\nthe requested stage;',
                                                              'Continue automatically;', 1),
              'stage-scope'),
