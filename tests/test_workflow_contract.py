@@ -99,7 +99,7 @@ def contract_errors(document):
             'never silently fall back to editing primary'),
         'first-write-preflight': (
             'Safety and worktree-first',
-            'Before the first edit, including in an existing worktree'),
+            'Each actor verifies current Git state before its first write, including a handoff snapshot:'),
         'evidence-without-narration': (
             'Safety and worktree-first',
             'no separate completion note is required.'),
@@ -247,7 +247,7 @@ class WorkflowContractTest(unittest.TestCase):
                                                              'Continue automatically;', 1),
              'stage-scope'),
             ('missing first-write preflight', self.document.replace(
-                'Before the first edit, including in an existing worktree',
+                'Each actor verifies current Git state before its first write, including a handoff\nsnapshot:',
                 'Directory names establish isolation', 1), 'first-write-preflight'),
             ('mandatory narration replaces factual evidence', self.document.replace(
                 'no\nseparate completion note is required.',
@@ -1179,6 +1179,8 @@ class PortableArtifactTest(unittest.TestCase):
         self.assertIn('to: unassigned', handoff)
         self.assertIn('snapshot grants no permission', handoff)
         self.assertIn('no dispatch follows', handoff)
+        self.assertIn('../../rules/common/workflow.md#safety-and-worktree-first',
+                      sections(handoff)['Receiver preflight'])
         adr = (PLUGIN / 'skills/architecture-decision-records/SKILL.md').read_text()
         self.assertIn('reuse approval already covering the exact action', adr)
 
@@ -1199,6 +1201,34 @@ class PortableArtifactTest(unittest.TestCase):
             self.assertIn('required-gate', cold_resume_fixture_errors(
                 {**snapshot, 'gates': [{'required': True, 'result': result}]}, current))
         # Simulated records only; real actor behavior remains a release gate.
+
+    def test_cold_receiver_primary_status_cannot_be_inherited_from_snapshot(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            primary = Path(temporary) / 'primary'
+            writer = Path(temporary) / 'writer'
+
+            def git(*args, cwd=primary):
+                return subprocess.run(['git', *args], cwd=cwd, check=True,
+                                      capture_output=True, text=True).stdout
+
+            primary.mkdir()
+            git('init', '-b', 'main')
+            (primary / 'file.txt').write_text('baseline\n')
+            git('add', 'file.txt')
+            git('-c', 'user.name=Workflow Test', '-c', 'user.email=test@example.invalid',
+                '-c', 'commit.gpgsign=false', 'commit', '-m', 'seed')
+            git('worktree', 'add', '-b', 'feat/receiver', str(writer))
+            sender_primary_status = git('status', '--porcelain')
+            sender_worktrees = git('worktree', 'list', '--porcelain', cwd=writer)
+            self.assertEqual(sender_primary_status, '')
+
+            # State changes after the sender exits, without moving either HEAD.
+            (primary / 'file.txt').write_text('unrelated user work\n')
+            self.assertEqual(git('worktree', 'list', '--porcelain', cwd=writer),
+                             sender_worktrees)
+            self.assertEqual(git('status', '--porcelain', cwd=writer), '')
+            self.assertNotEqual(git('-C', str(primary), 'status', '--porcelain',
+                                    cwd=writer), sender_primary_status)
 
     def test_s13_cold_snapshot_roundtrip_preserves_established_paths(self):
         template = (ARTIFACT_RESOURCES / 'handoff.md').read_text()

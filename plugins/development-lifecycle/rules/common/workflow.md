@@ -145,12 +145,12 @@ and project quality gates. QUICK cannot lower these requirements. Recommend
 DEEP for destructive or high-impact changes while retaining the mandatory gates
 regardless of the chosen profile.
 
-Before the first edit, including in an existing worktree, verify from actual Git
-output: writer root/branch/HEAD/status and linked isolation; primary branch/HEAD
-and clean status; default policy and the task base, including its relationship
-to the writer. Distinguish submodules and verify superproject ownership/isolation.
-A directory name or silent hook is not evidence. The existing git-workflows
-worktree skill supplies the read-only commands and setup procedure.
+Each actor verifies current Git state before its first write, including a handoff
+snapshot: writer root/branch/HEAD/status and linked isolation; primary branch/HEAD
+and clean status; default policy and task base relative to the writer. A sender's
+snapshot records past observations, not the receiver's current primary status.
+Distinguish submodules and verify superproject ownership/isolation. Directory names
+and silent hooks are not evidence; the git-workflows worktree skill supplies commands.
 
 Resolve the default from origin/HEAD or verified project policy. Missing origin/HEAD
 alone does not prove no remote: inspect configured remote names. When neither remotes
@@ -215,8 +215,8 @@ for tasks without an active plan, preserving established project locations.
 A handoff is a snapshot: task, from/to (or unassigned), base SHA, branch/worktree,
 profile/topology/status, completed changes, decisions, affected files, test
 results, risks, missing permissions and exact next step. It must be usable without
-chat history. The receiver checks current repository state and authority first;
-a stale base or permission mismatch needs reconciliation before dependent writes.
+chat history. Follow the [receiver preflight](../../resources/workflow/handoff.md#receiver-preflight)
+before resuming.
 
 Record checks as PASS, FAIL, NOT RUN or NOT APPLICABLE with reasons and actual
 commands/results. Distinguish static checks, local scenario walkthroughs and live
