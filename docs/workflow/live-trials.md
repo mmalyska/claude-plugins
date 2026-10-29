@@ -161,6 +161,13 @@ with only a plugin installed does not prove automatic global rule interception;
 record that limitation rather than claiming arbitrary-prompt default enforcement.
 Keep the selected profile/topology out of the default-case task input.
 
+For prepared-entry trials, give every actor the verified absolute path to the
+required installed skill entry file, derived from that actor's installation
+metadata and checked against the candidate. This is a locator, not an attached
+contract or proof of reading it; capture the actor's actual load. Do not guess a
+global cache root. Direct-entry/discovery cases still use their specified native
+entrypoint and retain discovery failures rather than substituting this locator.
+
 Verify actual exposed tools and permissions before actor trials. A native agent
 Markdown file is not evidence of a registered Codex agent. If independent review
 or cross-harness transfer cannot actually run, the positive actor path stays NOT
@@ -176,11 +183,16 @@ from the task, workflow expectations and hidden scorecard. Do not assert reposit
 state or prescribe the expected answer. Archive the rendered inventory with invocation
 metadata; a changed inventory is a new trial configuration, not an unchanged rerun.
 
-For a Claude allowlist scoped to an absolute primary path, render the already
-allowed forms using that exact path, for example:
+Render both current-directory and external-worktree forms when configured; an
+absolute `-C` form is not implied by a permitted current-directory command. For
+example, substitute the actual primary path and include only configured forms:
 
 ```text
-Permitted direct Git forms (run separately; <primary> is replaced before launch):
+Permitted direct Git forms (run separately from the assigned worktree):
+git branch --show-current
+git rev-parse --absolute-git-dir
+git rev-parse HEAD
+git status --porcelain
 git -C <primary> branch --show-current
 git -C <primary> rev-parse HEAD
 git -C <primary> status --porcelain
