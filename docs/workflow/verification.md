@@ -1,5 +1,16 @@
 # Workflow verification and release gates
 
+## Complete pre-write verification repair — pending LIVE retest
+
+The [pre-write completion repair](evidence/2026-10-29-prewrite-completion-fix.md)
+addresses the failed PR #28 Claude S05/revoked retest: isolation and primary
+checks ran, but default/base resolution was skipped entirely before edits.
+The common contract now separates all three prerequisites, provides concrete
+read-only default/base discovery and requires a brief completed-facts record.
+Direct project checks are preferred when native tools retain runner status.
+Static and disposable Git checks pass; post-merge LIVE verification is NOT RUN.
+Historical failures remain preserved and LIVE-F07/release remain OPEN/BLOCKED.
+
 ## Scope and decision
 
 This record accompanies T11 of the [implementation plan](../plans/hybrid-ai-workflow/plan.md).

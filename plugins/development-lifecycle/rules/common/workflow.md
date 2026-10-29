@@ -155,7 +155,10 @@ authorized primary maintenance is a separate operation, not a sandbox workaround
 Do not reset, stash, clean or remove another owner's work to obtain a clean state.
 
 Before the first edit, including in an existing worktree, establish these facts
-from actual Git output rather than a directory name or branch-name convention:
+from actual Git output rather than a directory name or branch-name convention.
+Complete all three parts below; isolation alone does not complete preflight.
+
+### 1. Verify writer isolation
 
 ```sh
 git rev-parse --show-toplevel
@@ -167,15 +170,31 @@ git status --porcelain
 git worktree list --porcelain
 ```
 
-Resolve Git/common directories to absolute physical paths. Use the worktree
-metadata to locate primary; check its actual branch, HEAD and status with
-`git -C <verified-primary> branch --show-current`, `rev-parse HEAD` and
-`status --porcelain`. Check the writer HEAD and accepted task base too. A path
-containing `.worktrees`, a feature branch, a hook's silence or controller setup
-is not evidence that these checks ran. Do not treat a submodule as a linked
-worktree; verify its superproject's isolation and ownership before mutation.
+Resolve Git/common directories to absolute physical paths. Do not treat a submodule
+as a linked worktree; verify its superproject isolation and ownership.
 
-Resolve the default from origin/HEAD or verified project policy. In a no-remote
+### 2. Verify primary state
+
+Use the worktree metadata to locate primary;
+check its actual branch, HEAD and status with
+`git -C <verified-primary> branch --show-current`, `rev-parse HEAD` and
+`status --porcelain`. A path containing `.worktrees`, a feature branch, a hook's
+silence or controller setup is not evidence that these checks ran.
+
+### 3. Resolve default and task base
+
+Resolve the default from origin/HEAD or verified project policy. When policy does
+not establish it, inspect the remote default and configured remote names with
+separate read-only calls (equivalent Git evidence is valid):
+
+```sh
+git symbolic-ref refs/remotes/origin/HEAD
+git remote
+```
+
+An absent remote-default ref does not prove that the repository has no remote.
+If remotes exist but their default is unresolved, use verified policy or stop;
+do not guess that the current primary branch is the default. In a no-remote
 fixture without default policy, report that no remote default is available and
 record the verified actual primary branch as the local task base when consistent
 with the task. `init.defaultBranch` is only a creation preference, not proof of
@@ -186,6 +205,13 @@ never repair it by switching, resetting, stashing or cleaning user state. Record
 the verified primary, writer and base briefly in session or existing task state.
 The existing git-workflows worktree skill supplies setup/creation details; these
 checks apply even when no worktree needs creating.
+
+Before the first mutation, briefly record all three completed parts: writer
+isolation, primary state, and default/base source plus accepted base SHA and
+writer relationship to it. A primary branch name and matching HEADs alone do not
+establish its default policy. Any unresolved part keeps preflight incomplete;
+stop dependent writes rather than declare isolation verification sufficient.
+Use a session note or existing task state; no new artifact is required.
 
 A denied or unexecuted prerequisite check remains unresolved; successful partial
 output does not complete the other checks in a rejected compound command. Retain
@@ -256,6 +282,14 @@ This evidence requirement applies in every profile, even when the on-demand
 [testing rules](testing.md) have not been loaded. Run each short check in its own
 tool call with complete output and its own exit status. Run Git diagnostics in a
 separate call. Apply this to both expected RED failures and GREEN verification.
+
+Use the exact project check directly when its tool result captures the runner
+status; do not add shell variables, quoting, status-printing or pipelines merely
+to obtain a second exit-code display. Additional shell syntax can need different
+permissions even when the direct runner is allowed. If a wrapper is denied,
+distinguish that from denial of the runner itself. Use an already permitted direct
+form only when the host allows that recovery; honor any no-retry instruction and
+otherwise report the check NOT RUN. Never relax permissions to obtain a result.
 
 Do not infer test success from `tests | tail`, `tests | tee`, or
 `tests; git status`: the shell may return the filter's or final command's status.
