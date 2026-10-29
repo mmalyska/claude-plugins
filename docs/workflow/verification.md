@@ -1,5 +1,15 @@
 # Workflow verification and release gates
 
+## Path-scoped trial permissions — pending LIVE verification
+
+The [permission-disclosure repair](evidence/2026-10-29-trial-permission-inventory.md)
+separates Claude's denied relative-path query from the absolute-primary commands
+already configured in its trial allowlist. The operator guide now supplies concise
+actual permission metadata to each actor, without teaching the expected result or
+broadening permissions. Runtime rules/skills and historical FAILs are unchanged.
+Fresh permission-disclosure trials remain NOT RUN; release stays BLOCKED. The
+all-plugin context audit remains deferred until all campaign tests finish.
+
 ## Cold-resume preflight repair — pending LIVE retest
 
 The [S06 repair record](evidence/2026-10-29-cold-resume-preflight-fix.md) documents

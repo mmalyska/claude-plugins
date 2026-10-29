@@ -166,6 +166,32 @@ Markdown file is not evidence of a registered Codex agent. If independent review
 or cross-harness transfer cannot actually run, the positive actor path stays NOT
 RUN; a local role pass may be recorded separately with its real scope.
 
+### Actor-visible permission metadata
+
+When native tools do not expose a restriction, give each actor a concise inventory
+from its actual launch settings: readable/writable paths, sandbox/approval mode and
+path-sensitive allowed command forms. Apply this to each host and fresh receiver;
+record host differences rather than invent equivalent allowlists. Keep this separate
+from the task, workflow expectations and hidden scorecard. Do not assert repository
+state or prescribe the expected answer. Archive the rendered inventory with invocation
+metadata; a changed inventory is a new trial configuration, not an unchanged rerun.
+
+For a Claude allowlist scoped to an absolute primary path, render the already
+allowed forms using that exact path, for example:
+
+```text
+Permitted direct Git forms (run separately; <primary> is replaced before launch):
+git -C <primary> branch --show-current
+git -C <primary> rev-parse HEAD
+git -C <primary> status --porcelain
+```
+
+Generate this inventory from the configured entries, not a second handwritten
+permission list. Relative paths, shell variables and compound commands may require
+different approval; do not add broader rules to make them work. Configured allowance
+is not proof of native acceptance. Preserve actual denials and host no-retry limits;
+if a required fact remains unresolved, the shared contract still blocks writes.
+
 ## 4. Execute and capture one case
 
 1. Operator records candidate/fixture base SHA, host/version, model choice, config
