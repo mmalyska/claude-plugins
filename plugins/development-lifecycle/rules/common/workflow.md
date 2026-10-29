@@ -145,84 +145,31 @@ and project quality gates. QUICK cannot lower these requirements. Recommend
 DEEP for destructive or high-impact changes while retaining the mandatory gates
 regardless of the chosen profile.
 
-Before a write, verify repository root, default branch, status and isolation;
-distinguish a linked worktree from a submodule. The primary checkout remains
-clean on its default branch. Use exposed native isolation if suitable, otherwise
-manual git worktrees. Locally exclude `.worktrees/` via `.git/info/exclude`, not a
-tracked `.gitignore` change. If isolation is blocked, stop writes and report the
-permission prerequisite; never silently fall back to editing primary. Explicitly
-authorized primary maintenance is a separate operation, not a sandbox workaround.
-Do not reset, stash, clean or remove another owner's work to obtain a clean state.
+Before the first edit, including in an existing worktree, verify from actual Git
+output: writer root/branch/HEAD/status and linked isolation; primary branch/HEAD
+and clean status; default policy and the task base, including its relationship
+to the writer. Distinguish submodules and verify superproject ownership/isolation.
+A directory name or silent hook is not evidence. The existing git-workflows
+worktree skill supplies the read-only commands and setup procedure.
 
-Before the first edit, including in an existing worktree, establish these facts
-from actual Git output rather than a directory name or branch-name convention.
-Complete all three parts below; isolation alone does not complete preflight.
+Resolve the default from origin/HEAD or verified project policy. Missing origin/HEAD
+alone does not prove no remote: inspect configured remote names. When neither remotes
+nor default policy exist, the verified clean primary branch may be the local task base
+when consistent with scope. `init.defaultBranch` is only a creation preference.
+Actual pre-write Git evidence is sufficient when the base is unambiguous; no
+separate completion note is required. Ambiguous or divergent state, or a base
+change needing authority, requires an explicit decision before dependent writes.
 
-### 1. Verify writer isolation
+A denied or unexecuted prerequisite check remains unresolved; recover only via
+permitted read-only checks or normal host permissions, respecting no-retry limits.
+If required facts remain unavailable, stop dependent writes and report the blocker;
+equivalent successful evidence counts without repeating commands or narration.
 
-```sh
-git rev-parse --show-toplevel
-git rev-parse --absolute-git-dir
-git rev-parse --git-common-dir
-git rev-parse --show-superproject-working-tree
-git branch --show-current
-git status --porcelain
-git worktree list --porcelain
-```
-
-Resolve Git/common directories to absolute physical paths. Do not treat a submodule
-as a linked worktree; verify its superproject isolation and ownership.
-
-### 2. Verify primary state
-
-Use the worktree metadata to locate primary;
-check its actual branch, HEAD and status with
-`git -C <verified-primary> branch --show-current`, `rev-parse HEAD` and
-`status --porcelain`. A path containing `.worktrees`, a feature branch, a hook's
-silence or controller setup is not evidence that these checks ran.
-
-### 3. Resolve default and task base
-
-Resolve the default from origin/HEAD or verified project policy. When policy does
-not establish it, inspect the remote default and configured remote names with
-separate read-only calls (equivalent Git evidence is valid):
-
-```sh
-git symbolic-ref refs/remotes/origin/HEAD
-git remote
-```
-
-An absent remote-default ref does not prove that the repository has no remote.
-If remotes exist but their default is unresolved, use verified policy or stop;
-do not guess that the current primary branch is the default. In a no-remote
-fixture without default policy, report that no remote default is available and
-record the verified actual primary branch as the local task base when consistent
-with the task. `init.defaultBranch` is only a creation preference, not proof of
-an existing repository's default. Missing origin/HEAD alone need not block work
-when that local base and isolation are verified. Ambiguous isolation/base, dirty
-or non-default primary means stop dependent writes and report the discrepancy;
-never repair it by switching, resetting, stashing or cleaning user state. Record
-the verified primary, writer and base briefly in session or existing task state.
-The existing git-workflows worktree skill supplies setup/creation details; these
-checks apply even when no worktree needs creating.
-
-Before the first mutation, briefly record all three completed parts: writer
-isolation, primary state, and default/base source plus accepted base SHA and
-writer relationship to it. A primary branch name and matching HEADs alone do not
-establish its default policy. Any unresolved part keeps preflight incomplete;
-stop dependent writes rather than declare isolation verification sufficient.
-Use a session note or existing task state; no new artifact is required.
-
-A denied or unexecuted prerequisite check remains unresolved; successful partial
-output does not complete the other checks in a rejected compound command. Retain
-facts already established, identify what is still missing, and recover only with
-permitted read-only checks or the host's normal permission path within scope.
-Do not bypass a denial or repeat an action the host forbids retrying. Equivalent
-Git output may establish a fact without repeating a particular command. If the
-remaining isolation/default/base facts cannot be verified, stop dependent writes
-and report the blocker; unrelated read-only work may continue. Permission to edit
-is not evidence that pre-write prerequisites passed. Do not record a denied
-origin/default query as an absent ref or a verified no-remote fallback.
+Keep primary clean on its default branch. Use suitable exposed native isolation
+or manual worktrees, with `.worktrees/` locally excluded in `.git/info/exclude`.
+If isolation is blocked, stop writes; never silently fall back to editing primary.
+Do not switch, reset, stash, clean or remove user state to satisfy a postcondition.
+Explicitly authorized primary maintenance is a separate scoped operation.
 
 Apply shared project policy from applicable `AGENTS.md`, host adapters and project
 documentation; surface conflicts rather than choose different policies by host.
