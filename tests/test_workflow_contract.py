@@ -100,6 +100,12 @@ def contract_errors(document):
         'first-write-preflight': (
             'Safety and worktree-first',
             'Before the first edit, including in an existing worktree'),
+        'complete-preflight': (
+            'Safety and worktree-first',
+            'Complete all three parts below; isolation alone does not complete preflight.'),
+        'direct-project-check': (
+            'Artifacts and evidence',
+            'Use the exact project check directly when its tool result captures the runner status;'),
         'denied-preflight-unresolved': (
             'Safety and worktree-first',
             'A denied or unexecuted prerequisite check remains unresolved;'),
@@ -243,6 +249,12 @@ class WorkflowContractTest(unittest.TestCase):
             ('missing first-write preflight', self.document.replace(
                 'Before the first edit, including in an existing worktree',
                 'Directory names establish isolation', 1), 'first-write-preflight'),
+            ('isolation treated as complete preflight', self.document.replace(
+                'Complete all three parts below; isolation alone does not complete preflight.',
+                'Isolation completes preflight.', 1), 'complete-preflight'),
+            ('direct check preference removed', self.document.replace(
+                'Use the exact project check directly when its tool result captures the runner\nstatus;',
+                'Always wrap checks;', 1), 'direct-project-check'),
             ('denied prerequisite treated as complete', self.document.replace(
                 'A denied or unexecuted prerequisite check remains unresolved;',
                 'A denied prerequisite counts as complete;', 1),
@@ -283,6 +295,30 @@ class WorkflowContractTest(unittest.TestCase):
             with self.subTest(case=name):
                 self.assertNotEqual(sample, self.document)
                 self.assertIn(expected, contract_errors(sample))
+
+    def test_documented_default_queries_distinguish_missing_ref_from_no_remote(self):
+        section = self.document.split('### 3. Resolve default and task base', 1)[1]
+        commands = re.search(r'```sh\n(.*?)```', section, re.DOTALL)[1].strip().splitlines()
+        self.assertEqual(commands, ['git symbolic-ref refs/remotes/origin/HEAD', 'git remote'])
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            subprocess.run(['git', 'init', '-b', 'main', str(root)],
+                           check=True, capture_output=True)
+
+            def observations():
+                return [subprocess.run(command.split(), cwd=root, capture_output=True,
+                                       text=True) for command in commands]
+
+            absent_ref, no_remotes = observations()
+            self.assertNotEqual(absent_ref.returncode, 0)
+            self.assertEqual(no_remotes.returncode, 0)
+            self.assertEqual(no_remotes.stdout, '')
+            subprocess.run(['git', 'remote', 'add', 'origin', str(root / 'not-fetched')],
+                           cwd=root, check=True)
+            absent_ref, configured_remote = observations()
+            self.assertNotEqual(absent_ref.returncode, 0)
+            self.assertEqual(configured_remote.returncode, 0)
+            self.assertEqual(configured_remote.stdout, 'origin\n')
 
     def test_documented_runner_status_survives_reporting_and_errexit(self):
         section = self.document.split('### Check exit status\n', 1)[1]

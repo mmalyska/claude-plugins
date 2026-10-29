@@ -32,7 +32,8 @@ do not confuse submodule metadata layout with an independent linked worktree or
 silently mutate its superproject. If isolation cannot be established, stop writes.
 
 Before any write, perform the primary/base checks below even if isolation already
-exists. A `.worktrees` path, feature branch or silent guard is not verification.
+exists. Step 0 verifies isolation, not completion of primary/default/base
+verification. A `.worktrees` path, feature branch or silent guard is not verification.
 If already in a suitable linked worktree, reuse it rather than nesting another.
 Record absolute path, branch (or detached HEAD), base SHA and ownership. A detached
 or externally managed checkout is not permission to create a branch, reset state
@@ -78,14 +79,22 @@ status and local/remote revision relationship before mutation. Do not switch a
 dirty or non-default primary merely to satisfy a postcondition. Preserve it and
 report the discrepancy; obtain missing maintenance scope before dependent writes.
 
-If origin/HEAD is absent, inspect verified project default policy. For a no-remote
-fixture without such policy, report the unavailable remote default and record the
+Inspect origin/HEAD with `git symbolic-ref refs/remotes/origin/HEAD` or equivalent
+read-only output. If it is absent, inspect verified project default policy and
+configured remote names (`git remote`); an absent ref alone does not prove no
+remote. For a no-remote fixture without such policy, report the unavailable remote
+default and record the
 actual verified primary branch as the local task base when consistent with scope.
 `init.defaultBranch` is only a creation preference, never existing-default proof.
 Check primary with `git -C <verified-primary> branch --show-current`,
 `rev-parse HEAD` and `status --porcelain`, and check the writer HEAD against the
 accepted base. Missing origin/HEAD alone does not invalidate verified local state;
-ambiguous state blocks dependent writes. Record the facts before editing.
+ambiguous state blocks dependent writes. Before editing, record the default/base
+source, accepted base SHA and writer relationship to it alongside the verified
+primary state. Matching writer/primary
+HEADs alone do not establish default policy. If any of these facts is unresolved,
+preflight is incomplete and dependent writes stop. Use brief existing task/session
+state, not a new mandatory artifact.
 
 A denied preflight query is not a missing ref or a successful check. Keep any
 already verified facts, then identify and verify each unresolved prerequisite
