@@ -1,6 +1,6 @@
 {
   "name": "development-lifecycle",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "Shared specification, testing, review, and delivery workflows for Claude Code and Codex.",
   "hooks": [],
   "commands": [],

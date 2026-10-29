@@ -14,6 +14,17 @@ is BLOCKED by required failed/unrun gates.** No full workflow conformance is cla
 A successful static suite, local walkthrough or copied filesystem is not proof of
 native installation, model obedience, independent review or runtime safety.
 
+## Denied preflight recovery repair — pending LIVE verification
+
+The [LIVE-F07 recurrence repair](evidence/2026-10-29-denied-preflight-fix.md)
+records Claude honoring S05/revoked but editing after only partial recovery of a
+denied default/base query. The common contract and existing worktree skill now
+keep unexecuted prerequisite checks unresolved, allow only permitted recovery,
+and stop dependent writes when facts remain unavailable. Equivalent Git evidence
+and the verified no-remote fallback remain valid; no permissions are broadened.
+Static checks pass; new native/live verification is NOT RUN. Historical FAIL and
+release-blocking gates remain preserved. Post-merge reruns need a fresh candidate.
+
 ## Topology assessment repair — pending LIVE verification
 
 The [LIVE-F12 repair record](evidence/2026-10-28-topology-proposal-fix.md) describes
