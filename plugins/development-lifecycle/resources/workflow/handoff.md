@@ -71,14 +71,11 @@ Remaining tasks/dependencies: `<IDs and paths>`. Rollback: `<scoped plan and che
 
 ## Receiver preflight
 
-1. Read current instructions/policy and linked plan/tasks/decisions; reconcile
-   profile/topology and authorization before checking available tools.
-2. Verify actual repository, dirty/index/untracked state, base SHA, current HEAD,
-   branch/worktree and writer ownership. Stale base, branch drift or missing state
-   blocks dependent writes until reconciled; do not auto-reset/rebase or discard work.
-3. Check receiver assignment, active actor/tool/file scope and missing permissions.
-   An unassigned or unauthorized receiver records a blocker; no dispatch follows.
-4. Review gate evidence against the actual revision. Required NOT RUN/FAIL gates
-   remain blockers, not PASS. Keep host/version and static/live evidence distinct.
-5. Resume only the exact authorized next action. Ask only for genuinely missing
-   scope; plan or handoff approval alone grants no delivery/runtime authority.
+1. Read current policy and linked task state; confirm assignment, profile/topology,
+   writer ownership and actor/tool/file scope. If unauthorized, no dispatch follows.
+2. Run the [shared Git preflight](../../rules/common/workflow.md#safety-and-worktree-first)
+   before any write; snapshot observations are historical. Stale base, branch drift
+   or missing state blocks dependent writes until reconciled; preserve user work.
+3. Review gates against the actual revision; required NOT RUN/FAIL is not PASS.
+   Resume only the exact authorized next action, with no inferred delivery/runtime
+   authority. Ask only for genuinely missing scope.

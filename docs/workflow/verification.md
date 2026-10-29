@@ -1,5 +1,16 @@
 # Workflow verification and release gates
 
+## Cold-resume preflight repair — pending LIVE retest
+
+The [S06 repair record](evidence/2026-10-29-cold-resume-preflight-fix.md) documents
+successful real cold transfers with missing current pre-write facts. Each actor,
+including a snapshot writer, now follows the same shared Git preflight; the
+receiver resource links it instead of duplicating an incomplete checklist.
+Sender observations do not establish current primary cleanliness. Guidance shrinks
+by three lines without a narration gate or broader permissions. Static/Git checks
+pass; fresh model reruns remain NOT RUN and historical FAILs remain preserved.
+Release stays BLOCKED; the all-plugin context audit remains after all testing.
+
 ## Lightweight preflight — acceptance adjustment
 
 The [simplification record](evidence/2026-10-29-lightweight-preflight.md) removes
