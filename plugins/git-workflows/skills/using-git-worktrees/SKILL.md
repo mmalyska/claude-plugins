@@ -31,17 +31,10 @@ For a submodule, verify actual submodule and superproject isolation/ownership;
 do not confuse submodule metadata layout with an independent linked worktree or
 silently mutate its superproject. If isolation cannot be established, stop writes.
 
-Before any write, perform the primary/base checks below even if isolation already
-exists. Step 0 verifies isolation, not completion of primary/default/base
-verification. A `.worktrees` path, feature branch or silent guard is not verification.
-If already in a suitable linked worktree, reuse it rather than nesting another.
-Record absolute path, branch (or detached HEAD), base SHA and ownership. A detached
-or externally managed checkout is not permission to create a branch, reset state
-or remove that checkout; use only the requested scoped work there.
-
-If in primary, create isolation before writes. There is no sandbox exception to
-this rule. Explicitly authorized primary maintenance is a separate operation,
-not a fallback when isolation fails. Preserve all existing dirty state.
+Continue with the primary/base checks below even in an existing worktree.
+Reuse suitable isolation; do not nest another worktree. Preserve detached or
+externally managed checkout ownership and all existing dirty state. Creating a
+branch or changing primary needs its own applicable scope.
 
 ## Step 1: Select the isolation mechanism
 
@@ -73,37 +66,30 @@ when available; do not route around it or dirty primary instead.
 
 ### Verify base without silently changing primary
 
-Locate the actual primary checkout from git worktree metadata; resolve the
-default branch from `origin/HEAD` or verified repository policy. Read its branch,
-status and local/remote revision relationship before mutation. Do not switch a
-dirty or non-default primary merely to satisfy a postcondition. Preserve it and
-report the discrepancy; obtain missing maintenance scope before dependent writes.
+Locate primary from worktree metadata; check its actual branch, HEAD and status
+with `git -C <verified-primary> branch --show-current`, `rev-parse HEAD` and
+`status --porcelain`. Compare writer HEAD with the task base, including required
+unpushed task commits. Do not switch a dirty or non-default primary merely to
+satisfy a postcondition.
 
-Inspect origin/HEAD with `git symbolic-ref refs/remotes/origin/HEAD` or equivalent
-read-only output. If it is absent, inspect verified project default policy and
-configured remote names (`git remote`); an absent ref alone does not prove no
-remote. For a no-remote fixture without such policy, report the unavailable remote
-default and record the
-actual verified primary branch as the local task base when consistent with scope.
-`init.defaultBranch` is only a creation preference, never existing-default proof.
-Check primary with `git -C <verified-primary> branch --show-current`,
-`rev-parse HEAD` and `status --porcelain`, and check the writer HEAD against the
-accepted base. Missing origin/HEAD alone does not invalidate verified local state;
-ambiguous state blocks dependent writes. Before editing, record the default/base
-source, accepted base SHA and writer relationship to it alongside the verified
-primary state. Matching writer/primary
-HEADs alone do not establish default policy. If any of these facts is unresolved,
-preflight is incomplete and dependent writes stop. Use brief existing task/session
-state, not a new mandatory artifact.
+Resolve the default from verified repository policy or read-only Git output:
 
-A denied preflight query is not a missing ref or a successful check. Keep any
-already verified facts, then identify and verify each unresolved prerequisite
-before editing. Use only permitted read-only recovery or normal host permissions
-within scope; do not bypass a denial or retry an action the host forbids. A partial
-fallback must not silently omit the default/base checks. Equivalent actual Git
-output is sufficient; no particular command spelling is required. If verification
-remains unavailable, stop dependent writes and report the blocker, even when
-Edit/Write tools are allowed. Follow the shared contract's pre-write requirements.
+```sh
+git symbolic-ref refs/remotes/origin/HEAD
+git remote
+```
+
+A missing origin/HEAD alone does not prove no remote. If remotes exist but their
+default is unresolved, use verified policy or stop. When neither remotes nor policy
+exist, the verified clean primary branch can be the local task base within scope.
+`init.defaultBranch` is only a creation preference. Unambiguous pre-write Git
+evidence suffices; no separate completion note is required. Resolve ambiguity,
+divergence or a change needing authority explicitly before dependent writes.
+
+A denied preflight query is not a missing ref or a successful check. Recover
+only through permitted read-only checks or normal host permissions; respect
+no-retry limits. If verification remains unavailable, stop dependent writes and
+report the blocker. Equivalent successful evidence counts; preserve user state.
 
 For an already clean primary on its default branch, update the intended remote
 base only within task authority, using fetch and `git pull --ff-only`. Stop on a

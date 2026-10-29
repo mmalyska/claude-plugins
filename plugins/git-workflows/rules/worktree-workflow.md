@@ -38,8 +38,9 @@ even when already in a feature worktree. Inspect actual Git/common directories,
 superproject, worktree metadata and writer state; locate primary and verify its
 actual branch, HEAD and clean status against the accepted base/default policy.
 A `.worktrees` path, feature branch, preconfigured fixture or silent guard is not
-proof of isolation. Record the verified facts before editing. Missing or ambiguous
-checks block dependent writes; preserve user state instead of repairing it.
+proof of isolation. Actual pre-write Git evidence suffices when the base is clear;
+no separate completion note is required. Resolve ambiguous or unauthorized base
+choices before dependent writes; preserve user state instead of repairing it.
 
 ## Isolation failure and primary state
 

@@ -100,9 +100,9 @@ def contract_errors(document):
         'first-write-preflight': (
             'Safety and worktree-first',
             'Before the first edit, including in an existing worktree'),
-        'complete-preflight': (
+        'evidence-without-narration': (
             'Safety and worktree-first',
-            'Complete all three parts below; isolation alone does not complete preflight.'),
+            'no separate completion note is required.'),
         'direct-project-check': (
             'Artifacts and evidence',
             'Use the exact project check directly when its tool result captures the runner status;'),
@@ -113,7 +113,7 @@ def contract_errors(document):
             'Safety and worktree-first',
             'stop dependent writes and report the blocker;'),
         'actual-primary': (
-            'Safety and worktree-first', 'check its actual branch, HEAD and status'),
+            'Safety and worktree-first', 'primary branch/HEAD and clean status;'),
         'full-initial-load': (
             'Loading and host limitations', 'Load the complete contract on first use'),
         'missing-guidance-stop': (
@@ -249,9 +249,9 @@ class WorkflowContractTest(unittest.TestCase):
             ('missing first-write preflight', self.document.replace(
                 'Before the first edit, including in an existing worktree',
                 'Directory names establish isolation', 1), 'first-write-preflight'),
-            ('isolation treated as complete preflight', self.document.replace(
-                'Complete all three parts below; isolation alone does not complete preflight.',
-                'Isolation completes preflight.', 1), 'complete-preflight'),
+            ('mandatory narration replaces factual evidence', self.document.replace(
+                'no\nseparate completion note is required.',
+                'A separate completion note is mandatory.', 1), 'evidence-without-narration'),
             ('direct check preference removed', self.document.replace(
                 'Use the exact project check directly when its tool result captures the runner\nstatus;',
                 'Always wrap checks;', 1), 'direct-project-check'),
@@ -260,11 +260,11 @@ class WorkflowContractTest(unittest.TestCase):
                 'A denied prerequisite counts as complete;', 1),
              'denied-preflight-unresolved'),
             ('unresolved preflight allows edits', self.document.replace(
-                'stop dependent writes\nand report the blocker;',
+                'stop dependent writes and report the blocker;',
                 'continue editing without the remaining facts;', 1),
              'denied-preflight-stop'),
             ('missing actual primary check', self.document.replace(
-                'check its actual branch, HEAD and status', 'assume primary is clean', 1),
+                'primary branch/HEAD\nand clean status;', 'assume primary is clean;', 1),
              'actual-primary'),
             ('missing full initial load', self.document.replace(
                 'Load the complete contract on first use', 'Read a short excerpt', 1),
@@ -297,7 +297,8 @@ class WorkflowContractTest(unittest.TestCase):
                 self.assertIn(expected, contract_errors(sample))
 
     def test_documented_default_queries_distinguish_missing_ref_from_no_remote(self):
-        section = self.document.split('### 3. Resolve default and task base', 1)[1]
+        section = WORKTREE_CREATION.read_text().split(
+            '### Verify base without silently changing primary', 1)[1]
         commands = re.search(r'```sh\n(.*?)```', section, re.DOTALL)[1].strip().splitlines()
         self.assertEqual(commands, ['git symbolic-ref refs/remotes/origin/HEAD', 'git remote'])
         with tempfile.TemporaryDirectory() as temporary:
@@ -639,7 +640,7 @@ def isolation_creation_errors(document):
     prose = active_prose(document)
     required = {
         'denied-preflight': 'A denied preflight query is not a missing ref or a successful check.',
-        'unverified-preflight-stop': 'If verification remains unavailable, stop dependent writes and report the blocker,',
+        'unverified-preflight-stop': 'If verification remains unavailable, stop dependent writes and report the blocker.',
         'blocked-writes': 'If worktree creation fails, stop writes and report the permission prerequisite.',
         'no-primary-fallback': 'Never silently fall back to editing primary.',
         'normal-permissions': 'Use normal host permission escalation only when available and within scope;',
@@ -699,7 +700,7 @@ class WorktreeIsolationTest(unittest.TestCase):
         cases = (
             ('A denied preflight query is not a missing ref or a successful check.',
              'denied-preflight'),
-            ('If verification remains unavailable, stop dependent writes and report the blocker,',
+            ('If verification remains unavailable, stop dependent writes and report the blocker.',
              'unverified-preflight-stop'),
             ('If worktree creation fails, stop writes and report the permission prerequisite.',
              'blocked-writes'),

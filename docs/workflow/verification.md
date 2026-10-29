@@ -1,5 +1,15 @@
 # Workflow verification and release gates
 
+## Lightweight preflight — acceptance adjustment
+
+The [simplification record](evidence/2026-10-29-lightweight-preflight.md) removes
+mandatory pre-edit narration when actual Git evidence makes the base unambiguous.
+Verification, isolation, authority and project gates remain required. Repeated
+preflight guidance shrinks by 66 lines across three files. Historical trial FAIL
+records are not regraded; no new live evidence is claimed. Static checks pass;
+release remains BLOCKED. An all-plugin context/size audit is deferred until the
+entire testing campaign is complete.
+
 ## Complete pre-write verification repair — pending LIVE retest
 
 The [pre-write completion repair](evidence/2026-10-29-prewrite-completion-fix.md)
