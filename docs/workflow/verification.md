@@ -1,5 +1,15 @@
 # Workflow verification and release gates
 
+## Prepared actor context — pending LIVE retest
+
+The [S07 setup repair](evidence/2026-10-29-trial-actor-context.md) gives each
+prepared-entry actor a verified installed skill locator and renders existing
+current-directory command forms alongside path-scoped forms. It changes no
+runtime instructions or permissions. Claude's historical S07 FAIL is preserved;
+a future context-disclosed run is a changed setup configuration, not an unchanged
+rerun. Static checks pass; LIVE verification remains NOT RUN and release BLOCKED.
+The all-plugin context audit remains deferred until all campaign tests finish.
+
 ## Path-scoped trial permissions — pending LIVE verification
 
 The [permission-disclosure repair](evidence/2026-10-29-trial-permission-inventory.md)
