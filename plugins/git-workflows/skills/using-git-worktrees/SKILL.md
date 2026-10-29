@@ -87,6 +87,15 @@ Check primary with `git -C <verified-primary> branch --show-current`,
 accepted base. Missing origin/HEAD alone does not invalidate verified local state;
 ambiguous state blocks dependent writes. Record the facts before editing.
 
+A denied preflight query is not a missing ref or a successful check. Keep any
+already verified facts, then identify and verify each unresolved prerequisite
+before editing. Use only permitted read-only recovery or normal host permissions
+within scope; do not bypass a denial or retry an action the host forbids. A partial
+fallback must not silently omit the default/base checks. Equivalent actual Git
+output is sufficient; no particular command spelling is required. If verification
+remains unavailable, stop dependent writes and report the blocker, even when
+Edit/Write tools are allowed. Follow the shared contract's pre-write requirements.
+
 For an already clean primary on its default branch, update the intended remote
 base only within task authority, using fetch and `git pull --ff-only`. Stop on a
 failed fetch/update or divergence; never auto-rebase, reset or discard local work.

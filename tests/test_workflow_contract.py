@@ -100,6 +100,12 @@ def contract_errors(document):
         'first-write-preflight': (
             'Safety and worktree-first',
             'Before the first edit, including in an existing worktree'),
+        'denied-preflight-unresolved': (
+            'Safety and worktree-first',
+            'A denied or unexecuted prerequisite check remains unresolved;'),
+        'denied-preflight-stop': (
+            'Safety and worktree-first',
+            'stop dependent writes and report the blocker;'),
         'actual-primary': (
             'Safety and worktree-first', 'check its actual branch, HEAD and status'),
         'full-initial-load': (
@@ -237,6 +243,14 @@ class WorkflowContractTest(unittest.TestCase):
             ('missing first-write preflight', self.document.replace(
                 'Before the first edit, including in an existing worktree',
                 'Directory names establish isolation', 1), 'first-write-preflight'),
+            ('denied prerequisite treated as complete', self.document.replace(
+                'A denied or unexecuted prerequisite check remains unresolved;',
+                'A denied prerequisite counts as complete;', 1),
+             'denied-preflight-unresolved'),
+            ('unresolved preflight allows edits', self.document.replace(
+                'stop dependent writes\nand report the blocker;',
+                'continue editing without the remaining facts;', 1),
+             'denied-preflight-stop'),
             ('missing actual primary check', self.document.replace(
                 'check its actual branch, HEAD and status', 'assume primary is clean', 1),
              'actual-primary'),
@@ -588,6 +602,8 @@ UNCHANGED_WORKTREE_HOOKS = {'guard-main-checkout.sh': 'af5510df0aa35479f8dfda41b
 def isolation_creation_errors(document):
     prose = active_prose(document)
     required = {
+        'denied-preflight': 'A denied preflight query is not a missing ref or a successful check.',
+        'unverified-preflight-stop': 'If verification remains unavailable, stop dependent writes and report the blocker,',
         'blocked-writes': 'If worktree creation fails, stop writes and report the permission prerequisite.',
         'no-primary-fallback': 'Never silently fall back to editing primary.',
         'normal-permissions': 'Use normal host permission escalation only when available and within scope;',
@@ -645,6 +661,10 @@ class WorktreeIsolationTest(unittest.TestCase):
     def test_removed_unsafe_fallbacks_are_detected(self):
         text = active_prose(WORKTREE_CREATION.read_text())
         cases = (
+            ('A denied preflight query is not a missing ref or a successful check.',
+             'denied-preflight'),
+            ('If verification remains unavailable, stop dependent writes and report the blocker,',
+             'unverified-preflight-stop'),
             ('If worktree creation fails, stop writes and report the permission prerequisite.',
              'blocked-writes'),
             ('Never silently fall back to editing primary.', 'no-primary-fallback'),

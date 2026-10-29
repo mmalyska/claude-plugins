@@ -187,6 +187,17 @@ the verified primary, writer and base briefly in session or existing task state.
 The existing git-workflows worktree skill supplies setup/creation details; these
 checks apply even when no worktree needs creating.
 
+A denied or unexecuted prerequisite check remains unresolved; successful partial
+output does not complete the other checks in a rejected compound command. Retain
+facts already established, identify what is still missing, and recover only with
+permitted read-only checks or the host's normal permission path within scope.
+Do not bypass a denial or repeat an action the host forbids retrying. Equivalent
+Git output may establish a fact without repeating a particular command. If the
+remaining isolation/default/base facts cannot be verified, stop dependent writes
+and report the blocker; unrelated read-only work may continue. Permission to edit
+is not evidence that pre-write prerequisites passed. Do not record a denied
+origin/default query as an absent ref or a verified no-remote fallback.
+
 Apply shared project policy from applicable `AGENTS.md`, host adapters and project
 documentation; surface conflicts rather than choose different policies by host.
 An unresolved conflict over a required project gate blocks dependent edits.
