@@ -88,6 +88,7 @@ git('config', '--local', 'commit.gpgsign', 'false')
     'Required check: python3 -B -m unittest discover -s tests -v\n'
     'Use isolated worktrees; preserve primary and unrelated user changes.\n'
     'Do not install dependencies or weaken the required check.\n')
+(primary / 'CLAUDE.md').write_text('@AGENTS.md\n')
 (primary / 'tags.py').write_text(
     'def normalize_tag(text):\n'
     '    """Return a lower-case tag with outer whitespace removed."""\n'
@@ -101,7 +102,7 @@ git('config', '--local', 'commit.gpgsign', 'false')
     'class TagsTest(unittest.TestCase):\n'
     '    def test_outer_whitespace(self):\n'
     '        self.assertEqual(normalize_tag("  example  "), "example")\n')
-git('add', 'AGENTS.md', 'tags.py', 'README.md', 'area-a.txt', 'area-b.txt', 'tests')
+git('add', 'AGENTS.md', 'CLAUDE.md', 'tags.py', 'README.md', 'area-a.txt', 'area-b.txt', 'tests')
 git('-c', 'user.name=Workflow Trial', '-c', 'user.email=trial@example.invalid',
     '-c', 'commit.gpgsign=false', 'commit', '-m', 'test: seed disposable fixture')
 writer = primary / '.worktrees/feat/subject'
@@ -128,6 +129,11 @@ is allowed setup, not permission for the agent to commit during every trial.
 
 The fixture's AGENTS.md adds only project gates/isolation. Do not prefill profile,
 topology or the expected model answer there: that would contaminate a default test.
+Its CLAUDE.md only imports AGENTS.md (`@AGENTS.md`), because Claude Code loads
+CLAUDE.md, not AGENTS.md, while Codex loads AGENTS.md; keep it a bare pointer so both
+hosts see the same project policy. Evidence recorded before this pointer existed used
+a fixture without it, so a Claude actor saw AGENTS.md only if its prompt said to read
+it; label such records and treat a rerun with the pointer as a changed setup.
 For S16 deliberately prepare the abnormal state before the model starts; do not
 repair it merely to satisfy a generic clean-primary precondition.
 
