@@ -1,5 +1,16 @@
 # Workflow verification and release gates
 
+## Live campaign closed with qualifications — 2026-10-30
+
+[Published campaign report](evidence/live/README.md): 82 scored LIVE records
+(66 PASS, 16 historical FAIL), four excluded NOT RUN observations, 48/68
+host/case slots represented and 20 incomplete. The curated publication preserves
+all outcomes, selected evidence, merged repairs and revision/host limits.
+PR #36 merged as `ab7604b2cb7af099d4a3b264ff43bda7a97f37b5` with offline
+verification only; no live retest on that revision. Full-conformance release
+acceptance remains BLOCKED. Earlier pending-test sections below are historical;
+no campaign work is queued and live calls remain frozen.
+
 ## Prepared actor context — pending LIVE retest
 
 The [S07 setup repair](evidence/2026-10-29-trial-actor-context.md) gives each

@@ -1,0 +1,20 @@
+{
+  "base_sha": "ab7604b2cb7af099d4a3b264ff43bda7a97f37b5",
+  "publication_kind": "curated evidence; no raw streams or operator handoffs",
+  "published_files": {
+    "README.md": "37cf6e3537030cf31df2dabb493e6bf8522bb33f2b249f0dc1d531037999579b",
+    "coverage.md": "1a3ff360d765ef49e1afee2ad2c07a543275ab7b117aeb708db26e4d0845cd49",
+    "findings.md": "d5d1f6823223193cd7b0d8dc6f6968f8bd6f4cc17ec8f5c406dc9b71cbf6b030",
+    "publication.md": "bc94b45f6b1f6ae209ce3a07d7df19064071481340a0e6d4119f1c5704697f34",
+    "run-index.json": "0f1d99cbde0fc564b86f011536b51a0fc2c2654974e2167b488bac9de961e449",
+    "selected-checks.json": "4dd808ff2d82057018057a759f988cbecf1a5bc470da31ce5f03de9dc136e30b",
+    "selected-observations.md": "14c562470bd107089109722a1bb15024a8b4ba9e721d087b3183c95c1e6842ec"
+  },
+  "source_inputs": {
+    "README.md": "df2c1282975da442c62e67c7a5cfbaa152afef1b8a57d7008f41715b33274f48",
+    "findings.md": "2d3eb92c07bad2b9ebfd2800735ebaaa91f517935786b2c36bc2e496dd000a5b",
+    "2026-10-30-risk-based-closeout.md": "d5a135e720963d12c7c8b2d7ee2798c2acbc84ced6cacbebb19d28a6687d2025",
+    "2026-10-30-focused-repair-assessment.md": "32d8b19e8db237d278a29cfd29a4dd66cc74e464d914f127818f8f8fd687bbe8",
+    "2026-10-30-startup-guidance-offline-repair.md": "944b0973b82b18fb79d6ad4441262353edf5fb2f6f76967598efd05fd56fcba2"
+  }
+}
