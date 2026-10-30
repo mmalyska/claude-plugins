@@ -33,9 +33,10 @@ CWD=$(printf '%s' "$HOOK_INPUT" | jq -r '.cwd // ""' 2>/dev/null) || exit 0
 # one spends context on advice that cannot apply.
 git -C "$CWD" rev-parse --git-dir >/dev/null 2>&1 || exit 0
 
-PREAMBLE='The git-workflows plugin enforces the rule below with a PreToolUse hook. It is
-a standing constraint on this session, not reference material -- follow it
-without being asked and without reading any further file.'
+PREAMBLE='Follow the worktree rule below as a standing constraint. The Claude PreToolUse
+hook is a best-effort backstop, not proof of isolation or permission. Read the
+linked worktree skill and applicable project instructions before dependent
+writes; this context does not replace other required guidance.'
 
 if [ "${CLAUDE_ALLOW_MAIN_EDITS:-}" = "1" ]; then
   PREAMBLE="$PREAMBLE

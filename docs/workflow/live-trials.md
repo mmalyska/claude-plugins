@@ -599,6 +599,14 @@ Artifact/evidence check: Real standalone/install evidence if run; missing capabi
 
 Operator setup: Host has no exposed native worktree tool; manual git is available and permitted. Begin from a clean disposable primary with no writer worktree.
 
+Before a future launch, assign an exact writer branch/destination and configure a
+usable form of the required gate from that destination. Verify that gate form
+under the actor's normal launch permissions using a separate disposable setup
+probe; do not create the actor's worktree or perform its preflight on its behalf.
+Render the actual cwd/path forms in the permission inventory. Keep denied or
+unavailable prerequisites NOT RUN; any permission expansion needs a new grant.
+Never reuse an executed fixture, profile, script, state or log.
+
 Task input (replace bracketed assignments with accepted scope):
 
 > Make the bounded normalize_tag fix using the available tools.
