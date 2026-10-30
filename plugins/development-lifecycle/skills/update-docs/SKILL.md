@@ -1,6 +1,6 @@
 ---
 name: update-docs
-description: "Use the update-docs workflow."
+description: "Synchronize requested project documentation with configured commands, APIs and environment sources."
 ---
 
 Use the current user request as input. In a Claude command invocation, `$ARGUMENTS` carries that input; in Codex, use the text accompanying the skill.

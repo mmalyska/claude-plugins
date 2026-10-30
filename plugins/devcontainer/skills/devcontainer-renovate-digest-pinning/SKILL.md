@@ -12,7 +12,7 @@ Use this skill when setting up automatic digest updates for a devcontainer image
 2. The Renovate preset that detects the digest
 3. The automerge rule to merge digest updates without review
 
-For the image build pipeline that publishes the image, see the `ghcr-image-pipeline` skill.
+For the image build pipeline that publishes the image, see the `devcontainer-ghcr-image-pipeline` skill.
 
 ---
 
@@ -101,7 +101,7 @@ Add a `packageRule` scoped to `.devcontainer/devcontainer.json` so digest update
 
 ## Step 5: Trigger Renovate After Image Build
 
-If using the `ghcr-image-pipeline` workflow, add a Renovate trigger job after the build:
+If using the `devcontainer-ghcr-image-pipeline` workflow, add a Renovate trigger job after the build:
 
 ```yaml
 renovate:

@@ -1,0 +1,47 @@
+[
+  {
+    "name": "agent-toolkit/rules-distill",
+    "skill": "plugins/agent-toolkit/skills/rules-distill/SKILL.md",
+    "paths": [
+      "plugins/agent-toolkit/skills/rules-distill/SKILL.md"
+    ],
+    "branch": "assess constraints without implementation recipe",
+    "baseline_characters": 12374,
+    "core_characters": 11190,
+    "selected_characters": 11190,
+    "selected_character_proxy_tokens": 2798,
+    "reduction_percent": 9.6,
+    "selected_paths_whole_file_characters": 11190,
+    "full_expansion_characters": 13214
+  },
+  {
+    "name": "agent-toolkit/iterative-retrieval",
+    "skill": "plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md",
+    "paths": [
+      "plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md"
+    ],
+    "branch": "assess constraints without implementation recipe",
+    "baseline_characters": 7685,
+    "core_characters": 7090,
+    "selected_characters": 7090,
+    "selected_character_proxy_tokens": 1772,
+    "reduction_percent": 7.7,
+    "selected_paths_whole_file_characters": 7090,
+    "full_expansion_characters": 8243
+  },
+  {
+    "name": "agent-toolkit/search-first",
+    "skill": "plugins/agent-toolkit/skills/search-first/SKILL.md",
+    "paths": [
+      "plugins/agent-toolkit/skills/search-first/SKILL.md"
+    ],
+    "branch": "assess constraints without implementation recipe",
+    "baseline_characters": 6622,
+    "core_characters": 5235,
+    "selected_characters": 5235,
+    "selected_character_proxy_tokens": 1309,
+    "reduction_percent": 20.9,
+    "selected_paths_whole_file_characters": 5235,
+    "full_expansion_characters": 7186
+  }
+]

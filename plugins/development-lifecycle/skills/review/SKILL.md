@@ -17,9 +17,10 @@ installed skill (`$plugin:skill`); do not execute slash commands in a shell.
 Use the five axes below at the depth selected by the workflow contract: QUICK
 focused self-review, STANDARD full self-review or separate local pass, DEEP a
 separate deliberate pass with evidence. SOLO does not add a reviewer agent.
-Apply [common review policy](../../rules/common/code-review.md) and the existing
-[reviewer role](../code-reviewer/SKILL.md) where useful; preserve task scope and
-project gates. Produce findings first; edits require existing or new fix authority.
+Apply [common review policy](../../rules/common/code-review.md). For a relevant
+security/language/framework check, read the matching section of
+[domain checks](../code-reviewer/references/domain-checks.md); the reviewer
+procedure is not a prerequisite. Preserve task scope and project gates. Produce findings first; edits require existing or new fix authority.
 
 ---
 
@@ -240,3 +241,10 @@ After all fixes are applied:
 Follow [the workflow contract](../../rules/common/workflow.md). Review informs
 Simplify; rerun affected checks after edits before Ship readiness. Review alone
 does not authorize delivery.
+
+## Reuse loaded guidance
+
+Reuse a complete contract already read from this installed revision while its
+content remains available. After compaction/context loss or a relevant source or
+policy change, read it fully again before dependent work. A summary or partial
+read does not establish first-use loading.

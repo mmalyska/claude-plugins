@@ -27,57 +27,6 @@ paths before the default `docs/adr/` structure below. Apply current explicit
 write authorization; reuse approval already covering the exact action rather
 than asking again. A proposed note does not grant implementation or runtime scope.
 
-## ADR Format
-
-Use the lightweight ADR format proposed by Michael Nygard, adapted for AI-assisted development:
-
-```markdown
-# ADR-NNNN: [Decision Title]
-
-**Date**: YYYY-MM-DD
-**Status**: proposed | accepted | deprecated | superseded by ADR-NNNN
-**Deciders**: [who was involved]
-
-## Context
-
-What is the issue that we're seeing that is motivating this decision or change?
-
-[2-5 sentences describing the situation, constraints, and forces at play]
-
-## Decision
-
-What is the change that we're proposing and/or doing?
-
-[1-3 sentences stating the decision clearly]
-
-## Alternatives Considered
-
-### Alternative 1: [Name]
-- **Pros**: [benefits]
-- **Cons**: [drawbacks]
-- **Why not**: [specific reason this was rejected]
-
-### Alternative 2: [Name]
-- **Pros**: [benefits]
-- **Cons**: [drawbacks]
-- **Why not**: [specific reason this was rejected]
-
-## Consequences
-
-What becomes easier or more difficult to do because of this change?
-
-### Positive
-- [benefit 1]
-- [benefit 2]
-
-### Negative
-- [trade-off 1]
-- [trade-off 2]
-
-### Risks
-- [risk and mitigation]
-```
-
 ## Workflow
 
 ### Capturing a New ADR
@@ -188,3 +137,15 @@ proposed → accepted → [deprecated | superseded by ADR-NNNN]
 
 - **Planner agent**: when the planner proposes architecture changes, suggest creating an ADR
 - **Code reviewer agent**: flag PRs that introduce architectural changes without a corresponding ADR
+
+## Select relevant detail
+
+Before recording a decision, establish context, alternatives, consequences and
+status. Use existing paths and authority; accepted architecture is not permission
+for implementation or runtime. Reading existing ADRs needs no template load.
+
+| Task branch | Reference |
+| --- | --- |
+| Writing a new ADR in the established location | [Writing a new ADR in the established location](references/adr-template-and-examples.md) |
+
+Read only the branch that applies; expand when the task crosses topics.

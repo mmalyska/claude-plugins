@@ -111,43 +111,6 @@ If the container needs to establish a WireGuard VPN tunnel (e.g. to reach a home
 
 ---
 
-## Complete `devcontainer.json` Example
-
-```json
-{
-  "name": "my-project",
-  "image": "ghcr.io/owner/repo-devcontainer:main@sha256:abc123...",
-  "secrets": {
-    "TERRAFORM_TOKEN": {
-      "description": "Token to access Terraform Cloud."
-    },
-    "BWS_ACCESS_TOKEN": {
-      "description": "Token to access Bitwarden Secrets Manager API."
-    },
-    "GITHUB_TOKEN": {
-      "description": "Personal access token for GitHub API."
-    },
-    "WG_PRIVATE_KEY": {
-      "description": "WireGuard client private key."
-    },
-    "WG_ENDPOINT": {
-      "description": "WireGuard server endpoint host:port."
-    }
-  },
-  "runArgs": [
-    "--env-file", ".devcontainer/devcontainer.env",
-    "--cap-add=NET_ADMIN",
-    "--device=/dev/net/tun"
-  ],
-  "initializeCommand": "test -f .devcontainer/devcontainer.env || cp .devcontainer/devcontainer.env.sample .devcontainer/devcontainer.env",
-  "onCreateCommand": "bash .devcontainer/scripts/onCreateCommand.sh ${containerWorkspaceFolder}",
-  "remoteUser": "vscode",
-  "containerUser": "vscode"
-}
-```
-
----
-
 ## Codespaces vs Local Behavior
 
 | | Codespaces | Local VS Code |
@@ -158,3 +121,15 @@ If the container needs to establish a WireGuard VPN tunnel (e.g. to reach a home
 | WireGuard `--device` | Not needed | Works on Linux/macOS hosts |
 
 When both mechanisms are present, Codespaces uses the `"secrets"` block and ignores the `--env-file` (since `devcontainer.env` doesn't exist in the Codespaces workspace). Local VS Code uses the `--env-file` and ignores the `"secrets"` block.
+
+## Select relevant detail
+
+Keep actual values in the existing secret mechanisms, never committed examples.
+Use only the mechanism and capabilities applicable to the target environment;
+configuration guidance does not authorize changing a host or VPN.
+
+| Task branch | Reference |
+| --- | --- |
+| A complete combined devcontainer example | [A complete combined devcontainer example](references/local-codespaces-examples.md) |
+
+Read only the branch that applies; expand when the task crosses topics.

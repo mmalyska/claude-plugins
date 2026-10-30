@@ -1,5 +1,5 @@
 ---
-description: "Use the update-docs workflow."
+description: "Synchronize requested project documentation with configured commands, APIs and environment sources."
 ---
 
 Load the canonical procedure from the active installation before doing this task:

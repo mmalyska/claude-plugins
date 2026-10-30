@@ -1,0 +1,7 @@
+{
+  "command": "python3 -B -m unittest discover -s tests -p test_rule_scanners.py -v",
+  "exit_code": 0,
+  "tests": 2,
+  "result": "PASS",
+  "scope": "Fresh temporary host-shaped directories only; no native/model CLI call."
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "frontend/frontend-patterns",
+    "skill": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+    "paths": [
+      "plugins/frontend/skills/frontend-patterns/SKILL.md",
+      "plugins/frontend/skills/frontend-patterns/references/components.md"
+    ],
+    "branch": "selected reference",
+    "before_characters": 14789,
+    "after_characters": 5401,
+    "reduction_percent": 63.5
+  },
+  {
+    "name": "backend/backend-patterns",
+    "skill": "plugins/backend/skills/backend-patterns/SKILL.md",
+    "paths": [
+      "plugins/backend/skills/backend-patterns/SKILL.md",
+      "plugins/backend/skills/backend-patterns/references/layers-and-middleware.md"
+    ],
+    "branch": "selected reference",
+    "before_characters": 13853,
+    "after_characters": 4627,
+    "reduction_percent": 66.6
+  }
+]

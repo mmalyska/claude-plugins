@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Backend engineering — API design, Node.js/NestJS patterns, hexagonal architecture, PostgreSQL, database migrations, and MCP server development",
   "hooks": [],
   "skills": "./skills/"

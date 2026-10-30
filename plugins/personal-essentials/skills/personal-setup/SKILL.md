@@ -17,6 +17,19 @@ claude plugin marketplace add mmalyska/claude-plugins
 codex plugin marketplace add mmalyska/claude-plugins
 ```
 
+## Select the requested owners
+
+When the user names a subset, install only those owners using the selected host's
+commands below. A requested core setup means development-lifecycle + git-workflows;
+add only the named domain owners. Toolkit and security are independent optional
+owners, not new dependencies. With no requested subset, keep the existing all-owner
+setup below. Ask only when the requested subset is ambiguous.
+
+These are task choices, not host CLI flags. Keep installed owners in place;
+this setup request does not authorize uninstalling plugins or changing global
+profiles. Installation success does not establish which metadata a session exposes.
+Finish with the selected/succeeded/remaining owner list and request a fresh session.
+
 ## Claude Code
 
 ```sh

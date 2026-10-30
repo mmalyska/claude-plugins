@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "description": "React/Next.js and TypeScript frontend — coding style, testing, performance, design quality, and security rules",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "Michał Małyska"
   },

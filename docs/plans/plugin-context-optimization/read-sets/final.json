@@ -1,0 +1,276 @@
+{
+  "method": "Exact characters; selected bounded sections only where explicit instructions say how to locate/read them; characters/4 proxy, not measured model tokens. Full expansion is reported independently.",
+  "cases": [
+    {
+      "name": "frontend/frontend-patterns",
+      "skill": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+      "paths": [
+        "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "plugins/frontend/skills/frontend-patterns/references/components.md"
+      ],
+      "branch": "selected reference",
+      "baseline_characters": 14789,
+      "core_characters": 1494,
+      "selected_characters": 5173,
+      "selected_character_proxy_tokens": 1293,
+      "reduction_percent": 65.0,
+      "selected_paths_whole_file_characters": 5173,
+      "full_expansion_characters": 15699
+    },
+    {
+      "name": "backend/backend-patterns",
+      "skill": "plugins/backend/skills/backend-patterns/SKILL.md",
+      "paths": [
+        "plugins/backend/skills/backend-patterns/SKILL.md",
+        "plugins/backend/skills/backend-patterns/references/layers-and-middleware.md"
+      ],
+      "branch": "selected reference",
+      "baseline_characters": 13853,
+      "core_characters": 1526,
+      "selected_characters": 4399,
+      "selected_character_proxy_tokens": 1100,
+      "reduction_percent": 68.2,
+      "selected_paths_whole_file_characters": 4399,
+      "full_expansion_characters": 14805
+    },
+    {
+      "name": "backend/api-design",
+      "skill": "plugins/backend/skills/api-design/SKILL.md",
+      "paths": [
+        "plugins/backend/skills/api-design/SKILL.md",
+        "plugins/backend/skills/api-design/references/http-contracts.md"
+      ],
+      "branch": "selected reference",
+      "baseline_characters": 13098,
+      "core_characters": 2121,
+      "selected_characters": 8791,
+      "selected_character_proxy_tokens": 2198,
+      "reduction_percent": 32.9,
+      "selected_paths_whole_file_characters": 8791,
+      "full_expansion_characters": 13947
+    },
+    {
+      "name": "backend/database-migrations",
+      "skill": "plugins/backend/skills/database-migrations/SKILL.md",
+      "paths": [
+        "plugins/backend/skills/database-migrations/SKILL.md",
+        "plugins/backend/skills/database-migrations/references/postgresql.md"
+      ],
+      "branch": "selected reference",
+      "baseline_characters": 11839,
+      "core_characters": 3162,
+      "selected_characters": 5543,
+      "selected_character_proxy_tokens": 1386,
+      "reduction_percent": 53.2,
+      "selected_paths_whole_file_characters": 5543,
+      "full_expansion_characters": 12806
+    },
+    {
+      "name": "dotnet/dotnet-patterns",
+      "skill": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+      "paths": [
+        "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+        "plugins/dotnet/skills/dotnet-patterns/references/language-and-async.md"
+      ],
+      "branch": "selected reference",
+      "baseline_characters": 9236,
+      "core_characters": 3532,
+      "selected_characters": 6451,
+      "selected_character_proxy_tokens": 1613,
+      "reduction_percent": 30.2,
+      "selected_paths_whole_file_characters": 6451,
+      "full_expansion_characters": 9911
+    },
+    {
+      "name": "dotnet/csharp-testing",
+      "skill": "plugins/dotnet/skills/csharp-testing/SKILL.md",
+      "paths": [
+        "plugins/dotnet/skills/csharp-testing/SKILL.md",
+        "plugins/dotnet/skills/csharp-testing/references/unit-and-mocking.md"
+      ],
+      "branch": "selected reference",
+      "baseline_characters": 8633,
+      "core_characters": 2863,
+      "selected_characters": 6786,
+      "selected_character_proxy_tokens": 1696,
+      "reduction_percent": 21.4,
+      "selected_paths_whole_file_characters": 6786,
+      "full_expansion_characters": 9367
+    },
+    {
+      "name": "devops/docker-patterns",
+      "skill": "plugins/devops/skills/docker-patterns/SKILL.md",
+      "paths": [
+        "plugins/devops/skills/docker-patterns/SKILL.md",
+        "plugins/devops/skills/docker-patterns/references/images-and-compose.md"
+      ],
+      "branch": "selected reference",
+      "baseline_characters": 8267,
+      "core_characters": 2874,
+      "selected_characters": 6159,
+      "selected_character_proxy_tokens": 1540,
+      "reduction_percent": 25.5,
+      "selected_paths_whole_file_characters": 6159,
+      "full_expansion_characters": 8934
+    },
+    {
+      "name": "devops/deployment-patterns",
+      "skill": "plugins/devops/skills/deployment-patterns/SKILL.md",
+      "paths": [
+        "plugins/devops/skills/deployment-patterns/SKILL.md",
+        "plugins/devops/skills/deployment-patterns/references/ci-and-release.md"
+      ],
+      "branch": "selected reference",
+      "baseline_characters": 10976,
+      "core_characters": 3252,
+      "selected_characters": 9348,
+      "selected_character_proxy_tokens": 2337,
+      "reduction_percent": 14.8,
+      "selected_paths_whole_file_characters": 9348,
+      "full_expansion_characters": 11709
+    },
+    {
+      "name": "devcontainer/devcontainer-secrets-injection",
+      "skill": "plugins/devcontainer/skills/devcontainer-secrets-injection/SKILL.md",
+      "paths": [
+        "plugins/devcontainer/skills/devcontainer-secrets-injection/SKILL.md"
+      ],
+      "branch": "assess constraints without implementation recipe",
+      "baseline_characters": 5264,
+      "core_characters": 4717,
+      "selected_characters": 4717,
+      "selected_character_proxy_tokens": 1179,
+      "reduction_percent": 10.4,
+      "selected_paths_whole_file_characters": 4717,
+      "full_expansion_characters": 5806
+    },
+    {
+      "name": "development-lifecycle/ai-regression-testing",
+      "skill": "plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md",
+      "paths": [
+        "plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md"
+      ],
+      "branch": "assess constraints without implementation recipe",
+      "baseline_characters": 11769,
+      "core_characters": 5568,
+      "selected_characters": 5568,
+      "selected_character_proxy_tokens": 1392,
+      "reduction_percent": 52.7,
+      "selected_paths_whole_file_characters": 5568,
+      "full_expansion_characters": 12263
+    },
+    {
+      "name": "development-lifecycle/e2e-testing",
+      "skill": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+      "paths": [
+        "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md"
+      ],
+      "branch": "explicit bounded topic section; full-file expansion reported separately",
+      "sections": {
+        "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md": "Page Object Model (POM)"
+      },
+      "baseline_characters": 7953,
+      "core_characters": 3238,
+      "selected_characters": 4118,
+      "selected_character_proxy_tokens": 1030,
+      "reduction_percent": 48.2,
+      "selected_paths_whole_file_characters": 8903,
+      "full_expansion_characters": 8903
+    },
+    {
+      "name": "development-lifecycle/architecture-decision-records",
+      "skill": "plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md",
+      "paths": [
+        "plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md"
+      ],
+      "branch": "assess constraints without implementation recipe",
+      "baseline_characters": 7657,
+      "core_characters": 7128,
+      "selected_characters": 7128,
+      "selected_character_proxy_tokens": 1782,
+      "reduction_percent": 6.9,
+      "selected_paths_whole_file_characters": 7128,
+      "full_expansion_characters": 8228
+    },
+    {
+      "name": "development-lifecycle/aside",
+      "skill": "plugins/development-lifecycle/skills/aside/SKILL.md",
+      "paths": [
+        "plugins/development-lifecycle/skills/aside/SKILL.md"
+      ],
+      "branch": "assess constraints without implementation recipe",
+      "baseline_characters": 6247,
+      "core_characters": 5561,
+      "selected_characters": 5561,
+      "selected_character_proxy_tokens": 1390,
+      "reduction_percent": 11.0,
+      "selected_paths_whole_file_characters": 5561,
+      "full_expansion_characters": 6811
+    },
+    {
+      "name": "agent-toolkit/rules-distill",
+      "skill": "plugins/agent-toolkit/skills/rules-distill/SKILL.md",
+      "paths": [
+        "plugins/agent-toolkit/skills/rules-distill/SKILL.md"
+      ],
+      "branch": "assess constraints without implementation recipe",
+      "baseline_characters": 12374,
+      "core_characters": 11190,
+      "selected_characters": 11190,
+      "selected_character_proxy_tokens": 2798,
+      "reduction_percent": 9.6,
+      "selected_paths_whole_file_characters": 11190,
+      "full_expansion_characters": 13214
+    },
+    {
+      "name": "agent-toolkit/iterative-retrieval",
+      "skill": "plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md",
+      "paths": [
+        "plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md"
+      ],
+      "branch": "assess constraints without implementation recipe",
+      "baseline_characters": 7685,
+      "core_characters": 7090,
+      "selected_characters": 7090,
+      "selected_character_proxy_tokens": 1772,
+      "reduction_percent": 7.7,
+      "selected_paths_whole_file_characters": 7090,
+      "full_expansion_characters": 8243
+    },
+    {
+      "name": "agent-toolkit/search-first",
+      "skill": "plugins/agent-toolkit/skills/search-first/SKILL.md",
+      "paths": [
+        "plugins/agent-toolkit/skills/search-first/SKILL.md"
+      ],
+      "branch": "assess constraints without implementation recipe",
+      "baseline_characters": 6622,
+      "core_characters": 5235,
+      "selected_characters": 5235,
+      "selected_character_proxy_tokens": 1309,
+      "reduction_percent": 20.9,
+      "selected_paths_whole_file_characters": 5235,
+      "full_expansion_characters": 7186
+    },
+    {
+      "name": "development-lifecycle/code-reviewer",
+      "skill": "plugins/development-lifecycle/skills/code-reviewer/SKILL.md",
+      "paths": [
+        "plugins/development-lifecycle/skills/code-reviewer/SKILL.md",
+        "plugins/development-lifecycle/skills/code-reviewer/references/domain-checks.md"
+      ],
+      "branch": "explicit bounded topic section; full-file expansion reported separately",
+      "sections": {
+        "plugins/development-lifecycle/skills/code-reviewer/references/domain-checks.md": "Security (CRITICAL)"
+      },
+      "baseline_characters": 10001,
+      "core_characters": 5911,
+      "selected_characters": 7053,
+      "selected_character_proxy_tokens": 1763,
+      "reduction_percent": 29.5,
+      "selected_paths_whole_file_characters": 11248,
+      "full_expansion_characters": 11248
+    }
+  ]
+}

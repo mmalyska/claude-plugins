@@ -1,7 +1,7 @@
 {
   "name": "security",
   "description": "Security skills — comprehensive security review checklists and Claude Code and Codex configuration auditing",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "Michał Małyska"
   },

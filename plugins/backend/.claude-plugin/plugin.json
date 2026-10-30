@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "description": "Backend engineering — API design, Node.js/NestJS patterns, hexagonal architecture, PostgreSQL, database migrations, and MCP server development",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": {
     "name": "Michał Małyska"
   },

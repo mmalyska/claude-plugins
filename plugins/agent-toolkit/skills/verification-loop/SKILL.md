@@ -1,6 +1,6 @@
 ---
 name: verification-loop
-description: "A comprehensive verification system for Claude Code or Codex sessions."
+description: "Check build/test results or readiness for scoped changes; report failed and unavailable project gates."
 metadata:
   origin: "ECC"
 ---

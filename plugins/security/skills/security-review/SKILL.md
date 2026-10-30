@@ -494,3 +494,10 @@ Before ANY production deployment:
 ---
 
 **Remember**: Security is not optional. One vulnerability can compromise the entire platform. When in doubt, err on the side of caution.
+
+## Cloud and infrastructure scope
+
+For cloud deployment, IAM, infrastructure or CI/CD security, read the relevant
+checklist in [cloud infrastructure security](cloud-infrastructure-security.md).
+Keep application-only reviews in the checks above. Report which applicable
+controls were assessed and which remain unverified.

@@ -1,6 +1,6 @@
 {
   "name": "dotnet",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": ".NET/C# development — C# code reviewer agent, testing patterns, and coding rules",
   "hooks": [],
   "skills": "./skills/"
