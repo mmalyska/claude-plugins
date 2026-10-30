@@ -989,7 +989,11 @@ class ToolkitAuthorizationTest(unittest.TestCase):
         self.assertIn('complete: false', retrieval)
         self.assertIn('critical missing context blocks dependent implementation', active_prose(retrieval))
         distill = (ROOT / 'plugins/agent-toolkit/skills/rules-distill/SKILL.md').read_text()
-        self.assertIn('[SOLO local role pass:', distill)
+        # The worked example is conditional reference, while actor boundaries
+        # remain in the core. Preserve the original example assertion there.
+        distill_example = (ROOT / 'plugins/agent-toolkit/skills/rules-distill/'
+                           'references/verdict-schema-and-examples.md').read_text()
+        self.assertIn('[SOLO local role pass:', distill_example)
         self.assertIn('brief is not permission to add actors', distill)
         self.assertIn('reuse existing approval', active_prose(distill))
 

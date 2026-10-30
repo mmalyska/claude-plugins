@@ -1,0 +1,25 @@
+{
+  "mode_policy": "Preserve HIGH warning in role/common policy; preserve HIGH commit block/request-changes in transport; no standardized threshold.",
+  "scope_resource_created": false,
+  "cycle_removed": true,
+  "role_topic_read": {
+    "name": "development-lifecycle/code-reviewer",
+    "skill": "plugins/development-lifecycle/skills/code-reviewer/SKILL.md",
+    "paths": [
+      "plugins/development-lifecycle/skills/code-reviewer/SKILL.md",
+      "plugins/development-lifecycle/skills/code-reviewer/references/domain-checks.md"
+    ],
+    "branch": "explicit bounded topic section; full-file expansion reported separately",
+    "sections": {
+      "plugins/development-lifecycle/skills/code-reviewer/references/domain-checks.md": "Security (CRITICAL)"
+    },
+    "baseline_characters": 10001,
+    "core_characters": 5911,
+    "selected_characters": 7053,
+    "selected_character_proxy_tokens": 1763,
+    "reduction_percent": 29.5,
+    "selected_paths_whole_file_characters": 11248,
+    "full_expansion_characters": 11248
+  },
+  "reuse": "Only complete same-source/revision content that remains available; reload after loss or change."
+}

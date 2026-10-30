@@ -1,6 +1,6 @@
 ---
 name: update-codemaps
-description: "Use the update-codemaps workflow."
+description: "Map architecture, routes, data and dependencies after requested structural changes."
 ---
 
 Use the current user request as input. In a Claude command invocation, `$ARGUMENTS` carries that input; in Codex, use the text accompanying the skill.

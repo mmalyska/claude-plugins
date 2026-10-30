@@ -29,7 +29,7 @@ Use the devcontainer-auditor agent to audit this repo's devcontainer config.
 Skills can be loaded on demand for specific tasks:
 
 ```
-Use the ghcr-image-pipeline skill to set up a GHCR build pipeline for this repo's devcontainer.
+Use the devcontainer-ghcr-image-pipeline skill to set up a GHCR build pipeline for this repo's devcontainer.
 ```
 
 ## Codex

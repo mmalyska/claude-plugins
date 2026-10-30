@@ -65,6 +65,21 @@ gates in QUICK, local sequential roles in SOLO, bounded authorized actors elsewh
 and no false background/scheduler/enforcement claims. One shared lifecycle remains;
 technique phases do not create a competing engineering process.
 
+## Structure and completion
+
+Map distinct trigger branches before splitting. Keep shared prerequisites inline;
+put conditional detail behind pointers that name its purpose and trigger. Keep
+related definitions, rules and caveats together. A flat checklist can be clearer
+than another file. Use familiar task language and direct positive actions while
+retaining explicit consent and safety limits.
+
+End each ordered step with observable evidence covering every applicable item.
+Sharpen that criterion before splitting a sequence. Preserve conventions and
+non-obvious reasons; look up current commands/configuration from their actual
+source. Treat a suspected default/no-op as uncertain until supported by evidence.
+The authoring pass is complete when each branch, pointer and completion bound is
+accounted for, with remaining uncertainty reported.
+
 ## Validate
 
 Check frontmatter, naming, local links, dependency availability, and install

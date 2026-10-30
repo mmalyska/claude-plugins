@@ -53,3 +53,11 @@ implementation session; no full workflow conformance or release readiness is cla
 | `agent-toolkit` | Planning, delegation, evaluations, and bounded automation |
 | `android` | Android development (coming soon) |
 | `personal-essentials` | Installs all plugins above |
+
+## Optional scoped setup
+
+Ask personal-setup for core (development-lifecycle + git-workflows) plus the
+specific domain owners you need, or request the existing all-owner setup. An
+unspecified setup retains the all-owner behavior. These are skill task inputs,
+not extra CLI flags. Existing plugins are not removed; actual exposed catalog
+cost depends on the host/session and has not been measured here.

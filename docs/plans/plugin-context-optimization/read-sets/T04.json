@@ -1,0 +1,113 @@
+[
+  {
+    "name": "backend/api-design",
+    "skill": "plugins/backend/skills/api-design/SKILL.md",
+    "paths": [
+      "plugins/backend/skills/api-design/SKILL.md",
+      "plugins/backend/skills/api-design/references/http-contracts.md"
+    ],
+    "branch": "selected reference",
+    "baseline_characters": 13098,
+    "core_characters": 2121,
+    "selected_characters": 8791,
+    "selected_character_proxy_tokens": 2198,
+    "reduction_percent": 32.9,
+    "selected_paths_whole_file_characters": 8791,
+    "full_expansion_characters": 13947
+  },
+  {
+    "name": "backend/database-migrations",
+    "skill": "plugins/backend/skills/database-migrations/SKILL.md",
+    "paths": [
+      "plugins/backend/skills/database-migrations/SKILL.md",
+      "plugins/backend/skills/database-migrations/references/postgresql.md"
+    ],
+    "branch": "selected reference",
+    "baseline_characters": 11839,
+    "core_characters": 3162,
+    "selected_characters": 5543,
+    "selected_character_proxy_tokens": 1386,
+    "reduction_percent": 53.2,
+    "selected_paths_whole_file_characters": 5543,
+    "full_expansion_characters": 12806
+  },
+  {
+    "name": "dotnet/dotnet-patterns",
+    "skill": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+    "paths": [
+      "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+      "plugins/dotnet/skills/dotnet-patterns/references/language-and-async.md"
+    ],
+    "branch": "selected reference",
+    "baseline_characters": 9236,
+    "core_characters": 3532,
+    "selected_characters": 6451,
+    "selected_character_proxy_tokens": 1613,
+    "reduction_percent": 30.2,
+    "selected_paths_whole_file_characters": 6451,
+    "full_expansion_characters": 9911
+  },
+  {
+    "name": "dotnet/csharp-testing",
+    "skill": "plugins/dotnet/skills/csharp-testing/SKILL.md",
+    "paths": [
+      "plugins/dotnet/skills/csharp-testing/SKILL.md",
+      "plugins/dotnet/skills/csharp-testing/references/unit-and-mocking.md"
+    ],
+    "branch": "selected reference",
+    "baseline_characters": 8633,
+    "core_characters": 2863,
+    "selected_characters": 6786,
+    "selected_character_proxy_tokens": 1696,
+    "reduction_percent": 21.4,
+    "selected_paths_whole_file_characters": 6786,
+    "full_expansion_characters": 9367
+  },
+  {
+    "name": "devops/docker-patterns",
+    "skill": "plugins/devops/skills/docker-patterns/SKILL.md",
+    "paths": [
+      "plugins/devops/skills/docker-patterns/SKILL.md",
+      "plugins/devops/skills/docker-patterns/references/images-and-compose.md"
+    ],
+    "branch": "selected reference",
+    "baseline_characters": 8267,
+    "core_characters": 2874,
+    "selected_characters": 6159,
+    "selected_character_proxy_tokens": 1540,
+    "reduction_percent": 25.5,
+    "selected_paths_whole_file_characters": 6159,
+    "full_expansion_characters": 8934
+  },
+  {
+    "name": "devops/deployment-patterns",
+    "skill": "plugins/devops/skills/deployment-patterns/SKILL.md",
+    "paths": [
+      "plugins/devops/skills/deployment-patterns/SKILL.md",
+      "plugins/devops/skills/deployment-patterns/references/ci-and-release.md"
+    ],
+    "branch": "selected reference",
+    "baseline_characters": 10976,
+    "core_characters": 3252,
+    "selected_characters": 9348,
+    "selected_character_proxy_tokens": 2337,
+    "reduction_percent": 14.8,
+    "selected_paths_whole_file_characters": 9348,
+    "full_expansion_characters": 11709
+  },
+  {
+    "name": "devcontainer/devcontainer-secrets-injection",
+    "skill": "plugins/devcontainer/skills/devcontainer-secrets-injection/SKILL.md",
+    "paths": [
+      "plugins/devcontainer/skills/devcontainer-secrets-injection/SKILL.md"
+    ],
+    "branch": "assess constraints without implementation recipe",
+    "baseline_characters": 5264,
+    "core_characters": 4717,
+    "selected_characters": 4717,
+    "selected_character_proxy_tokens": 1179,
+    "reduction_percent": 10.4,
+    "selected_paths_whole_file_characters": 4717,
+    "full_expansion_characters": 5806
+  }
+]

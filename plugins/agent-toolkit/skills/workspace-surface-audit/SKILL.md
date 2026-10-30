@@ -1,6 +1,6 @@
 ---
 name: workspace-surface-audit
-description: "Audit the active repo, MCP servers, plugins, connectors, env surfaces, and harness setup, then recommend the highest-value collection-provided skills, hooks, agents, and operator workflows. Use when the user wants help setting up Claude Code or Codex or understanding what capabilities are actually available in their environment."
+description: "Audit repository instructions, installed plugins and exposed tools when choosing setup or identifying missing integrations."
 metadata:
   origin: "ECC"
 ---

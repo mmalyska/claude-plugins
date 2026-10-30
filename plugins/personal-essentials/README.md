@@ -29,3 +29,11 @@ host. Rules are on demand, and bundled Claude hooks are disabled in Codex.
 After installation, start a new session and invoke
 `$personal-essentials:personal-setup`. The shared procedure selects Codex commands
 when running in Codex and Claude commands when running in Claude.
+
+## Optional scoped setup
+
+Ask personal-setup for core (development-lifecycle + git-workflows) plus the
+specific domain owners you need, or request the existing all-owner setup. An
+unspecified setup retains the all-owner behavior. These are skill task inputs,
+not extra CLI flags. Existing plugins are not removed; actual exposed catalog
+cost depends on the host/session and has not been measured here.

@@ -1,5 +1,5 @@
 ---
-description: "Use the update-codemaps workflow."
+description: "Map architecture, routes, data and dependencies after requested structural changes."
 ---
 
 Load the canonical procedure from the active installation before doing this task:

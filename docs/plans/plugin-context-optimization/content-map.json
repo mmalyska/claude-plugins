@@ -1,0 +1,2089 @@
+[
+  {
+    "source": "plugins/agent-toolkit/skills/autonomous-agent-harness/SKILL.md",
+    "source_sha256": "cc3f97a0af632095504b48d7e5b43e8c0091c192aff6c6644f50fbc5ae112b58",
+    "final_sha256": "cc3f97a0af632095504b48d7e5b43e8c0091c192aff6c6644f50fbc5ae112b58",
+    "original_headings": [
+      "Autonomous Agent Harness",
+      "Execution boundary",
+      "Establish the execution contract",
+      "Choose supported capabilities",
+      "One-shot execution",
+      "Persistent state and task queue",
+      "Configure and verify recurring work",
+      "Recovery"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/blueprint/SKILL.md",
+    "source_sha256": "e2753dd2791ae3ef5b36d1e264b9d7d80b67f9460c982431280bc623c61a95ad",
+    "final_sha256": "e2753dd2791ae3ef5b36d1e264b9d7d80b67f9460c982431280bc623c61a95ad",
+    "original_headings": [
+      "Blueprint \u2014 Construction Plan Generator",
+      "Execution boundary",
+      "Profile-sized planning",
+      "Prepare a resumable plan",
+      "Optional portable resources",
+      "Isolation and missing tools",
+      "Example",
+      "Plan changes",
+      "Source"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/context-budget/SKILL.md",
+    "source_sha256": "122e3232634fc8b6106bf3dce2564b69ee21a9f34fb7dc27d387124cac9877f9",
+    "final_sha256": "122e3232634fc8b6106bf3dce2564b69ee21a9f34fb7dc27d387124cac9877f9",
+    "original_headings": [
+      "Context Budget",
+      "Inventory",
+      "Measure and estimate",
+      "Findings and report"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/continuous-agent-loop/SKILL.md",
+    "source_sha256": "bedd74549ce5b78af3cfde63dd730953cdd5ecf5edc35e736d8b4a792fdd9e52",
+    "final_sha256": "bedd74549ce5b78af3cfde63dd730953cdd5ecf5edc35e736d8b4a792fdd9e52",
+    "original_headings": [
+      "Continuous Agent Loop",
+      "Execution boundary",
+      "Iteration"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/eval-harness/SKILL.md",
+    "source_sha256": "322cd9852c342f79d82d76c41c62d6b10f5a7046ef7a19fde669d9b7eff9197a",
+    "final_sha256": "322cd9852c342f79d82d76c41c62d6b10f5a7046ef7a19fde669d9b7eff9197a",
+    "original_headings": [
+      "Eval Harness Skill",
+      "When to Activate",
+      "Philosophy",
+      "Eval Types",
+      "Capability Evals",
+      "Regression Evals",
+      "Grader Types",
+      "1. Code-Based Grader",
+      "2. Model-Based Grader",
+      "3. Human Grader",
+      "Metrics",
+      "pass@k",
+      "pass^k",
+      "Eval Workflow",
+      "1. Define (Before Coding)",
+      "2. Implement",
+      "3. Evaluate",
+      "4. Report",
+      "Invocation and storage",
+      "Integration Patterns",
+      "Pre-Implementation",
+      "During Implementation",
+      "Post-Implementation",
+      "Eval Storage",
+      "Best Practices",
+      "Example: Adding Authentication",
+      "Product Evals (v1.8)",
+      "Grader Types",
+      "pass@k Guidance",
+      "Eval Anti-Patterns",
+      "Minimal Eval Artifact Layout"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md",
+    "source_sha256": "fa2af314b1d0f68822645e54b233ac88efddc5d95677bf1670caf31a2c92b6c3",
+    "final_sha256": "3beb4350de4bdbf2c315e710499f89f746d1502059e17829b0120f6e7f34d942",
+    "original_headings": [
+      "Iterative Retrieval Pattern",
+      "Execution boundary",
+      "When to Activate",
+      "The Problem",
+      "The Solution: Iterative Retrieval",
+      "Phase 1: SEARCH",
+      "Phase 2: EVALUATE",
+      "Phase 3: REFINE",
+      "Phase 4: LOOP",
+      "Practical Examples",
+      "Example 1: Bug Fix Context",
+      "Example 2: Feature Implementation",
+      "Integration with Agents",
+      "Best Practices",
+      "Related"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md",
+        "destination": "plugins/agent-toolkit/skills/iterative-retrieval/references/retrieval-examples.md",
+        "prefix": "## Practical Examples\n\n### Example 1: Bug Fix Context\n\n```\nTask: \"Fix the authentication token expiry bug\"\n\nCycle 1:\n  S",
+        "characters": 1103,
+        "sha256": "403620848538a259bbe947685148e810b86b1e43bd6a9954422542208ff674a8"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/rules-distill/SKILL.md",
+    "source_sha256": "d5014678c2a6d5d7150f7623201b8b3c0f6807f1b206cf543445a2f0d8c3f8cc",
+    "final_sha256": "5bc87e0cff1b314d9a895568d1e52e026cc0e9278664727dd295f06bfb197e0d",
+    "original_headings": [
+      "Rules Distill",
+      "Execution boundary",
+      "When to Use",
+      "How It Works",
+      "Phase 1: Inventory (Deterministic Collection)",
+      "1a. Collect skill inventory",
+      "1b. Collect rules index",
+      "1c. Present to user",
+      "Phase 2: Cross-read, Match & Verdict (LLM Judgment)",
+      "Batching",
+      "Cross-batch Merge",
+      "Local or authorized worker brief",
+      "Verdict Reference",
+      "Verdict Quality Requirements",
+      "Phase 3: User Review & Execution",
+      "Summary Table",
+      "User Actions",
+      "Save Results",
+      "Example",
+      "End-to-end local run",
+      "Design Principles"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/agent-toolkit/skills/rules-distill/SKILL.md",
+        "destination": "plugins/agent-toolkit/skills/rules-distill/references/verdict-schema-and-examples.md",
+        "prefix": "## Example\n\n### End-to-end local run\n\nThis example stays SOLO; worker analysis is possible only after separate explicit\n",
+        "characters": 1977,
+        "sha256": "0028fff519e67108d4301d25e813deb26753c893c08b79b7c0b46de186318d4d"
+      }
+    ],
+    "example_revisions": [
+      {
+        "before": "fb23a52b59abf605444b0b9fa58eb048902f0ea7fe9cd5924092f7f9dc9bf2ce",
+        "after": "edc0a06b6143afd4da862af1bb11fc76443d643bb1322cf70af5f08c422ef2d0",
+        "reason": "T07 scoped retrieval replaces the stale whole-rule-corpus input; extraction criteria, schema and verdict rules are preserved."
+      }
+    ],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/safety-guard/SKILL.md",
+    "source_sha256": "cf395903bd015351abc5fbc885807f4271091ce78c9dbf1fd7e13e26dd2a1352",
+    "final_sha256": "cf395903bd015351abc5fbc885807f4271091ce78c9dbf1fd7e13e26dd2a1352",
+    "original_headings": [
+      "Safety Guard",
+      "Modes",
+      "Delivery and runtime authority",
+      "Host controls"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/search-first/SKILL.md",
+    "source_sha256": "4f04963d082e78a78eecbaf191c7219b953030d40b7974324fc5a127a3a45347",
+    "final_sha256": "2defaa01da23e009fae0048d029b16f11d54ab404b0bb7ed74abe9eb7c272ac8",
+    "original_headings": [
+      "/search-first \u2014 Research Before You Code",
+      "Trigger",
+      "Workflow",
+      "Decision Matrix",
+      "How to Use",
+      "Quick Mode (inline)",
+      "Full Mode (agent)",
+      "Search Shortcuts by Category",
+      "Development Tooling",
+      "AI/LLM Integration",
+      "Data & APIs",
+      "Content & Publishing",
+      "Integration Points",
+      "With planner agent",
+      "With architect agent",
+      "With iterative-retrieval skill",
+      "Examples",
+      "Example 1: \"Add dead link checking\"",
+      "Example 2: \"Add HTTP client wrapper\"",
+      "Example 3: \"Add config file linter\"",
+      "Anti-Patterns"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/agent-toolkit/skills/search-first/SKILL.md",
+        "destination": "plugins/agent-toolkit/skills/search-first/references/search-examples.md",
+        "prefix": "## Search Shortcuts by Category\n\n### Development Tooling\n\n- Linting \u2192 `eslint`, `ruff`, `textlint`, `markdownlint`\n- For",
+        "characters": 735,
+        "sha256": "cd2a64a7e201d5503de37d621bafe385b45d2c8965db8be9f8e7696e78a2b255"
+      },
+      {
+        "source": "plugins/agent-toolkit/skills/search-first/SKILL.md",
+        "destination": "plugins/agent-toolkit/skills/search-first/references/search-examples.md",
+        "prefix": "## Examples\n\nIllustrations below assume the relevant adoption/installation action is authorized.\nTheir outcomes are hypo",
+        "characters": 1155,
+        "sha256": "2e3cda8ac795d2717f6c938a88acba9ef068d43402e3533ffeed142ea4dabf26"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/subagent-driven-development/SKILL.md",
+    "source_sha256": "91628cc4ef01386490fefe1a89c5353440f26792a3816361cf1a1bae0058fcfc",
+    "final_sha256": "91628cc4ef01386490fefe1a89c5353440f26792a3816361cf1a1bae0058fcfc",
+    "original_headings": [
+      "Subagent-Driven Development",
+      "Execution boundary",
+      "Selected execution technique",
+      "Per-task procedure",
+      "Brief and status"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/team-builder/SKILL.md",
+    "source_sha256": "00a061f02fa27b92d0f5c114ff4cb3f9c24ba559743b1c5647725e8b5cb6c324",
+    "final_sha256": "00a061f02fa27b92d0f5c114ff4cb3f9c24ba559743b1c5647725e8b5cb6c324",
+    "original_headings": [
+      "Team Builder",
+      "Execution boundary",
+      "Discover and propose roles",
+      "Execute only the selected scope"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/verification-loop/SKILL.md",
+    "source_sha256": "34a599b5c74740b7d01ad00b799659e911a61d22489bf9871f54bee53080761b",
+    "final_sha256": "11ec81977c1918f86e880b3ef1fbf8fc0f253d8c19759338642d686cba959b5e",
+    "original_headings": [
+      "Verification Loop Skill",
+      "When to Use",
+      "Execution",
+      "Verification Phases",
+      "Phase 1: Build Verification",
+      "Phase 2: Type Check",
+      "Phase 3: Lint Check",
+      "Phase 4: Test Suite",
+      "Phase 5: Security Scan",
+      "Phase 6: Diff Review",
+      "Output Format",
+      "Continuous Mode",
+      "Integration with Hooks"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/workspace-surface-audit/SKILL.md",
+    "source_sha256": "5bdaf7ba517f41ea55c42b198302bcc8c773b8a0c3dd31f2317cff5929591e32",
+    "final_sha256": "67ff406f6696adff1235cbe1081bf427942ce7f8416cb3575c9e146f102a8d47",
+    "original_headings": [
+      "Workspace Surface Audit",
+      "When to Use",
+      "Non-Negotiable Rules",
+      "Host-specific discovery",
+      "Audit Inputs",
+      "Audit Process",
+      "Phase 1: Inventory What Exists",
+      "Phase 2: Benchmark Against Official and Installed Surfaces",
+      "Phase 3: Turn Gaps Into Collection Decisions",
+      "Output Format",
+      "Recommendation Rules",
+      "Good Outcomes"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/agent-toolkit/skills/writing-skills/SKILL.md",
+    "source_sha256": "be4b2ce83483ca7b7dcdd81a889010983beed1f29f82c0775f62a26d6197e667",
+    "final_sha256": "fdd79f385b0fd3afc985c3c7592219d2b652e5891dff53f458c1aadd19795d7b",
+    "original_headings": [
+      "Writing Shared Skills",
+      "Execution boundary",
+      "Format and discovery",
+      "Portable behavior",
+      "Profile/topology authoring review",
+      "Validate"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/backend/skills/api-design/SKILL.md",
+    "source_sha256": "7d49c3d3557fa5f23835080ef5a717ef1e39c3f4ef2694793906f1a151c3bf71",
+    "final_sha256": "4d86dff0da77bbd87b1bdbf7924e961a888d7e408d70cbbce7fb55ab17d32ed9",
+    "original_headings": [
+      "API Design Patterns",
+      "When to Activate",
+      "Resource Design",
+      "URL Structure",
+      "Naming Rules",
+      "HTTP Methods and Status Codes",
+      "Method Semantics",
+      "Status Code Reference",
+      "Common Mistakes",
+      "Response Format",
+      "Success Response",
+      "Collection Response (with Pagination)",
+      "Error Response",
+      "Response Envelope Variants",
+      "Pagination",
+      "Offset-Based (Simple)",
+      "Cursor-Based (Scalable)",
+      "When to Use Which",
+      "Filtering, Sorting, and Search",
+      "Filtering",
+      "Sorting",
+      "Full-Text Search",
+      "Sparse Fieldsets",
+      "Authentication and Authorization",
+      "Token-Based Auth",
+      "Authorization Patterns",
+      "Rate Limiting",
+      "Headers",
+      "Rate Limit Tiers",
+      "Versioning",
+      "URL Path Versioning (Recommended)",
+      "Header Versioning",
+      "Versioning Strategy",
+      "Implementation Patterns",
+      "TypeScript (Next.js API Route)",
+      "Python (Django REST Framework)",
+      "Go (net/http)",
+      "API Design Checklist"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/http-contracts.md",
+        "prefix": "## Resource Design\n\n### URL Structure\n\n```\n# Resources are nouns, plural, lowercase, kebab-case\nGET    /api/v1/users\nGET",
+        "characters": 919,
+        "sha256": "80367a029aa5ca6642b544d3588c317b22ed646f9efc886f07a985613b21705b"
+      },
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/http-contracts.md",
+        "prefix": "## HTTP Methods and Status Codes\n\n### Method Semantics\n\n| Method | Idempotent | Safe | Use For |\n|--------|-----------|-",
+        "characters": 1751,
+        "sha256": "82abb902bee186fbd89218432c31ad045f97d8893fe0dfd2c72db92a071b8bb8"
+      },
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/http-contracts.md",
+        "prefix": "## Response Format\n\n### Success Response\n\n```json\n{\n  \"data\": {\n    \"id\": \"abc-123\",\n    \"email\": \"alice@example.com\",\n ",
+        "characters": 1494,
+        "sha256": "d56daeb321ea595a389e4e895d457edd280df0e335d73f9b7eba28ed64f870b3"
+      },
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/http-contracts.md",
+        "prefix": "## Authentication and Authorization\n\n### Token-Based Auth\n\n```\n# Bearer token in Authorization header\nGET /api/v1/users\n",
+        "characters": 832,
+        "sha256": "fd091e4d3e4bc20927292fff8c6004d049e0c64afd2e2363488a02b41742d1ad"
+      },
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/http-contracts.md",
+        "prefix": "## Rate Limiting\n\n### Headers\n\n```\nHTTP/1.1 200 OK\nX-RateLimit-Limit: 100\nX-RateLimit-Remaining: 95\nX-RateLimit-Reset: 1",
+        "characters": 639,
+        "sha256": "8644a33287035d1c30f940137e412a731300cfab40a75ff9ca5777bc9b6db50a"
+      },
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/http-contracts.md",
+        "prefix": "## Versioning\n\n### URL Path Versioning (Recommended)\n\n```\n/api/v1/users\n/api/v2/users\n```\n\n**Pros:** Explicit, easy to r",
+        "characters": 978,
+        "sha256": "a2c0150d69884a7b41139c0b3a8c1d74d16f3767bcedd4b47e4e1e4620fbea64"
+      },
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/pagination-and-query.md",
+        "prefix": "## Pagination\n\n### Offset-Based (Simple)\n\n```\nGET /api/v1/users?page=2&per_page=20\n\n# Implementation\nSELECT * FROM users",
+        "characters": 1085,
+        "sha256": "8860c46b4be083b27e0600bfa70e49e05beacae7c255328150d32a8261efd6a4"
+      },
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/pagination-and-query.md",
+        "prefix": "## Filtering, Sorting, and Search\n\n### Filtering\n\n```\n# Simple equality\nGET /api/v1/orders?status=active&customer_id=abc",
+        "characters": 961,
+        "sha256": "09eca5310a41b9c1389b304f2668a776e310c47227622e50e8340b82921f7c61"
+      },
+      {
+        "source": "plugins/backend/skills/api-design/SKILL.md",
+        "destination": "plugins/backend/skills/api-design/references/implementation-examples.md",
+        "prefix": "## Implementation Patterns\n\n### TypeScript (Next.js API Route)\n\n```typescript\nimport { z } from \"zod\";\nimport { NextRequ",
+        "characters": 3007,
+        "sha256": "0262a7a2c37d8a30f3b53f84e90e2a865b4f2b8e90836b4b7b3d0a1ec7b0bd20"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+    "source_sha256": "fc14d08da5b8542e45587f3fadce02c43520b1c3f05e7abc01fbaa217f4d73cd",
+    "final_sha256": "0487d88f2bbc30a1a916a50b507ffe29a078ee4a022575e4a10bdc7f72c74191",
+    "original_headings": [
+      "Backend Development Patterns",
+      "When to Activate",
+      "API Design Patterns",
+      "RESTful API Structure",
+      "Repository Pattern",
+      "Service Layer Pattern",
+      "Middleware Pattern",
+      "Database Patterns",
+      "Query Optimization",
+      "N+1 Query Prevention",
+      "Transaction Pattern",
+      "Caching Strategies",
+      "Redis Caching Layer",
+      "Cache-Aside Pattern",
+      "Error Handling Patterns",
+      "Centralized Error Handler",
+      "Retry with Exponential Backoff",
+      "Authentication & Authorization",
+      "JWT Token Validation",
+      "Role-Based Access Control",
+      "Rate Limiting",
+      "Simple In-Memory Rate Limiter",
+      "Background Jobs & Queues",
+      "Simple Queue Pattern",
+      "Logging & Monitoring",
+      "Structured Logging"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+        "destination": "plugins/backend/skills/backend-patterns/references/layers-and-middleware.md",
+        "prefix": "## API Design Patterns\n\n### RESTful API Structure\n\n```typescript\n// PASS: Resource-based URLs\nGET    /api/markets       ",
+        "characters": 2830,
+        "sha256": "3bbffcf135423549a67c4caa0a1ff2ae31e06bbaa180e19b03c79d98a77bcd23"
+      },
+      {
+        "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+        "destination": "plugins/backend/skills/backend-patterns/references/data-and-caching.md",
+        "prefix": "## Database Patterns\n\n### Query Optimization\n\n```typescript\n// PASS: GOOD: Select only needed columns\nconst { data } = a",
+        "characters": 1783,
+        "sha256": "eae7e54edcd904dcf3e6c85a377f75a9744afefb7c4e07107fd5937c0b5b837a"
+      },
+      {
+        "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+        "destination": "plugins/backend/skills/backend-patterns/references/data-and-caching.md",
+        "prefix": "## Caching Strategies\n\n### Redis Caching Layer\n\n```typescript\nclass CachedMarketRepository implements MarketRepository {",
+        "characters": 1244,
+        "sha256": "a29a1cbd686b9eef195228e5b3258d7a22f41373047198b822de32174d5b8c38"
+      },
+      {
+        "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+        "destination": "plugins/backend/skills/backend-patterns/references/auth-and-rate-limits.md",
+        "prefix": "## Authentication & Authorization\n\n### JWT Token Validation\n\n```typescript\nimport jwt from 'jsonwebtoken'\n\ninterface JWT",
+        "characters": 2024,
+        "sha256": "96743f43ea96e4b9d879edf285e84f584fc0d2eff2058b0e4f53f99e7b65c0a1"
+      },
+      {
+        "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+        "destination": "plugins/backend/skills/backend-patterns/references/auth-and-rate-limits.md",
+        "prefix": "## Rate Limiting\n\n### Simple In-Memory Rate Limiter\n\n```typescript\nclass RateLimiter {\n  private requests = new Map<stri",
+        "characters": 1049,
+        "sha256": "0a0e03224b3a7c4083a90759ed1e948b4b1e2217f58a74cd58d34d75adf9dae2"
+      },
+      {
+        "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+        "destination": "plugins/backend/skills/backend-patterns/references/jobs-errors-and-logging.md",
+        "prefix": "## Error Handling Patterns\n\n### Centralized Error Handler\n\n```typescript\nclass ApiError extends Error {\n  constructor(\n ",
+        "characters": 1696,
+        "sha256": "db325c840fb6dda55bc2ba7045471d8b5df65884178d62886bf71b6ea78a0bd2"
+      },
+      {
+        "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+        "destination": "plugins/backend/skills/backend-patterns/references/jobs-errors-and-logging.md",
+        "prefix": "## Background Jobs & Queues\n\n### Simple Queue Pattern\n\n```typescript\nclass JobQueue<T> {\n  private queue: T[] = []\n  pri",
+        "characters": 1017,
+        "sha256": "9b374551e1532e0b4761ef0b1f59724c61bbfc4c518f4af14d0561b8047a864f"
+      },
+      {
+        "source": "plugins/backend/skills/backend-patterns/SKILL.md",
+        "destination": "plugins/backend/skills/backend-patterns/references/jobs-errors-and-logging.md",
+        "prefix": "## Logging & Monitoring\n\n### Structured Logging\n\n```typescript\ninterface LogContext {\n  userId?: string\n  requestId?: st",
+        "characters": 1460,
+        "sha256": "895dec400acf62781b58c82ec24ffc1a98eda08b1fee255e0b72993da18e5d56"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/backend/skills/database-migrations/SKILL.md",
+    "source_sha256": "71fca59d895bd5153a37fc11fee47d0772282a2227be80cb942508f5f5b64318",
+    "final_sha256": "8c87b6a0020d46affebb21635681566ecfade154316bc22f40a923117b409755",
+    "original_headings": [
+      "Database Migration Patterns",
+      "When to Activate",
+      "Core Principles",
+      "Migration Safety Checklist",
+      "PostgreSQL Patterns",
+      "Adding a Column Safely",
+      "Adding an Index Without Downtime",
+      "Renaming a Column (Zero-Downtime)",
+      "Removing a Column Safely",
+      "Large Data Migrations",
+      "Prisma (TypeScript/Node.js)",
+      "Workflow",
+      "Schema Example",
+      "Custom SQL Migration",
+      "Drizzle (TypeScript/Node.js)",
+      "Workflow",
+      "Schema Example",
+      "Kysely (TypeScript/Node.js)",
+      "Workflow (kysely-ctl)",
+      "Migration File",
+      "Programmatic Migrator",
+      "Django (Python)",
+      "Workflow",
+      "Data Migration",
+      "SeparateDatabaseAndState",
+      "golang-migrate (Go)",
+      "Workflow",
+      "Migration Files",
+      "Zero-Downtime Migration Strategy",
+      "Timeline Example",
+      "Anti-Patterns"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/backend/skills/database-migrations/SKILL.md",
+        "destination": "plugins/backend/skills/database-migrations/references/postgresql.md",
+        "prefix": "## PostgreSQL Patterns\n\n### Adding a Column Safely\n\n```sql\n-- GOOD: Nullable column, no lock\nALTER TABLE users ADD COLUM",
+        "characters": 2340,
+        "sha256": "d97e69807116ddd801b4f5783805e7e1515614c3af905e82ad3812b181ecc5f5"
+      },
+      {
+        "source": "plugins/backend/skills/database-migrations/SKILL.md",
+        "destination": "plugins/backend/skills/database-migrations/references/orms-typescript.md",
+        "prefix": "## Prisma (TypeScript/Node.js)\n\n### Workflow\n\n```bash\n# Create migration from schema changes\nnpx prisma migrate dev --na",
+        "characters": 1100,
+        "sha256": "d54a8661050b686ce5a7dc44151bb17dbef95941f987b7db97163989fb0428e9"
+      },
+      {
+        "source": "plugins/backend/skills/database-migrations/SKILL.md",
+        "destination": "plugins/backend/skills/database-migrations/references/orms-typescript.md",
+        "prefix": "## Drizzle (TypeScript/Node.js)\n\n### Workflow\n\n```bash\n# Generate migration from schema changes\nnpx drizzle-kit generate",
+        "characters": 698,
+        "sha256": "9d5753925d505fec433d8697d86f7d99e76769ac843d153a9491af8e8fd33fc2"
+      },
+      {
+        "source": "plugins/backend/skills/database-migrations/SKILL.md",
+        "destination": "plugins/backend/skills/database-migrations/references/orms-typescript.md",
+        "prefix": "## Kysely (TypeScript/Node.js)\n\n### Workflow (kysely-ctl)\n\n```bash\n# Initialize config file (kysely.config.ts)\nkysely in",
+        "characters": 2346,
+        "sha256": "686031de5402191b5233afd247d6f8d8eef440fa468e64ed0eb9f9643b9bf517"
+      },
+      {
+        "source": "plugins/backend/skills/database-migrations/SKILL.md",
+        "destination": "plugins/backend/skills/database-migrations/references/orms-python-go.md",
+        "prefix": "## Django (Python)\n\n### Workflow\n\n```bash\n# Generate migration from model changes\npython manage.py makemigrations\n\n# App",
+        "characters": 1512,
+        "sha256": "46f02a8eb29dc36fb713e3e75c4e9f38445783832b7367a6daa64eb8a300ecb2"
+      },
+      {
+        "source": "plugins/backend/skills/database-migrations/SKILL.md",
+        "destination": "plugins/backend/skills/database-migrations/references/orms-python-go.md",
+        "prefix": "## golang-migrate (Go)\n\n### Workflow\n\n```bash\n# Create migration pair\nmigrate create -ext sql -dir migrations -seq add_u",
+        "characters": 761,
+        "sha256": "a33369427b9cd25195ca8eff4612647067e1d9ee0d93767a345365d2393b9657"
+      },
+      {
+        "source": "plugins/backend/skills/database-migrations/SKILL.md",
+        "destination": "plugins/backend/skills/database-migrations/references/expand-contract.md",
+        "prefix": "## Zero-Downtime Migration Strategy\n\nFor critical production changes, follow the expand-contract pattern:\n\n```\nPhase 1: ",
+        "characters": 723,
+        "sha256": "8ea64e75028dde0a47ab5b40c02458949f497b420c200bd156e408ae0a3533e7"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/backend/skills/database-reviewer/SKILL.md",
+    "source_sha256": "a196c60ae7f65dccc91dc65d80f24add1c57ef67e051f80ad7234f7c7a21b99c",
+    "final_sha256": "a196c60ae7f65dccc91dc65d80f24add1c57ef67e051f80ad7234f7c7a21b99c",
+    "original_headings": [
+      "Database Reviewer",
+      "Core Responsibilities",
+      "Diagnostic Commands",
+      "Review Workflow",
+      "1. Query Performance (CRITICAL)",
+      "2. Schema Design (HIGH)",
+      "3. Security (CRITICAL)",
+      "Key Principles",
+      "Anti-Patterns to Flag",
+      "Review Checklist",
+      "Reference"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/backend/skills/hexagonal-architecture/SKILL.md",
+    "source_sha256": "32ded30644da8e0246b01154e3b2695bf9353322a7e6758b920d79002bc686d8",
+    "final_sha256": "32ded30644da8e0246b01154e3b2695bf9353322a7e6758b920d79002bc686d8",
+    "original_headings": [
+      "Hexagonal Architecture",
+      "When to Use",
+      "Core Concepts",
+      "How It Works",
+      "Step 1: Model a use case boundary",
+      "Step 2: Define outbound ports first",
+      "Step 3: Implement the use case with pure orchestration",
+      "Step 4: Build adapters at the edge",
+      "Step 5: Wire everything in a composition root",
+      "Step 6: Test per boundary",
+      "Architecture Diagram",
+      "Suggested Module Layout",
+      "TypeScript Example",
+      "Port definitions",
+      "Use case",
+      "Outbound adapter",
+      "Composition root",
+      "Multi-Language Mapping",
+      "Anti-Patterns to Avoid",
+      "Migration Playbook",
+      "Refactoring Existing Systems",
+      "Testing Guidance (Same Hexagonal Boundaries)",
+      "Best Practices Checklist"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/backend/skills/mcp-server-patterns/SKILL.md",
+    "source_sha256": "63fc54b2796a865a77cea540d398796acf93c5b48a3bc0b26253f9a4b3719c71",
+    "final_sha256": "63fc54b2796a865a77cea540d398796acf93c5b48a3bc0b26253f9a4b3719c71",
+    "original_headings": [
+      "MCP Server Patterns",
+      "When to Use",
+      "How It Works",
+      "Core concepts",
+      "Connecting with stdio",
+      "Remote (Streamable HTTP)",
+      "Examples",
+      "Install and server setup",
+      "Best Practices",
+      "Official SDKs and Docs"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/backend/skills/nestjs-patterns/SKILL.md",
+    "source_sha256": "1be6b730cee07997e103e4ddd6e1f743599c318af64f78809fee6bfc6c2632ad",
+    "final_sha256": "1be6b730cee07997e103e4ddd6e1f743599c318af64f78809fee6bfc6c2632ad",
+    "original_headings": [
+      "NestJS Development Patterns",
+      "When to Activate",
+      "Project Structure",
+      "Bootstrap and Global Validation",
+      "Modules, Controllers, and Providers",
+      "DTOs and Validation",
+      "Auth, Guards, and Request Context",
+      "Exception Filters and Error Shape",
+      "Config and Environment Validation",
+      "Persistence and Transactions",
+      "Testing",
+      "Production Defaults"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/backend/skills/postgres-patterns/SKILL.md",
+    "source_sha256": "7a17f59402b6284ee32eac9868f3a6a987e9dbffc60552bf36bf5864136d44b4",
+    "final_sha256": "7a17f59402b6284ee32eac9868f3a6a987e9dbffc60552bf36bf5864136d44b4",
+    "original_headings": [
+      "PostgreSQL Patterns",
+      "When to Activate",
+      "Quick Reference",
+      "Index Cheat Sheet",
+      "Data Type Quick Reference",
+      "Common Patterns",
+      "Anti-Pattern Detection",
+      "Configuration Template",
+      "Related"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/devcontainer/skills/devcontainer-auditor/SKILL.md",
+    "source_sha256": "5e82c1207030b96758f37b0bb3e4f372015eb87ce7669db38f6392681543012a",
+    "final_sha256": "5e82c1207030b96758f37b0bb3e4f372015eb87ce7669db38f6392681543012a",
+    "original_headings": [
+      "Devcontainer Config Auditor",
+      "When to Use",
+      "Audit Checklist",
+      "1. Image Pinning",
+      "2. Secrets Management",
+      "3. WireGuard Capabilities (if applicable)",
+      "4. Lifecycle Hooks",
+      "5. Renovate Integration",
+      "6. User Identity",
+      "Audit Report Format",
+      "How to Run"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/devcontainer/skills/devcontainer-ghcr-image-pipeline/SKILL.md",
+    "source_sha256": "49b64b1b3b86146b0231f20bc3aee58465304dcbc291fa717f484e907d76ecf4",
+    "final_sha256": "49b64b1b3b86146b0231f20bc3aee58465304dcbc291fa717f484e907d76ecf4",
+    "original_headings": [
+      "Devcontainer GHCR Image Pipeline",
+      "When to Use",
+      "Directory Layout",
+      "Complete Workflow",
+      "Key Concepts",
+      "Tag Transformation Step",
+      "Push Filter",
+      "cacheFrom",
+      "Renovate Trigger",
+      "Referencing the Published Image",
+      "Required Repository Settings"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/devcontainer/skills/devcontainer-renovate-digest-pinning/SKILL.md",
+    "source_sha256": "d1c44a012e685db82a17661788008db4c2cd5a3d18f2d2e43a4115cea4f18eb6",
+    "final_sha256": "25d7d51dfc5ac1f5f81f718a471fcefdaf3a499f2992ff95007c2c334f3d8883",
+    "original_headings": [
+      "Devcontainer Renovate Digest Pinning",
+      "When to Use",
+      "Step 1: Pin the Image to a Digest",
+      "Step 2: Get the Current Digest",
+      "Step 3: Enable the Renovate Preset",
+      "Step 4: Add the Per-File Automerge Rule",
+      "Step 5: Trigger Renovate After Image Build",
+      "How It Works End-to-End"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/devcontainer/skills/devcontainer-secrets-injection/SKILL.md",
+    "source_sha256": "e54108ee29e6665ca3e85f75b6e70cddbe83c7cfb8d9f70a6a1540932a1bd2af",
+    "final_sha256": "f67493da08d68ac9233be74ad3d17d5f9698bb61343eaec063c3d0384bd9967d",
+    "original_headings": [
+      "Devcontainer Secrets Injection",
+      "When to Use",
+      "Mechanism 1: Codespaces \u2014 `\"secrets\"` block",
+      "Mechanism 2: Local \u2014 `devcontainer.env` file",
+      "`.devcontainer/devcontainer.env.sample`",
+      "`.gitignore`",
+      "`runArgs` in `devcontainer.json`",
+      "`initializeCommand` \u2014 auto-create env from sample",
+      "WireGuard VPN Capabilities",
+      "Complete `devcontainer.json` Example",
+      "Codespaces vs Local Behavior"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/devcontainer/skills/devcontainer-secrets-injection/SKILL.md",
+        "destination": "plugins/devcontainer/skills/devcontainer-secrets-injection/references/local-codespaces-examples.md",
+        "prefix": "## Complete `devcontainer.json` Example\n\n```json\n{\n  \"name\": \"my-project\",\n  \"image\": \"ghcr.io/owner/repo-devcontainer:m",
+        "characters": 1044,
+        "sha256": "7cbddef5782a61e297f2185c2a479950c52886cf2fe2433e5fe9ec38a4ac5ac0"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md",
+    "source_sha256": "e169ff063007e27ddeabc7d6d97a459d597d3f9a7850e52c69baa73a0ed6e920",
+    "final_sha256": "0b615b82e11b735e45b8da7ca9e908d0c9740e3997eeaa915c10ede921ef2aa3",
+    "original_headings": [
+      "AI Regression Testing",
+      "When to Activate",
+      "The Core Problem",
+      "Sandbox-Mode API Testing",
+      "Setup (Vitest + Next.js App Router)",
+      "Test Helper for Next.js API Routes",
+      "Writing Regression Tests",
+      "Testing Sandbox/Production Parity",
+      "Integrating with existing Test and Review procedures",
+      "Common AI Regression Patterns",
+      "Pattern 1: Sandbox/Production Path Mismatch",
+      "Pattern 2: SELECT Clause Omission",
+      "Pattern 3: Error State Leakage",
+      "Pattern 4: Optimistic Update Without Proper Rollback",
+      "Strategy: Test Where Bugs Were Found",
+      "Quick Reference",
+      "DO / DON'T"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/ai-regression-testing/references/regression-examples.md",
+        "prefix": "## Sandbox-Mode API Testing\n\nMost projects with AI-friendly architecture have a sandbox/mock mode. This is the key to fa",
+        "characters": 4011,
+        "sha256": "7aa56bb1535a3925e435789ca845061742507e36f19581fdd27bec3af66069f5"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/ai-regression-testing/references/regression-examples.md",
+        "prefix": "## Common AI Regression Patterns\n\n### Pattern 1: Sandbox/Production Path Mismatch\n\n**Frequency**: Most common (observed ",
+        "characters": 2630,
+        "sha256": "f806c9e8e616c2535ad17be9c593fd9720e83c46e796d5948422a2dd594638b4"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/architect/SKILL.md",
+    "source_sha256": "d9a2a544f77dfde710dd698a43d1eb9837ef69a9a74a63242e5f129135ad79a2",
+    "final_sha256": "d9a2a544f77dfde710dd698a43d1eb9837ef69a9a74a63242e5f129135ad79a2",
+    "original_headings": [
+      "Architect",
+      "Your Role",
+      "Profile-sized architecture work",
+      "Portable planning resources",
+      "Architecture Review Process",
+      "1. Current State Analysis",
+      "2. Requirements Gathering",
+      "3. Design Proposal",
+      "4. Trade-Off Analysis",
+      "Architectural Principles",
+      "1. Modularity & Separation of Concerns",
+      "2. Scalability",
+      "3. Maintainability",
+      "4. Security",
+      "5. Performance",
+      "Common Patterns",
+      "Frontend Patterns",
+      "Backend Patterns",
+      "Data Patterns",
+      "Architecture Decision Records (ADRs)",
+      "System Design Checklist",
+      "Functional Requirements",
+      "Non-Functional Requirements",
+      "Technical Design",
+      "Operations",
+      "Red Flags",
+      "Project-Specific Architecture (Example)",
+      "Current Architecture",
+      "Key Design Decisions",
+      "Scalability Plan"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md",
+    "source_sha256": "1ec32d283676b38267a16437c1f66b8e27f369a7875c49d35c014fb8f1882543",
+    "final_sha256": "e8c8e925f992e8591f468b9a39a509222d8d69465966f3572b61b108498546e2",
+    "original_headings": [
+      "Architecture Decision Records",
+      "When to Activate",
+      "Portable workflow notes",
+      "ADR Format",
+      "Workflow",
+      "Capturing a New ADR",
+      "Reading Existing ADRs",
+      "ADR Directory Structure",
+      "ADR Index Format",
+      "Decision Detection Signals",
+      "What Makes a Good ADR",
+      "Do",
+      "Don't",
+      "ADR Lifecycle",
+      "Categories of Decisions Worth Recording",
+      "Integration with Other Skills"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/architecture-decision-records/references/adr-template-and-examples.md",
+        "prefix": "## ADR Format\n\nUse the lightweight ADR format proposed by Michael Nygard, adapted for AI-assisted development:\n\n```markd",
+        "characters": 1050,
+        "sha256": "bef985cd7cd8e1cede7da06a20c5b032b4a88ce3ddcdc34aa273be54430a2ef4"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/aside/SKILL.md",
+    "source_sha256": "25d80d693b13810ffb2cf2eebd8bb664f3a365a61f79108c2b56a3e379eedad4",
+    "final_sha256": "efd8c0e7768c00356a94b109a9a6095e484db97c7c9d81acfeb9e86f632777c8",
+    "original_headings": [
+      "Aside Command",
+      "When to Use",
+      "Usage",
+      "Process",
+      "Step 1: Freeze the current task state",
+      "Step 2: Answer the question directly",
+      "Step 3: Resume the main task",
+      "Edge Cases",
+      "Example Output",
+      "Notes"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/development-lifecycle/skills/aside/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/aside/references/aside-examples.md",
+        "prefix": "## Example Output\n\n```\nUser: /aside what does fetchWithRetry() actually do?\n\nASIDE: what does fetchWithRetry() do?\n\nfetc",
+        "characters": 905,
+        "sha256": "13194eb8fc96287dc4193c2d9e772ec811ba73dae92a746285ea8f9b83d03b86"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/aside/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/aside/references/aside-examples.md",
+        "prefix": "## Usage\n\n```\n/aside <your question>\n/aside what does this function actually return?\n/aside is this pattern thread-safe?",
+        "characters": 286,
+        "sha256": "c0bd80eb1340a53ec27e781b122d641697cb759a0845cb9e90b756b98dd897db"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/build-error-resolver/SKILL.md",
+    "source_sha256": "f00f781e1a22a5ecd04a25c473bf89a58b4cad697466478abb8e3f3b304bd89b",
+    "final_sha256": "f00f781e1a22a5ecd04a25c473bf89a58b4cad697466478abb8e3f3b304bd89b",
+    "original_headings": [
+      "Build Error Resolver",
+      "Core Responsibilities",
+      "Diagnostic Commands",
+      "Workflow",
+      "1. Collect All Errors",
+      "2. Fix Strategy (MINIMAL CHANGES)",
+      "3. Common Fixes",
+      "DO and DON'T",
+      "Priority Levels",
+      "Quick Recovery",
+      "Success Metrics",
+      "When NOT to Use"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/claude-devfleet/SKILL.md",
+    "source_sha256": "bc5698d9c09ea8cc6556e0a60e0986ed55498410f91b2b1800dfa8ca7b33ffc6",
+    "final_sha256": "bc5698d9c09ea8cc6556e0a60e0986ed55498410f91b2b1800dfa8ca7b33ffc6",
+    "original_headings": [
+      "Claude DevFleet \u2014 Optional Execution Client",
+      "Host and prerequisites",
+      "Verify inert planning before any service mutation",
+      "Bounded manual execution when explicitly authorized",
+      "Operations to inspect, not blindly invoke"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/code-review/SKILL.md",
+    "source_sha256": "0b3d0e23fe00f9863d4a16bb95835a03a415c7156ce843e25afb4c83e3925ab3",
+    "final_sha256": "9a377993ae2cb7289d79f6158bddf97b6128e52ca24783ebbcdf8214166a0730",
+    "original_headings": [
+      "Code Review",
+      "Mode Selection",
+      "Local Review Mode",
+      "Phase 1 \u2014 GATHER",
+      "Phase 2 \u2014 REVIEW",
+      "Phase 3 \u2014 REPORT",
+      "PR Review Mode",
+      "Phase 1 \u2014 FETCH",
+      "Phase 2 \u2014 CONTEXT",
+      "Phase 3 \u2014 REVIEW",
+      "Phase 4 \u2014 VALIDATE",
+      "Phase 5 \u2014 DECIDE",
+      "Phase 6 \u2014 REPORT",
+      "Phase 7 \u2014 PUBLISH",
+      "Phase 8 \u2014 OUTPUT",
+      "Edge Cases"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/code-reviewer/SKILL.md",
+    "source_sha256": "ca17dd4da63e10e19dc2cfca0ee6ad7f866a57d12bc3be620f291d0ae53b6168",
+    "final_sha256": "8cf67b13ff6bc37461687829a32a8855a1288693a8798cc727bdbf35108270b1",
+    "original_headings": [
+      "Code Reviewer",
+      "Review Process",
+      "Confidence-Based Filtering",
+      "Review Checklist",
+      "Security (CRITICAL)",
+      "Code Quality (HIGH)",
+      "React/Next.js Patterns (HIGH)",
+      "Node.js/Backend Patterns (HIGH)",
+      "Performance (MEDIUM)",
+      "Best Practices (LOW)",
+      "Review Output Format",
+      "Summary Format",
+      "Approval Criteria",
+      "Project-Specific Guidelines",
+      "v1.8 AI-Generated Code Review Addendum"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/development-lifecycle/skills/code-reviewer/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/code-reviewer/references/domain-checks.md",
+        "prefix": "## Review Checklist\n\n### Security (CRITICAL)\n\nThese MUST be flagged \u2014 they can cause real damage:\n\n- **Hardcoded credent",
+        "characters": 5280,
+        "sha256": "0cf7a6cab9fc003633239eb5d93f0705a1b100d9d67314f853c2bddfac7155a8"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/development-lifecycle-rules/SKILL.md",
+    "source_sha256": "7be6f9efa4a411837644bdc22dac08c293115dfa54e7303dceabfce9cd944829",
+    "final_sha256": "7be6f9efa4a411837644bdc22dac08c293115dfa54e7303dceabfce9cd944829",
+    "original_headings": [
+      "Development Lifecycle Rules"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/doc-updater/SKILL.md",
+    "source_sha256": "f82bbabb81f949ac171e9094e2a1520e5f3a1adce4fd5188a814f4a1dff51915",
+    "final_sha256": "f82bbabb81f949ac171e9094e2a1520e5f3a1adce4fd5188a814f4a1dff51915",
+    "original_headings": [
+      "Documentation & Codemap Specialist",
+      "Core Responsibilities",
+      "Analysis Commands",
+      "Codemap Workflow",
+      "1. Analyze Repository",
+      "2. Analyze Modules",
+      "3. Generate Codemaps",
+      "4. Codemap Format",
+      "Documentation Update Workflow",
+      "Key Principles",
+      "Quality Checklist",
+      "When to Update"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/docs-lookup/SKILL.md",
+    "source_sha256": "d8f49ed7c91332a69e6b060d433e2d54e60e885b43bda29f9ed2b61c9fcc8bcb",
+    "final_sha256": "d8f49ed7c91332a69e6b060d433e2d54e60e885b43bda29f9ed2b61c9fcc8bcb",
+    "original_headings": [
+      "Your Role",
+      "Workflow",
+      "Step 1: Resolve the library",
+      "Step 2: Fetch documentation",
+      "Step 3: Return the answer",
+      "Output Format",
+      "Examples",
+      "Example: Middleware setup",
+      "Example: API usage"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+    "source_sha256": "0d6094ac306cc7d7699cb5864111db961a32a894526048266b00ff0d5d20f6ad",
+    "final_sha256": "9216a7d07ddd5403d6ec8038cb5c3399ff9f493b1db2b822a81cfb4670465872",
+    "original_headings": [
+      "E2E Testing Patterns",
+      "Test File Organization",
+      "Page Object Model (POM)",
+      "Test Structure",
+      "Playwright Configuration",
+      "Flaky Test Patterns",
+      "Quarantine",
+      "Identify Flakiness",
+      "Common Causes & Fixes",
+      "Artifact Management",
+      "Screenshots",
+      "Traces",
+      "Video",
+      "CI/CD Integration",
+      "Test Report Template",
+      "Wallet / Web3 Testing",
+      "Financial / Critical Flow Testing"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md",
+        "prefix": "## Test File Organization\n\n```\ntests/\n\u251c\u2500\u2500 e2e/\n\u2502   \u251c\u2500\u2500 auth/\n\u2502   \u2502   \u251c\u2500\u2500 login.spec.ts\n\u2502   \u2502   \u251c\u2500\u2500 logout.spec.ts\n\u2502   \u2502 ",
+        "characters": 359,
+        "sha256": "1911cd83c3d0f19de47ee74423837a881e92190816097ffc1eb96d4825b0247c"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md",
+        "prefix": "## Page Object Model (POM)\n\n```typescript\nimport { Page, Locator } from '@playwright/test'\n\nexport class ItemsPage {\n  r",
+        "characters": 878,
+        "sha256": "da41163f0a39d1f5b4a370f11ceee9c80968d9f8f1f64f5f6354e574d2b29518"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md",
+        "prefix": "## Test Structure\n\n```typescript\nimport { test, expect } from '@playwright/test'\nimport { ItemsPage } from '../../pages/",
+        "characters": 872,
+        "sha256": "3a8642d2e96aee8e579d9e546c20ee89f5bf187b7266bacd5bb41c260d80f4fa"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md",
+        "prefix": "## Playwright Configuration\n\n```typescript\nimport { defineConfig, devices } from '@playwright/test'\n\nexport default defi",
+        "characters": 1129,
+        "sha256": "bc5c021c412106ca78ed40c08986665e64edad6249cffd722978a579e6b1d1b4"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md",
+        "prefix": "## Artifact Management\n\n### Screenshots\n\n```typescript\nawait page.screenshot({ path: 'artifacts/after-login.png' })\nawai",
+        "characters": 605,
+        "sha256": "1fab54b36be4af6ee85a947d06902e74e281e76d0d7231df6f4bcacb8eb008e6"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md",
+        "prefix": "## CI/CD Integration\n\n```yaml\n# .github/workflows/e2e.yml\nname: E2E Tests\non: [push, pull_request]\n\njobs:\n  test:\n    ru",
+        "characters": 598,
+        "sha256": "1f152da4d099bfcdd6d26e0920510301a5f27fe4f4ca2e503bc01714bf369004"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md",
+        "prefix": "## Test Report Template\n\n```markdown\n# E2E Test Report\n\n**Date:** YYYY-MM-DD HH:MM\n**Duration:** Xm Ys\n**Status:** PASSI",
+        "characters": 548,
+        "sha256": "98aed15cf9a05ddee1f941abff75ca405d18e031314ae5a84e81696ced961f72"
+      },
+      {
+        "source": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+        "destination": "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md",
+        "prefix": "## Wallet / Web3 Testing\n\n```typescript\ntest('wallet connection', async ({ page, context }) => {\n  // Mock wallet provid",
+        "characters": 608,
+        "sha256": "16ecc6c0f046281365e087e41264e7148d3954ad2744fdbb13380130cb8d73ca"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/learn-eval/SKILL.md",
+    "source_sha256": "27f8437e640436d0a6f8e6f7a7ce7051d780b4c38d795f850f14fffa9484c542",
+    "final_sha256": "27f8437e640436d0a6f8e6f7a7ce7051d780b4c38d795f850f14fffa9484c542",
+    "original_headings": [
+      "/learn-eval - Extract, Evaluate, then Save",
+      "What to Extract",
+      "Process",
+      "Output Format for Step 5",
+      "Design Rationale",
+      "Notes"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/review/SKILL.md",
+    "source_sha256": "f00317985b02fcb4f4c6f6641d41f4f1e2b62303ab919a76844799547ac48d2b",
+    "final_sha256": "35f48c5cd92f4f3c554a1af5de43861722f02509e0a969288dbd27b0f8448224",
+    "original_headings": [
+      "/review - Five-Axis Code Review",
+      "Phase 1 \u2014 SCOPE",
+      "Determine Target Files",
+      "Present Scope to User",
+      "Phase 2 \u2014 FIVE-AXIS REVIEW",
+      "Axis 1 \u2014 Correctness",
+      "Axis 2 \u2014 Readability",
+      "Axis 3 \u2014 Architecture",
+      "Axis 4 \u2014 Security",
+      "Axis 5 \u2014 Performance",
+      "Phase 3 \u2014 PRIORITISED FINDINGS",
+      "Format",
+      "Ordering Within Each Severity",
+      "Phase 4 \u2014 DECISION GATE",
+      "Apply Fixes (if user selects fix option)",
+      "Lifecycle Position"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/ship/SKILL.md",
+    "source_sha256": "15a890b777ae896765b0a371553de5ecd2b88476e0df8290f92c52fede0ddebb",
+    "final_sha256": "15a890b777ae896765b0a371553de5ecd2b88476e0df8290f92c52fede0ddebb",
+    "original_headings": [
+      "Ship \u2014 Readiness and Authorized Delivery",
+      "Step 1: Establish action and scope",
+      "Step 2: Verify evidence appropriate to the change",
+      "Step 3: Review and readiness decision",
+      "Step 4: Execute only the authorized action",
+      "Step 5: Verify and report"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/simplify/SKILL.md",
+    "source_sha256": "722e9584f1d81769eb0fcaf5d2cb576b3f3489e18f21e706ddfb34cc287ab2e8",
+    "final_sha256": "722e9584f1d81769eb0fcaf5d2cb576b3f3489e18f21e706ddfb34cc287ab2e8",
+    "original_headings": [
+      "Simplify",
+      "When to Activate",
+      "Phase 1 \u2014 SCOPE",
+      "Phase 2 \u2014 SIMPLIFICATION PASSES",
+      "Pass 1 \u2014 Guard Clauses",
+      "Pass 2 \u2014 Extract Helpers",
+      "Pass 3 \u2014 Deduplicate",
+      "Pass 4 \u2014 Name Magic Values",
+      "Pass 5 \u2014 Name Complex Conditions",
+      "Phase 3 \u2014 SUMMARY",
+      "Lifecycle Position"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/skill-create/SKILL.md",
+    "source_sha256": "0a5b36376612ad374a78ad45bba259fc32dbe3806a1b3e86d01d0070e17e9dad",
+    "final_sha256": "0a5b36376612ad374a78ad45bba259fc32dbe3806a1b3e86d01d0070e17e9dad",
+    "original_headings": [
+      "/skill-create - Local Skill Generation",
+      "Save location",
+      "Usage",
+      "What It Does",
+      "Analysis Steps",
+      "Step 1: Gather Git Data",
+      "Step 2: Detect Patterns",
+      "Step 3: Generate SKILL.md",
+      "Step 4: Generate Instincts (if --instincts)",
+      "Example Output",
+      "GitHub App Integration",
+      "Related Commands"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/spec/SKILL.md",
+    "source_sha256": "adf28641f7d70c9929039e0d0d562c3c382ec12738414ec2cc96ad8e81b55031",
+    "final_sha256": "adf28641f7d70c9929039e0d0d562c3c382ec12738414ec2cc96ad8e81b55031",
+    "original_headings": [
+      "Spec Command",
+      "Profile-sized output",
+      "Portable planning resources",
+      "Spec Template",
+      "Lifecycle Position"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/tdd-guide/SKILL.md",
+    "source_sha256": "f5560dc1556ec7260dcd9f2c4f3f3c1ec78ddf6ad4cfde4777eded38a597b50e",
+    "final_sha256": "f5560dc1556ec7260dcd9f2c4f3f3c1ec78ddf6ad4cfde4777eded38a597b50e",
+    "original_headings": [
+      "TDD Guide",
+      "Applicability and profile",
+      "Selected TDD procedure",
+      "Select applicable test types and edge cases",
+      "Quality checklist",
+      "Optional deeper evaluation"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/test/SKILL.md",
+    "source_sha256": "7b8b1af94a04e56f984bf11f9e81a8c125e00e2bc7ee12cfa1cfc7b4229684b9",
+    "final_sha256": "7b8b1af94a04e56f984bf11f9e81a8c125e00e2bc7ee12cfa1cfc7b4229684b9",
+    "original_headings": [
+      "Test",
+      "Select the verification technique",
+      "Discover project commands",
+      "Feature Mode \u2014 selected TDD",
+      "Bug Fix Mode \u2014 reproducer",
+      "Coverage and evidence",
+      "Lifecycle Position"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/update-codemaps/SKILL.md",
+    "source_sha256": "7a2fadb9328a8e74aece7332a1ef0ff9722d1506a3b6eb7f0ca28317de83725e",
+    "final_sha256": "3359fae15c87aba1b5305b37b7505ea641bdcff0edfa9ca67c8d378368b7fc32",
+    "original_headings": [
+      "Update Codemaps",
+      "Step 1: Scan Project Structure",
+      "Step 2: Generate Codemaps",
+      "Codemap Format",
+      "Step 3: Diff Detection",
+      "Step 4: Add Metadata",
+      "Step 5: Save Analysis Report",
+      "Tips"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/development-lifecycle/skills/update-docs/SKILL.md",
+    "source_sha256": "d8fab8ddc33c4062f1c4b88398fcdb928a3875477c8c925e99ada1c2ab18d954",
+    "final_sha256": "82e686e21bf6eea98dc67730724fee8e7066b55419675784a933bc538311a34b",
+    "original_headings": [
+      "Update Documentation",
+      "Step 1: Identify Sources of Truth",
+      "Step 2: Generate Script Reference",
+      "Step 3: Generate Environment Documentation",
+      "Step 4: Update Contributing Guide",
+      "Step 5: Update Runbook",
+      "Step 6: Staleness Check",
+      "Step 7: Show Summary",
+      "Rules"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/devops/skills/deployment-patterns/SKILL.md",
+    "source_sha256": "09fd6a913c56222d904631584b81b3af1a3547335bd2d9fbc42e1c147aea6736",
+    "final_sha256": "6ab47141f201ce58612f00d3cb80c6fd4a7a6084a8c55c258272996d017d477d",
+    "original_headings": [
+      "Deployment Patterns",
+      "When to Activate",
+      "Deployment Strategies",
+      "Rolling Deployment (Default)",
+      "Blue-Green Deployment",
+      "Canary Deployment",
+      "Docker",
+      "Multi-Stage Dockerfile (Node.js)",
+      "Multi-Stage Dockerfile (Go)",
+      "Multi-Stage Dockerfile (Python/Django)",
+      "Docker Best Practices",
+      "CI/CD Pipeline",
+      "GitHub Actions (Standard Pipeline)",
+      "Pipeline Stages",
+      "Health Checks",
+      "Health Check Endpoint",
+      "Kubernetes Probes",
+      "Environment Configuration",
+      "Twelve-Factor App Pattern",
+      "Configuration Validation",
+      "Rollback Strategy",
+      "Instant Rollback",
+      "Rollback Checklist",
+      "Production Readiness Checklist",
+      "Application",
+      "Infrastructure",
+      "Monitoring",
+      "Security",
+      "Operations"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/devops/skills/deployment-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/deployment-patterns/references/ci-and-release.md",
+        "prefix": "## Deployment Strategies\n\n### Rolling Deployment (Default)\n\nReplace instances gradually \u2014 old and new versions run simul",
+        "characters": 1438,
+        "sha256": "487daaa5081176abbbe8fe9c81afa8d4bcbd0dc2e870276350c66636f6b5d378"
+      },
+      {
+        "source": "plugins/devops/skills/deployment-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/deployment-patterns/references/ci-and-release.md",
+        "prefix": "## Docker\n\n### Multi-Stage Dockerfile (Node.js)\n\n```dockerfile\n# Stage 1: Install dependencies\nFROM node:22-alpine AS de",
+        "characters": 2770,
+        "sha256": "0d479acb12651c7a45e09323e607e5075dd0f56d4483dbaffc128571b8f44273"
+      },
+      {
+        "source": "plugins/devops/skills/deployment-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/deployment-patterns/references/ci-and-release.md",
+        "prefix": "## CI/CD Pipeline\n\n### GitHub Actions (Standard Pipeline)\n\n```yaml\nname: CI/CD\n\non:\n  push:\n    branches: [main]\n  pull_",
+        "characters": 1833,
+        "sha256": "8b0b7117a6800b04130d0f453937783601babc1c7bd5759bd2dc82ee52fabf7d"
+      },
+      {
+        "source": "plugins/devops/skills/deployment-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/deployment-patterns/references/health-and-rollback.md",
+        "prefix": "## Health Checks\n\n### Health Check Endpoint\n\n```typescript\n// Simple health check\napp.get(\"/health\", (req, res) => {\n  r",
+        "characters": 1394,
+        "sha256": "dc3a2dad5be632263483a8a4af80f3a6952532401e494d9ceeed29bf2fbb3b1b"
+      },
+      {
+        "source": "plugins/devops/skills/deployment-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/deployment-patterns/references/health-and-rollback.md",
+        "prefix": "## Environment Configuration\n\n### Twelve-Factor App Pattern\n\n```bash\n# All config via environment variables \u2014 never in c",
+        "characters": 919,
+        "sha256": "4b4185b47643ec95640fd9e701c90a20f88e8d3fd78218687db5f9e7e391597e"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/devops/skills/docker-patterns/SKILL.md",
+    "source_sha256": "9285e14a3bf3be8b957da3d732a69c7934135ecb0351a245482d06c6e36094b6",
+    "final_sha256": "b72afccb8653f90715c5339518e591d609f57cca49a5397e33d8898091468ba6",
+    "original_headings": [
+      "Docker Patterns",
+      "When to Activate",
+      "Docker Compose for Local Development",
+      "Standard Web App Stack",
+      "Development vs Production Dockerfile",
+      "Override Files",
+      "Networking",
+      "Service Discovery",
+      "Custom Networks",
+      "Exposing Only What's Needed",
+      "Volume Strategies",
+      "Common Patterns",
+      "Container Security",
+      "Dockerfile Hardening",
+      "Compose Security",
+      "Secret Management",
+      ".dockerignore",
+      "Debugging",
+      "Common Commands",
+      "Debugging Network Issues",
+      "Anti-Patterns"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/devops/skills/docker-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/docker-patterns/references/images-and-compose.md",
+        "prefix": "## Docker Compose for Local Development\n\n### Standard Web App Stack\n\n```yaml\n# docker-compose.yml\nservices:\n  app:\n    b",
+        "characters": 3094,
+        "sha256": "c631143e816f16f8dd5193fb3ae92b24666fd5efe0048773c747a28992e373df"
+      },
+      {
+        "source": "plugins/devops/skills/docker-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/docker-patterns/references/images-and-compose.md",
+        "prefix": "## .dockerignore\n\n```\nnode_modules\n.git\n.env\n.env.*\ndist\ncoverage\n*.log\n.next\n.cache\ndocker-compose*.yml\nDockerfile*\nREA",
+        "characters": 137,
+        "sha256": "0618ec1dbd513fa84596619508d4544d9c1baa288c4e9ef142e325558924bb36"
+      },
+      {
+        "source": "plugins/devops/skills/docker-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/docker-patterns/references/networking-and-operations.md",
+        "prefix": "## Networking\n\n### Service Discovery\n\nServices in the same Compose network resolve by service name:\n```\n# From \"app\" con",
+        "characters": 823,
+        "sha256": "648975b52e8dc8038102c519e344f5b5a5dda8e856dddb81016dab2844b77ca3"
+      },
+      {
+        "source": "plugins/devops/skills/docker-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/docker-patterns/references/networking-and-operations.md",
+        "prefix": "## Volume Strategies\n\n```yaml\nvolumes:\n  # Named volume: persists across container restarts, managed by Docker\n  pgdata:",
+        "characters": 764,
+        "sha256": "b10c3e957cd4400f6c15ff74804f5679fc393ca7b2e104839a1fce3fb1c36c39"
+      },
+      {
+        "source": "plugins/devops/skills/docker-patterns/SKILL.md",
+        "destination": "plugins/devops/skills/docker-patterns/references/networking-and-operations.md",
+        "prefix": "## Debugging\n\n### Common Commands\n\n```bash\n# View logs\ndocker compose logs -f app           # Follow app logs\ndocker com",
+        "characters": 1149,
+        "sha256": "17f966693bdf096c7bdb5cf58254815d5f1612b276a7c6dc0fc3a0a0da90f9b2"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/dotnet/skills/csharp-reviewer/SKILL.md",
+    "source_sha256": "3594cd5088635d047927c6068b9325787166d55903948dcdf4c6e7f011fc7fac",
+    "final_sha256": "3594cd5088635d047927c6068b9325787166d55903948dcdf4c6e7f011fc7fac",
+    "original_headings": [
+      "Review Priorities",
+      "CRITICAL \u2014 Security",
+      "CRITICAL \u2014 Error Handling",
+      "HIGH \u2014 Async Patterns",
+      "HIGH \u2014 Type Safety",
+      "HIGH \u2014 Code Quality",
+      "MEDIUM \u2014 Performance",
+      "MEDIUM \u2014 Best Practices",
+      "Diagnostic Commands",
+      "Review Output Format",
+      "Approval Criteria",
+      "Framework Checks",
+      "Reference"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/dotnet/skills/csharp-testing/SKILL.md",
+    "source_sha256": "7ce828955dd644ed8b54b06df7bb152295a246df3c1c10d7dd59a8d80b8df6f5",
+    "final_sha256": "b649b71bf0bf93cc35e9936515a8d08383e3bbcc5540534a2fecee241854e063",
+    "original_headings": [
+      "C# Testing Patterns",
+      "When to Activate",
+      "Test Framework Stack",
+      "Unit Test Structure",
+      "Arrange-Act-Assert",
+      "Parameterized Tests with Theory",
+      "Mocking with NSubstitute",
+      "ASP.NET Core Integration Tests",
+      "WebApplicationFactory Setup",
+      "Testing with Testcontainers",
+      "Test Organization",
+      "Test Data Builders",
+      "Common Anti-Patterns",
+      "Running Tests"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/dotnet/skills/csharp-testing/SKILL.md",
+        "destination": "plugins/dotnet/skills/csharp-testing/references/unit-and-mocking.md",
+        "prefix": "## Unit Test Structure\n\n### Arrange-Act-Assert\n\n```csharp\npublic sealed class OrderServiceTests\n{\n    private readonly I",
+        "characters": 2405,
+        "sha256": "b279b5791dc193e508d1f6451007951d70acb65480f2dc665ffaafcb4a0686bc"
+      },
+      {
+        "source": "plugins/dotnet/skills/csharp-testing/SKILL.md",
+        "destination": "plugins/dotnet/skills/csharp-testing/references/unit-and-mocking.md",
+        "prefix": "## Mocking with NSubstitute\n\n```csharp\n[Fact]\npublic async Task GetOrderAsync_ReturnsNull_WhenNotFound()\n{\n    // Arrang",
+        "characters": 785,
+        "sha256": "afdd2c31adf736bd177f1bdf1486a5d726fcbb2d012337bd47e0cd3ce52c7dca"
+      },
+      {
+        "source": "plugins/dotnet/skills/csharp-testing/SKILL.md",
+        "destination": "plugins/dotnet/skills/csharp-testing/references/unit-and-mocking.md",
+        "prefix": "## Test Data Builders\n\n```csharp\npublic sealed class OrderBuilder\n{\n    private string _customerId = \"cust-default\";\n   ",
+        "characters": 681,
+        "sha256": "b81855cb7609f4041036864e80cc87394e45bf8e27643b825fa793badc4a3d83"
+      },
+      {
+        "source": "plugins/dotnet/skills/csharp-testing/SKILL.md",
+        "destination": "plugins/dotnet/skills/csharp-testing/references/integration-and-fixtures.md",
+        "prefix": "## ASP.NET Core Integration Tests\n\n### WebApplicationFactory Setup\n\n```csharp\npublic sealed class OrderApiTests : IClass",
+        "characters": 2535,
+        "sha256": "a261c59e4dc8ee74311ee611d0c4c8988b0e53a2301065634af0963a1f6886a3"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+    "source_sha256": "939574d0c2c6ef13c5cdbd463dd35636c0bf07a39cbd8e0e43c75ebf1b56bc53",
+    "final_sha256": "4bfc1ac1ef86a048a88141f8b91b568a69d8a647ccd2acce523df2fbcca531c5",
+    "original_headings": [
+      ".NET Development Patterns",
+      "When to Activate",
+      "Core Principles",
+      "1. Prefer Immutability",
+      "2. Explicit Over Implicit",
+      "3. Depend on Abstractions",
+      "Async/Await Patterns",
+      "Proper Async Usage",
+      "Parallel Async Operations",
+      "Options Pattern",
+      "Result Pattern",
+      "Repository Pattern with EF Core",
+      "Middleware and Pipeline",
+      "Minimal API Patterns",
+      "Guard Clauses",
+      "Anti-Patterns to Avoid"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+        "destination": "plugins/dotnet/skills/dotnet-patterns/references/language-and-async.md",
+        "prefix": "## Async/Await Patterns\n\n### Proper Async Usage\n\n```csharp\n// Good: Async all the way, with CancellationToken\npublic asy",
+        "characters": 1324,
+        "sha256": "6318ec91427cbe23e0b04c649eccc1970fbbdae2c0ada0fb31f0fb2b38b7b89f"
+      },
+      {
+        "source": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+        "destination": "plugins/dotnet/skills/dotnet-patterns/references/language-and-async.md",
+        "prefix": "## Result Pattern\n\nReturn explicit success/failure instead of throwing for expected failures.\n\n```csharp\npublic sealed r",
+        "characters": 851,
+        "sha256": "cf82251d7a265c06cd8eb3ca75063690b21126bd90f4fcf7f7c1f3cfd534443e"
+      },
+      {
+        "source": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+        "destination": "plugins/dotnet/skills/dotnet-patterns/references/language-and-async.md",
+        "prefix": "## Guard Clauses\n\n```csharp\n// Good: Early returns with clear validation\npublic async Task<ProcessResult> ProcessPayment",
+        "characters": 696,
+        "sha256": "3b73dfc26200da90f219cf30e7cac1d2a4a726f7e49fcf779e7432689cf25a90"
+      },
+      {
+        "source": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+        "destination": "plugins/dotnet/skills/dotnet-patterns/references/application-and-data.md",
+        "prefix": "## Options Pattern\n\nBind configuration sections to strongly-typed objects.\n\n```csharp\npublic sealed class SmtpOptions\n{\n",
+        "characters": 623,
+        "sha256": "24c07859ed22ad6c92eb375181d69b5a5df20365926a798b09882063f6ec9586"
+      },
+      {
+        "source": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+        "destination": "plugins/dotnet/skills/dotnet-patterns/references/application-and-data.md",
+        "prefix": "## Repository Pattern with EF Core\n\n```csharp\npublic sealed class SqlOrderRepository : IOrderRepository\n{\n    private re",
+        "characters": 1015,
+        "sha256": "c606f98493335419cee90a2aa8784f374a42c3e15e088f83b07a98d6ddf67129"
+      },
+      {
+        "source": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+        "destination": "plugins/dotnet/skills/dotnet-patterns/references/application-and-data.md",
+        "prefix": "## Middleware and Pipeline\n\n```csharp\n// Custom middleware\npublic sealed class RequestTimingMiddleware\n{\n    private rea",
+        "characters": 924,
+        "sha256": "2bcdab83995363b215fdbf934b4b7088173b7edf0731e15a5f3116e1e5bca0a2"
+      },
+      {
+        "source": "plugins/dotnet/skills/dotnet-patterns/SKILL.md",
+        "destination": "plugins/dotnet/skills/dotnet-patterns/references/application-and-data.md",
+        "prefix": "## Minimal API Patterns\n\n```csharp\n// Organized with route groups\nvar orders = app.MapGroup(\"/api/orders\")\n    .RequireA",
+        "characters": 835,
+        "sha256": "a35587371537d5d7a3cdb7e667d0a4182993abbd024d38c5910d8cfc092e4487"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/dotnet/skills/dotnet-rules/SKILL.md",
+    "source_sha256": "cbed5145844da4fe36593dd443da4b03322e3f3b1c802d7c96e6ea464860e39f",
+    "final_sha256": "cbed5145844da4fe36593dd443da4b03322e3f3b1c802d7c96e6ea464860e39f",
+    "original_headings": [],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/frontend/skills/design-system/SKILL.md",
+    "source_sha256": "741b95e99d0d2ba0d9daa72e0470ba00bf0b3dde409e03303a571c0a09c43801",
+    "final_sha256": "741b95e99d0d2ba0d9daa72e0470ba00bf0b3dde409e03303a571c0a09c43801",
+    "original_headings": [
+      "Design System \u2014 Generate & Audit Visual Systems",
+      "When to Use",
+      "How It Works",
+      "Mode 1: Generate Design System",
+      "Mode 2: Visual Audit",
+      "Mode 3: AI Slop Detection",
+      "Examples"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+    "source_sha256": "47d62833fff01b308a4d867f092da19bba9e15feac34b1dcb8c7961c6669c555",
+    "final_sha256": "6ee576bffc690fc3cff0286a126fbafd8b5f70ffe6c5cefd9e4c04c006dd76c6",
+    "original_headings": [
+      "Frontend Development Patterns",
+      "When to Activate",
+      "Component Patterns",
+      "Composition Over Inheritance",
+      "Compound Components",
+      "Render Props Pattern",
+      "Custom Hooks Patterns",
+      "State Management Hook",
+      "Async Data Fetching Hook",
+      "Debounce Hook",
+      "State Management Patterns",
+      "Context + Reducer Pattern",
+      "Performance Optimization",
+      "Memoization",
+      "Code Splitting & Lazy Loading",
+      "Virtualization for Long Lists",
+      "Form Handling Patterns",
+      "Controlled Form with Validation",
+      "Error Boundary Pattern",
+      "Animation Patterns",
+      "Framer Motion Animations",
+      "Accessibility Patterns",
+      "Keyboard Navigation",
+      "Focus Management"
+    ],
+    "relocated_sections": [
+      {
+        "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "destination": "plugins/frontend/skills/frontend-patterns/references/components.md",
+        "prefix": "## Component Patterns\n\n### Composition Over Inheritance\n\n```typescript\n// PASS: GOOD: Component composition\ninterface Ca",
+        "characters": 2667,
+        "sha256": "ac34ca1c007d7415e14e82c25c4fed0e3e3cc74e7bf2f7c4eb70396884ffca3a"
+      },
+      {
+        "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "destination": "plugins/frontend/skills/frontend-patterns/references/components.md",
+        "prefix": "## Error Boundary Pattern\n\n```typescript\ninterface ErrorBoundaryState {\n  hasError: boolean\n  error: Error | null\n}\n\nexp",
+        "characters": 964,
+        "sha256": "fbdddd66e4b06fee336ef2fe66eb0a1f3106e77407e249922f739be394259d08"
+      },
+      {
+        "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "destination": "plugins/frontend/skills/frontend-patterns/references/state-and-data.md",
+        "prefix": "## Custom Hooks Patterns\n\n### State Management Hook\n\n```typescript\nexport function useToggle(initialValue = false): [boo",
+        "characters": 2149,
+        "sha256": "842351cf7d92261b483c4721b082a455da3ef45550dd36e4c20272b00d1e586a"
+      },
+      {
+        "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "destination": "plugins/frontend/skills/frontend-patterns/references/state-and-data.md",
+        "prefix": "## State Management Patterns\n\n### Context + Reducer Pattern\n\n```typescript\ninterface State {\n  markets: Market[]\n  selec",
+        "characters": 1281,
+        "sha256": "55fe557d687b813e314b0c00dc04ccab3baa90b778449de4bf8dda8117c55e52"
+      },
+      {
+        "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "destination": "plugins/frontend/skills/frontend-patterns/references/forms-and-accessibility.md",
+        "prefix": "## Form Handling Patterns\n\n### Controlled Form with Validation\n\n```typescript\ninterface FormData {\n  name: string\n  desc",
+        "characters": 1589,
+        "sha256": "8749bd43551e31e019798969b9418ec1d99f5bc23d63501553c405631d65b1ee"
+      },
+      {
+        "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "destination": "plugins/frontend/skills/frontend-patterns/references/forms-and-accessibility.md",
+        "prefix": "## Accessibility Patterns\n\n### Keyboard Navigation\n\n```typescript\nexport function Dropdown({ options, onSelect }: Dropdo",
+        "characters": 1825,
+        "sha256": "2e5383fde96c44cf0686e02d350ab61d338cb1827ae691581db13cb6ea71e10a"
+      },
+      {
+        "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "destination": "plugins/frontend/skills/frontend-patterns/references/performance.md",
+        "prefix": "## Performance Optimization\n\n### Memoization\n\n```typescript\n// PASS: useMemo for expensive computations\nconst sortedMark",
+        "characters": 2251,
+        "sha256": "4036f36bf262766cff120beb53ab1123f55ac5f7c0382499565838f4f31e5ef9"
+      },
+      {
+        "source": "plugins/frontend/skills/frontend-patterns/SKILL.md",
+        "destination": "plugins/frontend/skills/frontend-patterns/references/performance.md",
+        "prefix": "## Animation Patterns\n\n### Framer Motion Animations\n\n```typescript\nimport { motion, AnimatePresence } from 'framer-motio",
+        "characters": 1310,
+        "sha256": "5ff8712620e0ff1f756c39b107e3e8c4246c0b27c7cfff1055d0854b4af77ec8"
+      }
+    ],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/frontend/skills/frontend-rules/SKILL.md",
+    "source_sha256": "f7f5da3d38634e09af13a9ba711d529429d14c709d59762b5ed84f6f2767e8e2",
+    "final_sha256": "6461443183015952507ee7499368862130d2143d3af5870010793101e780559d",
+    "original_headings": [],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/frontend/skills/nextjs-turbopack/SKILL.md",
+    "source_sha256": "08805d1df06d2cf4986cd262437885a3d2287fa5bef292d82e24d3b1b35290ad",
+    "final_sha256": "08805d1df06d2cf4986cd262437885a3d2287fa5bef292d82e24d3b1b35290ad",
+    "original_headings": [
+      "Next.js and Turbopack",
+      "When to Use",
+      "How It Works",
+      "Examples",
+      "Commands",
+      "Usage",
+      "Best Practices"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/git-workflows/skills/commit/SKILL.md",
+    "source_sha256": "77cbc37d93ad54f53ee08c09ff55a526281b09b700ee9710abdee0917c59eba3",
+    "final_sha256": "77cbc37d93ad54f53ee08c09ff55a526281b09b700ee9710abdee0917c59eba3",
+    "original_headings": [
+      "Smart Commit",
+      "Step 1: Confirm action and inspect",
+      "Step 2: Select and stage exact scope",
+      "Step 3: Commit",
+      "Step 4: Verify and stop"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/git-workflows/skills/finishing-a-development-branch/SKILL.md",
+    "source_sha256": "4a3af7368b174a367c2ba5fba8b38e74e2d6c04df488fcec90a3ed74a74311cc",
+    "final_sha256": "4a3af7368b174a367c2ba5fba8b38e74e2d6c04df488fcec90a3ed74a74311cc",
+    "original_headings": [
+      "Finishing a Development Branch",
+      "Step 1: Verify readiness and scope",
+      "Step 2: Inspect checkout and ownership",
+      "Delivery scope carried into finishing",
+      "Step 3: Honor the requested action",
+      "Authorized local merge",
+      "Authorized PR",
+      "Keep",
+      "Explicit discard",
+      "Step 4: Optional authorized cleanup",
+      "Step 5: Read-only primary verification",
+      "Quick reference"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/git-workflows/skills/git-workflows-rules/SKILL.md",
+    "source_sha256": "8f986e47e5f3f27a8054919c985a30c35035917a0c1d99563b815de64d2aa6df",
+    "final_sha256": "8f986e47e5f3f27a8054919c985a30c35035917a0c1d99563b815de64d2aa6df",
+    "original_headings": [],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/git-workflows/skills/pr/SKILL.md",
+    "source_sha256": "6f7605c3eb54b4cb262c6cdad2464be4d86b38d65eea12a32791b30a5cc02b2e",
+    "final_sha256": "6f7605c3eb54b4cb262c6cdad2464be4d86b38d65eea12a32791b30a5cc02b2e",
+    "original_headings": [
+      "Create Pull Request",
+      "Step 1: Establish PR scope",
+      "Step 2: Inspect content and existing PR",
+      "Step 3: Push within authorization",
+      "Step 4: Create the requested PR",
+      "Step 5: Read back and stop"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/git-workflows/skills/using-git-worktrees/SKILL.md",
+    "source_sha256": "5e09beb8518e6d5eec39cb3c2af850ac3dce54ab88f8d7916778a4defd35d74a",
+    "final_sha256": "5e09beb8518e6d5eec39cb3c2af850ac3dce54ab88f8d7916778a4defd35d74a",
+    "original_headings": [
+      "Using Git Worktrees",
+      "Step 0: Inspect current state",
+      "Step 1: Select the isolation mechanism",
+      "Local directory and exclude",
+      "Verify base without silently changing primary",
+      "Create and verify the worktree",
+      "Blocked isolation",
+      "Step 2: Setup and baseline in isolation",
+      "Actor scope",
+      "Quick reference"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/personal-essentials/skills/personal-setup/SKILL.md",
+    "source_sha256": "eeb9dbb5c57e99c96817f1b4af49a8d4992bf851720ec12002d1f9da35a93a28",
+    "final_sha256": "a3adeeeafde9effe80ec2fd38197c90d9fbfce80bd11cccdfa867a55d9dfc6fb",
+    "original_headings": [
+      "Personal Setup",
+      "Claude Code",
+      "Codex"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/renovate/skills/renovate-auditor/SKILL.md",
+    "source_sha256": "6cb38d6a32ce325315493b8ac49821fffeb8da6c6ac6488f6860601d004500d0",
+    "final_sha256": "6cb38d6a32ce325315493b8ac49821fffeb8da6c6ac6488f6860601d004500d0",
+    "original_headings": [
+      "Renovate Config Auditor",
+      "When to Use",
+      "Audit Checklist",
+      "1. Base Preset",
+      "2. Dependency Dashboard",
+      "3. Automerge Rules",
+      "4. Regex Manager Coverage",
+      "5. Local Override Structure",
+      "6. ignorePaths",
+      "Audit Report Format",
+      "How to Run"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/renovate/skills/renovate-automerge-rules/SKILL.md",
+    "source_sha256": "3a2b8ec880044f0c86c27a83dd20ec354e5efc3b09a9d9baaee2ab36514643e3",
+    "final_sha256": "3a2b8ec880044f0c86c27a83dd20ec354e5efc3b09a9d9baaee2ab36514643e3",
+    "original_headings": [
+      "Renovate Automerge Rules",
+      "When to Use",
+      "Shared Automerge Presets",
+      "`automerge-docker-digest`",
+      "`automerge-github-actions`",
+      "`automerge-terraform-providers`",
+      "`automerge-galaxy-collections` / `automerge-galaxy-roles`",
+      "`automergeType: \"branch\"` vs `\"pr\"`",
+      "Per-Repo Scoping Patterns",
+      "`automergeSchedule` requires `platformAutomerge: false`",
+      "Safety: `minimumReleaseAge`",
+      "Never Automerge Major Versions"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/renovate/skills/renovate-custom-regex-managers/SKILL.md",
+    "source_sha256": "59302837e83f375a27cd8b50bff7a17a8e943e2f404c20c4365be63ca53a13ff",
+    "final_sha256": "59302837e83f375a27cd8b50bff7a17a8e943e2f404c20c4365be63ca53a13ff",
+    "original_headings": [
+      "Renovate Custom Regex Managers",
+      "When to Use",
+      "Pattern 1: Generic Comment Annotation (YAML / Dockerfile)",
+      "versionTemplate for non-standard formats",
+      "kustomize remote URL pattern",
+      "Pattern 2: Docker Image in YAML (with digest)",
+      "Pattern 3: devcontainer.json Image",
+      "Checking Your Annotations",
+      "Adding Custom Managers Beyond the Presets"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/renovate/skills/renovate-extending-presets/SKILL.md",
+    "source_sha256": "d20e0b051ae38d800082e3c00756771f5421cc5cae40749cb7d349798a29ff88",
+    "final_sha256": "d20e0b051ae38d800082e3c00756771f5421cc5cae40749cb7d349798a29ff88",
+    "original_headings": [
+      "Extending mmalyska/renovate-config Presets",
+      "When to Use",
+      "Available Presets",
+      "Minimal Base Config",
+      "Adding Sub-Presets",
+      "Local Override Pattern",
+      "Full home-ops Pattern (Reference)",
+      "Dependency Dashboard",
+      "Rate Limiting"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  },
+  {
+    "source": "plugins/security/skills/security-review/SKILL.md",
+    "source_sha256": "62fcba5dfb9b9ef8cf7aabffd379e4377ee71d2d76de44bf7c4c1d0f48035bc7",
+    "final_sha256": "967e64ad3edd83ec9bd1fbced0fae5b724b9cbe733cf1d98259816b860141114",
+    "original_headings": [
+      "Security Review Skill",
+      "When to Activate",
+      "Security Checklist",
+      "1. Secrets Management",
+      "FAIL: NEVER Do This",
+      "PASS: ALWAYS Do This",
+      "Verification Steps",
+      "2. Input Validation",
+      "Always Validate User Input",
+      "File Upload Validation",
+      "Verification Steps",
+      "3. SQL Injection Prevention",
+      "FAIL: NEVER Concatenate SQL",
+      "PASS: ALWAYS Use Parameterized Queries",
+      "Verification Steps",
+      "4. Authentication & Authorization",
+      "JWT Token Handling",
+      "Authorization Checks",
+      "Row Level Security (Supabase)",
+      "Verification Steps",
+      "5. XSS Prevention",
+      "Sanitize HTML",
+      "Content Security Policy",
+      "Verification Steps",
+      "6. CSRF Protection",
+      "CSRF Tokens",
+      "SameSite Cookies",
+      "Verification Steps",
+      "7. Rate Limiting",
+      "API Rate Limiting",
+      "Expensive Operations",
+      "Verification Steps",
+      "8. Sensitive Data Exposure",
+      "Logging",
+      "Error Messages",
+      "Verification Steps",
+      "9. Blockchain Security (Solana)",
+      "Wallet Verification",
+      "Transaction Verification",
+      "Verification Steps",
+      "10. Dependency Security",
+      "Regular Updates",
+      "Lock Files",
+      "Verification Steps",
+      "Security Testing",
+      "Automated Security Tests",
+      "Pre-Deployment Security Checklist",
+      "Resources"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Changed core/reference layout or scoped prose; original examples checked with declared T07 revision."
+  },
+  {
+    "source": "plugins/security/skills/security-scan/SKILL.md",
+    "source_sha256": "aef3a54d682404767f36170d0c4d39c2b00ad021830abe154eb5536fe36805f4",
+    "final_sha256": "aef3a54d682404767f36170d0c4d39c2b00ad021830abe154eb5536fe36805f4",
+    "original_headings": [
+      "Agent Configuration Security Scan",
+      "Inventory by target",
+      "Manual review (available in either host)",
+      "Optional external scanner"
+    ],
+    "relocated_sections": [],
+    "example_revisions": [],
+    "disposition": "Unchanged source; reference/standalone semantics retained."
+  }
+]

@@ -135,3 +135,11 @@ Superpowers/delegation/scheduling/scanner/DevFleet and permitted local fallbacks
 static text checks cannot prove model behavior. Preserve previous versions for
 rollback, reinstall an explicitly selected prior revision and start a fresh session;
 never remove optional providers or user data as automatic rollback.
+
+## Optional scoped setup
+
+Ask personal-setup for core (development-lifecycle + git-workflows) plus the
+specific domain owners you need, or request the existing all-owner setup. An
+unspecified setup retains the all-owner behavior. These are skill task inputs,
+not extra CLI flags. Existing plugins are not removed; actual exposed catalog
+cost depends on the host/session and has not been measured here.

@@ -32,8 +32,9 @@ Otherwise:
 
 ## Local Review Mode
 
-Use [review](../review/SKILL.md) for profile-sized scope selection and axes and
-[common review policy](../../rules/common/code-review.md) for project gates. This
+Use [common review policy](../../rules/common/code-review.md) for scoped checks
+and project gates. Honor explicit targets first, then current staged/unstaged and
+relevant untracked work, then an actual clean-tree task-base comparison. This
 entrypoint adds local/PR transport and reports; it does not require another actor.
 
 ### Phase 1 — GATHER
@@ -46,37 +47,17 @@ git ls-files --others --exclude-standard
 
 Inspect task-relevant untracked files without staging them. For a clean working
 tree use the actual base comparison or explicit revision as described in
-[review](../review/SKILL.md); report no changes if no target matches.
+the scope order above; report no changes if no target matches.
 
 ### Phase 2 — REVIEW
 
-Read each changed file in full. Check for:
-
-**Security Issues (CRITICAL):**
-
-- Hardcoded credentials, API keys, tokens
-- SQL injection vulnerabilities
-- XSS vulnerabilities
-- Missing input validation
-- Insecure dependencies
-- Path traversal risks
-
-**Code Quality (HIGH):**
-
-- Functions > 50 lines
-- Files > 800 lines
-- Nesting depth > 4 levels
-- Missing error handling
-- console.log statements
-- TODO/FIXME comments
-- Missing JSDoc for public APIs
-
-**Best Practices (MEDIUM):**
-
-- Mutation patterns (use immutable instead)
-- Emoji usage in code/comments
-- Missing tests for new code
-- Accessibility issues (a11y)
+Read the scoped changes and their relevant definitions/callers. Expand to the
+full file when needed to resolve behavior, trust boundaries or uncertainty.
+Apply the common policy's security, quality and performance checks. Local mode
+retains its stronger gate: CRITICAL or HIGH findings block commit.
+Retain local classifications: TODO/FIXME and missing public API documentation
+are HIGH; mutation conventions, emoji usage, missing tests and accessibility are
+MEDIUM unless mandatory project gates require a stronger result.
 
 ### Phase 3 — REPORT
 
@@ -314,3 +295,10 @@ Next steps:
 - **No `gh` CLI**: Fall back to local-only review (read the diff, skip GitHub publish). Warn user.
 - **Diverged branches**: Suggest `git fetch origin && git rebase origin/<base>` before review.
 - **Large PRs (>50 files)**: Warn about review scope. Focus on source changes first, then tests, then config/docs.
+
+## Reuse loaded guidance
+
+Reuse a complete contract already read from this installed revision while its
+content remains available. After compaction/context loss or a relevant source or
+policy change, read it fully again before dependent work. A summary or partial
+read does not establish first-use loading.

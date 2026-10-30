@@ -1,0 +1,66 @@
+[
+  {
+    "name": "development-lifecycle/ai-regression-testing",
+    "skill": "plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md",
+    "paths": [
+      "plugins/development-lifecycle/skills/ai-regression-testing/SKILL.md"
+    ],
+    "branch": "assess constraints without implementation recipe",
+    "baseline_characters": 11769,
+    "core_characters": 5568,
+    "selected_characters": 5568,
+    "selected_character_proxy_tokens": 1392,
+    "reduction_percent": 52.7,
+    "selected_paths_whole_file_characters": 5568,
+    "full_expansion_characters": 12263
+  },
+  {
+    "name": "development-lifecycle/e2e-testing",
+    "skill": "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+    "paths": [
+      "plugins/development-lifecycle/skills/e2e-testing/SKILL.md",
+      "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md"
+    ],
+    "branch": "explicit bounded topic section; full-file expansion reported separately",
+    "sections": {
+      "plugins/development-lifecycle/skills/e2e-testing/references/playwright-examples.md": "Page Object Model (POM)"
+    },
+    "baseline_characters": 7953,
+    "core_characters": 3238,
+    "selected_characters": 4118,
+    "selected_character_proxy_tokens": 1030,
+    "reduction_percent": 48.2,
+    "selected_paths_whole_file_characters": 8903,
+    "full_expansion_characters": 8903
+  },
+  {
+    "name": "development-lifecycle/architecture-decision-records",
+    "skill": "plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md",
+    "paths": [
+      "plugins/development-lifecycle/skills/architecture-decision-records/SKILL.md"
+    ],
+    "branch": "assess constraints without implementation recipe",
+    "baseline_characters": 7657,
+    "core_characters": 7128,
+    "selected_characters": 7128,
+    "selected_character_proxy_tokens": 1782,
+    "reduction_percent": 6.9,
+    "selected_paths_whole_file_characters": 7128,
+    "full_expansion_characters": 8228
+  },
+  {
+    "name": "development-lifecycle/aside",
+    "skill": "plugins/development-lifecycle/skills/aside/SKILL.md",
+    "paths": [
+      "plugins/development-lifecycle/skills/aside/SKILL.md"
+    ],
+    "branch": "assess constraints without implementation recipe",
+    "baseline_characters": 6247,
+    "core_characters": 5561,
+    "selected_characters": 5561,
+    "selected_character_proxy_tokens": 1390,
+    "reduction_percent": 11.0,
+    "selected_paths_whole_file_characters": 5561,
+    "full_expansion_characters": 6811
+  }
+]

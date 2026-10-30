@@ -1,0 +1,95 @@
+{
+  "disposition": "Retain all 18 standalone boundaries; no mandatory shared read added.",
+  "boundaries": [
+    {
+      "source": "plugins/backend/skills/database-reviewer/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/devcontainer/skills/devcontainer-auditor/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/development-lifecycle/skills/architect/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/development-lifecycle/skills/build-error-resolver/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/development-lifecycle/skills/code-reviewer/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/development-lifecycle/skills/doc-updater/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/development-lifecycle/skills/docs-lookup/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/development-lifecycle/skills/tdd-guide/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/dotnet/skills/csharp-reviewer/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/renovate/skills/renovate-auditor/SKILL.md",
+      "boundary_sha256": "bc4006d228c4708eba846b229a3b0c6422b5116ae703326630f55734659fb1d2",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/agent-toolkit/skills/autonomous-agent-harness/SKILL.md",
+      "boundary_sha256": "79b6d3bfcddf743be72ca11702d21c8103645da93503ac736cd355c984e20051",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/agent-toolkit/skills/blueprint/SKILL.md",
+      "boundary_sha256": "79b6d3bfcddf743be72ca11702d21c8103645da93503ac736cd355c984e20051",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/agent-toolkit/skills/continuous-agent-loop/SKILL.md",
+      "boundary_sha256": "79b6d3bfcddf743be72ca11702d21c8103645da93503ac736cd355c984e20051",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/agent-toolkit/skills/iterative-retrieval/SKILL.md",
+      "boundary_sha256": "79b6d3bfcddf743be72ca11702d21c8103645da93503ac736cd355c984e20051",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/agent-toolkit/skills/rules-distill/SKILL.md",
+      "boundary_sha256": "79b6d3bfcddf743be72ca11702d21c8103645da93503ac736cd355c984e20051",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/agent-toolkit/skills/subagent-driven-development/SKILL.md",
+      "boundary_sha256": "79b6d3bfcddf743be72ca11702d21c8103645da93503ac736cd355c984e20051",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/agent-toolkit/skills/team-builder/SKILL.md",
+      "boundary_sha256": "79b6d3bfcddf743be72ca11702d21c8103645da93503ac736cd355c984e20051",
+      "unchanged": true
+    },
+    {
+      "source": "plugins/agent-toolkit/skills/writing-skills/SKILL.md",
+      "boundary_sha256": "79b6d3bfcddf743be72ca11702d21c8103645da93503ac736cd355c984e20051",
+      "unchanged": true
+    }
+  ]
+}

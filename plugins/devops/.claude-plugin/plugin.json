@@ -1,7 +1,7 @@
 {
   "name": "devops",
   "description": "DevOps and infrastructure — CI/CD pipelines, Docker, deployment workflows, and production readiness",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": {
     "name": "Michał Małyska"
   },
