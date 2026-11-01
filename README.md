@@ -32,6 +32,8 @@ also exposed as skills, such as `$development-lifecycle:architect`.
 
 See [installation and maintenance](docs/codex.md) and the
 [host capability matrix and consumer strategy](docs/workflow/compatibility.md).
+To adapt another repository, follow the
+[repository adoption guide](docs/workflow/repository-adoption-guide.md).
 OpenCode has a documented manual path; native integration is deferred. STANDARD +
 SOLO is the workflow default; other actor topologies require explicit authorization.
 Native installation/discovery and live acceptance evidence remain NOT RUN in this
