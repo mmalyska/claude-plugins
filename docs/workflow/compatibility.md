@@ -131,6 +131,8 @@ These are future scopes in other repositories, not changes or completed acceptan
 items in this PR. This session neither inspects nor edits those repositories.
 AC12, AC14 and AC18 are consumer-only; collection-level source identity tests do
 not satisfy consumer installation, policy migration or idempotence requirements.
+The [repository adoption guide](repository-adoption-guide.md) is the general
+procedure and templates for these follow-ups; it adds no workflow definition.
 
 ### home-ops follow-up
 
