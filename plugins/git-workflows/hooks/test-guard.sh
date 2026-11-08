@@ -262,5 +262,68 @@ expect "read-only search is allowed" allow
 run_guard Bash "" "echo hi > $FIXTURE/primary/notes.md" "$FIXTURE/primary/.worktrees/feat/x"
 expect "absolute write from a worktree into the primary is flagged" ask
 
+echo ""
+echo "git mutations classify the repository the command acts on:"
+WT="$FIXTURE/primary/.worktrees/feat/x"
+PRI="$FIXTURE/primary"
+run_guard Bash "" "cd $WT && git commit -m x" "$PRI"
+expect "cd into a worktree, then commit, is allowed from a primary cwd" allow
+run_guard Bash "" "cd $WT && pwd && git add f && git commit -q -m \"several words here\"" "$PRI"
+expect "a chained commit after cd is allowed" allow
+run_guard Bash "" "cd \"$WT\" && git commit -m x" "$PRI"
+expect "a quoted cd target is resolved" allow
+run_guard Bash "" "git -C $WT commit -m x" "$PRI"
+expect "git -C into a worktree is allowed from a primary cwd" allow
+run_guard Bash "" "git -C $PRI commit -m x" "$WT"
+expect "git -C into the primary is flagged from a worktree" ask
+run_guard Bash "" "git -c a=b -C $PRI commit -m x" "$WT"
+expect "git -C after another global option is flagged" ask
+run_guard_sub Bash "" "git -C $PRI commit -m x" "$WT"
+expect "subagent git -C into the primary is denied" deny
+run_guard Bash "" "git -C $PRI switch feat/x" "$WT"
+expect "git -C switch to a feature branch in the primary is flagged" ask
+run_guard Bash "" "git -C $PRI switch main" "$WT"
+expect "git -C switch to the default branch in the primary is allowed" allow
+run_guard Bash "" "cd $PRI && git commit -m x" "$WT"
+expect "cd into the primary, then commit, is flagged from a worktree" ask
+run_guard Bash "" "cd $WT && git commit -m x; cd $PRI && git commit -m y" "$PRI"
+expect "any commit that lands in the primary is flagged" ask
+
+echo ""
+echo "git mutations the guard cannot resolve stay conservative:"
+run_guard Bash "" 'cd $W && git commit -m x' "$PRI"
+expect "cd to a variable falls back to the cwd" ask
+run_guard Bash "" 'git -C "$W" commit -m x' "$PRI"
+expect "git -C with a variable falls back to the cwd" ask
+run_guard Bash "" "bash -c \"git commit -m x\"" "$PRI"
+expect "a commit hidden in a quoted command falls back to the cwd" ask
+run_guard Bash "" "git commit -m \"cd /tmp\"" "$PRI"
+expect "cd inside a commit message does not move the base" ask
+
+echo ""
+echo "in-place edits: the script is not a file:"
+run_guard Bash "" "sed -i \"s/a/b/\" $WT/seed.txt" "$PRI"
+expect "sed -i on a worktree file is allowed from a primary cwd" allow
+run_guard Bash "" "sed -i 's/one two/three four/' $WT/seed.txt" "$PRI"
+expect "a sed script with spaces is skipped whole" allow
+run_guard Bash "" "sed -i -e s/a/b/ -e s/c/d/ $WT/seed.txt" "$PRI"
+expect "repeated -e scripts are skipped" allow
+run_guard Bash "" "perl -pi -e 's/a/b/' $WT/seed.txt" "$PRI"
+expect "perl -pi -e on a worktree file is allowed from a primary cwd" allow
+run_guard Bash "" "sed -i 's/a/b/' $PRI/seed.txt" "$WT"
+expect "sed -i on a primary file is flagged from a worktree" ask
+run_guard Bash "" "sed -i 's/one two/three/' seed.txt" "$PRI"
+expect "sed -i with a spaced script on a relative primary file is flagged" ask
+run_guard Bash "" "sed -i -e 's/a/b/' $PRI/seed.txt" "$WT"
+expect "sed -i -e on a primary file is flagged from a worktree" ask
+run_guard Bash "" "perl -i -pe 's/a/b/' $PRI/seed.txt" "$WT"
+expect "perl -i -pe on a primary file is flagged from a worktree" ask
+run_guard Bash "" "echo hi > \"$PRI/notes.md\"" "$WT"
+expect "a quoted absolute redirect into the primary is flagged" ask
+run_guard Bash "" "mkdir -p $WT/new; git status --short" "$PRI"
+expect "words after a ; are not targets of the earlier command" allow
+run_guard Bash "" "mkdir -p $WT/new; rm seed.txt" "$PRI"
+expect "a write after a ; is still flagged" ask
+
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]

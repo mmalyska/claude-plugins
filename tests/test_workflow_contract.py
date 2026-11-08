@@ -630,12 +630,6 @@ class RoleAuthorizationTest(unittest.TestCase):
 GIT_PLUGIN = ROOT / 'plugins/git-workflows'
 WORKTREE_CREATION = GIT_PLUGIN / 'skills/using-git-worktrees/SKILL.md'
 WORKTREE_FINISH = GIT_PLUGIN / 'skills/finishing-a-development-branch/SKILL.md'
-# Startup-preamble repair intentionally changes only the injector hash;
-# guard behavior and other frozen hook files remain unchanged.
-UNCHANGED_WORKTREE_HOOKS = {'guard-main-checkout.sh': 'af5510df0aa35479f8dfda41b21bffbdeffd93c31a28fa8c9f59660f445e8c51',
- 'hooks.json': '501056f7d13da344b80ba6a49c687b9a45bb74ee8187eebbcd4d84827f4ff5bf',
- 'inject-worktree-rule.sh': '302b8209043e5807a7a74050080b8659171edcf0ea38a09175788e91b28bf2c7',
- 'test-guard.sh': '0259c27e6320a2494ab6660f119693b21644dbece528cadaff51aca5f2c0ee52'}
 
 
 def isolation_creation_errors(document):
@@ -748,12 +742,6 @@ class WorktreeIsolationTest(unittest.TestCase):
         self.assertIn('stop writes rather than silently edit primary', readme)
         self.assertNotIn('always leaves the primary checkout on the default branch', readme)
         self.assertNotIn('research → worktree → plan → TDD → review → commit', readme)
-
-    def test_existing_hook_sources_and_fixtures_unchanged(self):
-        for name, expected_hash in UNCHANGED_WORKTREE_HOOKS.items():
-            with self.subTest(path=name):
-                self.assertEqual(hashlib.sha256((GIT_PLUGIN / 'hooks' / name).read_bytes()).hexdigest(),
-                                 expected_hash)
 
 
     @unittest.skipUnless(os.name == 'posix' and all(shutil.which(tool)

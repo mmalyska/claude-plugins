@@ -169,6 +169,7 @@ has_write_construct() {
 RESOLVED_TARGET=''
 target_is_primary() {
   t=$1 base=$2
+  t=${t%;}; t=${t#[\"\']}; t=${t%[\"\']}
   [ -n "$t" ] || return 1
   # '~/'* is a literal pattern, not an attempt to expand: the token arrives from
   # JSON unexpanded, so the expansion is ours to do.
@@ -206,7 +207,7 @@ writes_into_primary() {
   set -- $cmd
   set +f
 
-  expect=0 takes=0 cdnext=0
+  expect=0 takes=0 cdnext=0 existing=0
   for w in "$@"; do
     # `cd` inside the command moves the base that relative paths resolve
     # against. Without this, `cd /tmp && echo x > f` looks like a write to the
@@ -214,6 +215,7 @@ writes_into_primary() {
     # way around the guard.
     if [ "$cdnext" = "1" ]; then
       cdnext=0
+      w=${w%;}; w=${w#[\"\']}; w=${w%[\"\']}
       # shellcheck disable=SC2088  # literal pattern; see target_is_primary
       case $w in
         -*)    ;;
@@ -246,15 +248,99 @@ writes_into_primary() {
 
     if [ "$takes" = "1" ]; then
       case $w in -*) continue ;; esac
-      target_is_primary "$w" "$base" && { WRITE_TARGET=$RESOLVED_TARGET; return 0; }
+      # sed and perl only edit files that exist; any other word is their script.
+      if target_is_primary "$w" "$base" && { [ "$existing" = "0" ] || [ -e "$RESOLVED_TARGET" ]; }; then
+        WRITE_TARGET=$RESOLVED_TARGET
+        return 0
+      fi
+      case $w in *';') takes=0 ;; esac
       continue
     fi
 
     case $w in
-      tee|cp|mv|rm|mkdir|rmdir|touch|ln|install|truncate|patch|dd) takes=1 ;;
-      sed|perl|gsed) [ "$inplace" = "0" ] && takes=1 ;;
+      tee|cp|mv|rm|mkdir|rmdir|touch|ln|install|truncate|patch|dd) takes=1; existing=0 ;;
+      sed|perl|gsed) [ "$inplace" = "0" ] && { takes=1; existing=1; } ;;
     esac
   done
+  return 1
+}
+
+# Resolves a path token against a directory into GT_PATH. 1 = the text alone
+# cannot say where it points (a variable, a command substitution, `cd -`).
+GT_PATH=''
+gt_resolve() {
+  gt_p=$1 gt_b=$2
+  gt_p=${gt_p%;}; gt_p=${gt_p#[\"\']}; gt_p=${gt_p%[\"\']}
+  # shellcheck disable=SC2088  # literal pattern; see target_is_primary
+  case $gt_p in
+    ''|-*|*'$'*|*'`'*|*'*'*) return 1 ;;
+    '~')   GT_PATH=$HOME ;;
+    '~/'*) GT_PATH="$HOME/${gt_p#'~/'}" ;;
+    /*)    GT_PATH=$gt_p ;;
+    *)     GT_PATH="$gt_b/$gt_p" ;;
+  esac
+  return 0
+}
+
+# 0 = a git command here mutates a primary checkout; GIT_TARGET names it.
+#
+# Follows `cd` and `git -C`, so the repository a command acts on is what gets
+# classified. Anything the walk cannot settle (a variable path, a commit wrapped
+# in `bash -c "..."`) is judged by the cwd.
+GIT_TARGET=''
+git_mutates_primary() {
+  gt_cmd=$1 gt_orig=$2
+  case "$gt_cmd" in *git*) ;; *) return 1 ;; esac
+
+  set -f
+  # shellcheck disable=SC2086
+  set -- $gt_cmd
+  set +f
+
+  gt_base=$gt_orig gt_known=1 gt_cd=0 gt_seen=0
+  while [ "$#" -gt 0 ]; do
+    gt_w=$1; shift
+    if [ "$gt_cd" = "1" ]; then
+      gt_cd=0
+      if gt_resolve "$gt_w" "$gt_base"; then gt_base=$GT_PATH; else gt_known=0; fi
+      continue
+    fi
+    case $gt_w in
+      cd)  gt_cd=1; continue ;;
+      git) ;;
+      *)   continue ;;
+    esac
+
+    gt_dir=$gt_base gt_dk=$gt_known
+    while [ "$#" -ge 2 ]; do
+      case $1 in
+        -C) if gt_resolve "$2" "$gt_dir"; then gt_dir=$GT_PATH; else gt_dk=0; fi ;;
+        -c) ;;
+        *)  break ;;
+      esac
+      shift 2
+    done
+    [ "$gt_dk" = "1" ] || gt_dir=$gt_orig
+
+    gt_seg=git
+    for gt_a in "$@"; do
+      case $gt_a in '&&'|'||'|';'|'|') break ;; esac
+      gt_seg="$gt_seg $gt_a"
+    done
+    if is_mutating_command "$gt_seg" "$gt_dir"; then
+      gt_seen=1
+      if [ "$(classify_target "$gt_dir")" = "primary" ]; then
+        GIT_TARGET=$gt_dir
+        return 0
+      fi
+    fi
+  done
+
+  if [ "$gt_seen" = "0" ] && is_mutating_command "$gt_cmd" "$gt_orig" \
+    && [ "$(classify_target "$gt_orig")" = "primary" ]; then
+    GIT_TARGET=$gt_orig
+    return 0
+  fi
   return 1
 }
 
@@ -264,8 +350,8 @@ case "$TOOL" in
   Edit|Write|NotebookEdit) TARGET=$FILE_PATH ;;
   Bash)
     BASH_DIR=$(nearest_dir "$CWD")
-    if is_mutating_command "$COMMAND" "$BASH_DIR"; then
-      TARGET=$CWD
+    if git_mutates_primary "$COMMAND" "$BASH_DIR"; then
+      TARGET=$GIT_TARGET
     elif writes_into_primary "$COMMAND" "$BASH_DIR"; then
       TARGET=$WRITE_TARGET
     else
