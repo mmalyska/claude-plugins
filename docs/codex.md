@@ -129,8 +129,9 @@ supplies installed metadata. No user configuration directory or HOME is repurpos
 as scratch storage. Verify installed CLI versions and these test interfaces before
 claiming native compatibility; preparation/format validation is not execution proof.
 
-Native installation/discovery and behavioral scenarios remain release gates until
-actually run with evidence. Test standalone owners, combined owners, missing
+Native installation/discovery and behavioral scenarios are optional gate runs: they
+do not block a release (see [release sequence](workflow/compatibility.md#release-sequence-and-rollback))
+and stay NOT RUN until actually run with evidence. Test standalone owners, combined owners, missing
 Superpowers/delegation/scheduling/scanner/DevFleet and permitted local fallbacks;
 static text checks cannot prove model behavior. Preserve previous versions for
 rollback, reinstall an explicitly selected prior revision and start a fresh session;
