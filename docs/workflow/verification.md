@@ -1,5 +1,13 @@
 # Workflow verification and release gates
 
+## Spec depth repair — pending LIVE retest
+
+The [spec depth record](evidence/2026-11-08-spec-depth-fix.md) documents a real
+session that recorded DEEP but folded the specification into the plan without
+loading the spec skill. The contract now names the triggers for DEEP, the switching
+rules and the separate specification; the spec skill's gate exists as its description
+claimed. Static checks pass; a fresh model rerun remains NOT RUN.
+
 ## Live campaign closed with qualifications — 2026-10-30
 
 [Published campaign report](evidence/live/README.md): 82 scored LIVE records

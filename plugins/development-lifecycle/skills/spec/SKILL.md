@@ -1,6 +1,6 @@
 ---
 name: spec
-description: "Define the problem before writing code — interactive spec with verification gate"
+description: "Define requirements before planning or coding, sized to the profile, with a separate specification and verification gate for DEEP. Use for a requested spec or when planning work that is or may be DEEP."
 ---
 
 # Spec Command
@@ -34,17 +34,20 @@ available it may assist, but it is not required.
 - QUICK: record goal, scope and success briefly in session; no mandatory file.
 - STANDARD: concise requirements, non-goals and acceptance; use the template's
   relevant sections when the design is non-obvious.
-- DEEP: durable repository-grounded specification, alternatives, risks and
-  measurable acceptance. Record unresolved decisions instead of inventing them.
+- DEEP: a separate durable repository-grounded specification, alternatives, risks
+  and measurable acceptance, which passes the verification gate below. Record
+  unresolved decisions instead of inventing them. Plan waits until the user
+  accepts the specification.
 
-The template is optional structure, not a required dossier for every task.
-Review material design decisions with the user before dependent implementation;
+The template is optional structure, not a required dossier for every task; for
+DEEP the template and its DEEP sections are the minimum. Review material design decisions with the user before dependent implementation;
 reuse accepted decisions without asking again. When Plan is authorized, identify
 exact files, dependencies, checks and completion criteria using existing planning
 procedures. A Spec-only instruction stops here; it does not authorize Build.
 
-**Save path:** Preserve an existing project spec location. Otherwise use
-`.reports/agent-workflows/specs/YYYY-MM-DD-<kebab-case-topic>.md`.
+**Save path:** Preserve an existing project spec location. When the project keeps
+each piece of work in a plan folder such as `.plans/<slug>/`, use `spec.md` in that
+folder. Otherwise use `.reports/agent-workflows/specs/YYYY-MM-DD-<kebab-case-topic>.md`.
 
 ## Portable planning resources
 
@@ -100,6 +103,44 @@ be durable. These resources do not authorize Build, another actor or delivery.
 ```
 
 If a brainstorming question has no answer, record it as `- [ ] Still unclear: …` in Open Questions rather than inventing an answer.
+
+For DEEP, add these sections after Scope:
+
+```md
+## Decisions
+
+### Accepted by the user
+- [Decision]
+
+### Proposed, not yet confirmed
+- [Proposal]
+
+## Alternatives Considered
+
+- [Rejected option] — [why it was rejected]
+
+## Risks
+
+- [Risk] — [impact]; [mitigation, how it is detected, or explicit acceptance]
+```
+
+## Verification gate
+
+Required for DEEP and useful for any written specification. Inspect the actual
+file in a distinct local pass before reporting Spec complete:
+
+- Problem and users are stated, and success criteria are observable.
+- Requirements say what must happen and leave implementation to Plan.
+- Behavior is defined for failure and rejection paths, not only for success.
+- Each rejected alternative says why it was rejected.
+- Each risk has an impact and a mitigation, detection or explicit acceptance.
+- Accepted decisions are separate from proposals the user has not confirmed.
+- Each unresolved item says what happens for each outcome.
+- The text agrees with itself and with repository evidence.
+
+Record findings and corrections, or a reasoned no-change result. If the pass is
+unfinished, keep the status Draft. A local pass by the author is not independent
+review, so disclose that. The gate grants no authority for Plan, Build or delivery.
 
 ## Lifecycle Position
 

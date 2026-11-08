@@ -29,6 +29,7 @@ solo, handoff, parallel, review. Record changes and reconcile conflicts first.
 
 ## Objective and non-goals
 
+- Spec: `<path to the accepted specification, or why this profile needs none>`
 - Objective: `<problem and intended behavior>`
 - Non-goals: `<explicit excluded work and repositories>`
 - Acceptance: `<observable criteria and mandatory project gates>`

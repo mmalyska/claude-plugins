@@ -36,6 +36,8 @@ not another engineering lifecycle.
   state for multi-session work.
 - DEEP: repository-grounded decisions, risks, ownership/integrator, exact tasks,
   verification, impact and rollout/rollback, plus a distinct local review pass.
+  Start DEEP planning from a specification the user accepted; if there is none,
+  do the Spec stage first.
 
 ## Prepare a resumable plan
 

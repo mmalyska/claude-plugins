@@ -1447,5 +1447,81 @@ class WorkflowScenarioTest(unittest.TestCase):
             self.assertIn('S12:instruction', scenario_fixture_errors(self.fixture(), removed))
 
 
+class SpecDepthTest(unittest.TestCase):
+    """A session recorded DEEP but folded its specification into the plan."""
+
+    SKILL = PLUGIN / 'skills/spec/SKILL.md'
+    COMMAND = PLUGIN / 'commands/spec.md'
+
+    @staticmethod
+    def flat(text):
+        return ' '.join(text.split())
+
+    @staticmethod
+    def description(path):
+        return re.search(r'^description: "(.*)"$', path.read_text(), re.MULTILINE)[1]
+
+    def setUp(self):
+        self.contract = self.flat(CONTRACT.read_text())
+        self.skill = self.flat(self.SKILL.read_text())
+
+    def test_contract_defines_when_work_is_big_enough_for_deep(self):
+        for trigger in ('Requirements are unsettled', 'Behavior outlives the change',
+                        'The change crosses boundaries', 'It is hard to undo',
+                        'It needs more than one PR or more than one session',
+                        'Line or file counts are not triggers.'):
+            with self.subTest(trigger=trigger):
+                self.assertIn(trigger, self.contract)
+
+    def test_contract_defines_switching_between_profiles(self):
+        for rule in ('If a trigger appears during QUICK or STANDARD work, stop dependent work',
+                     'lower one only on the user\'s word',
+                     'A specification once written stays.'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, self.contract)
+
+    def test_deep_cannot_fold_the_specification_into_the_plan(self):
+        for rule in ('DEEP keeps a separate specification document.',
+                     'A recorded profile commits the task to that profile\'s procedure.',
+                     'load this contract and the spec skill',
+                     'A DEEP Plan starts from a specification the user accepted.'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, self.contract)
+
+    def test_spec_description_is_true_of_the_body(self):
+        self.assertEqual(self.description(self.SKILL), self.description(self.COMMAND))
+        self.assertIn('verification gate', self.description(self.SKILL))
+        self.assertIn('## Verification gate', self.SKILL.read_text())
+
+    def test_spec_description_says_when_to_use_it(self):
+        self.assertIn('when planning work that is or may be DEEP', self.description(self.SKILL))
+
+    def test_template_holds_what_deep_requires(self):
+        template = '\n'.join(re.findall(r'```md\n(.*?)\n```', self.SKILL.read_text(), re.DOTALL))
+        for heading in ('## Decisions', '## Alternatives Considered', '## Risks'):
+            with self.subTest(heading=heading):
+                self.assertIn(heading, template)
+
+    def test_gate_inspects_the_actual_file_and_stays_a_draft_when_unfinished(self):
+        gate = self.flat(sections(self.SKILL.read_text())['Verification gate'])
+        for declaration in ('Inspect the actual file in a distinct local pass',
+                            'Accepted decisions are separate from proposals',
+                            'failure and rejection paths',
+                            'keep the status Draft',
+                            'not independent review'):
+            with self.subTest(declaration=declaration):
+                self.assertIn(declaration, gate)
+
+    def test_spec_sits_beside_the_plan_in_a_plan_folder_project(self):
+        self.assertIn('use `spec.md` in that folder', self.skill)
+        self.assertIn('with `spec.md` beside them for DEEP', self.contract)
+
+    def test_planning_guidance_starts_from_the_accepted_spec(self):
+        blueprint = self.flat((ROOT / 'plugins/agent-toolkit/skills/blueprint/SKILL.md').read_text())
+        self.assertIn('Start DEEP planning from a specification the user accepted', blueprint)
+        resource = (PLUGIN / 'resources/workflow/plan.md').read_text()
+        self.assertIn('- Spec: `<path to the accepted specification', resource)
+
+
 if __name__ == '__main__':
     unittest.main()

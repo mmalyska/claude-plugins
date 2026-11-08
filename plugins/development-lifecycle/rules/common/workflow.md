@@ -11,6 +11,7 @@ happens; the execution profile sets depth; the execution topology assigns actors
 A skill is a procedure, and a harness supplies tools. Neither creates another
 lifecycle. All seven stages remain conceptually present and in this order.
 A profile may combine activities or omit a separate document, not remove a stage.
+DEEP keeps a separate specification document.
 Tests may guide Build through TDD; that technique does not reorder the lifecycle.
 If Review or Simplify changes the result, rerun affected checks before readiness.
 
@@ -61,9 +62,31 @@ Choose QUICK for small reversible low-risk work, STANDARD for normal engineering
 and recommend DEEP for architecture, migrations, broad impact or multi-step work.
 A recommendation does not silently change the user's selection.
 
+Recommend DEEP and name the trigger when any one of these holds. Line or file
+counts are not triggers.
+
+1. Requirements are unsettled: defining done needs the user's decisions.
+2. Behavior outlives the change: a new automation, agent, schedule or service,
+   or a new permission or policy.
+3. The change crosses boundaries: several repositories or applications, or
+   settings in external services.
+4. It is hard to undo: data migration, credentials, destructive work or
+   unattended deployment.
+5. It needs more than one PR or more than one session.
+
+If a trigger appears during QUICK or STANDARD work, stop dependent work, report
+it and recommend DEEP. When the user accepts, write the specification from known
+facts and check completed work against it. Raise a profile at any time; lower one
+only on the user's word. A specification once written stays.
+
+A recorded profile commits the task to that profile's procedure. Before the first
+DEEP Spec or Plan artifact, load this contract and the spec skill. A DEEP Plan starts
+from a specification the user accepted. A plan drafted without one stays draft: say
+so and repair it instead of presenting it as DEEP work.
+
 | Stage | QUICK | STANDARD | DEEP |
 | --- | --- | --- | --- |
-| Spec | Session goal, scope and success | Concise requirements, non-goals and acceptance | Repository-grounded specification, constraints and measurable risks |
+| Spec | Session goal, scope and success | Concise requirements, non-goals and acceptance | Separate repository-grounded specification, alternatives, constraints and measurable risks |
 | Plan | Mental plan or short checklist | Affected areas, dependencies and gates; durable file for multi-session work | Durable staged tasks, decisions, ownership, rollout/rollback and permission gates |
 | Build | Smallest scoped edit | Complete scoped implementation | Phased implementation with integration contracts and impact control |
 | Test | Smallest meaningful regression or documented check | Appropriate automated checks and project gates | Layered positive, negative and scenario evidence |
@@ -191,7 +214,7 @@ uncertainty, never silently pass them or fetch/install dependencies implicitly.
 
 Preserve the established project artifact directory and old formats. When no
 convention exists, use `.plans/<slug>/plan.md` and `tasks.md` for a new durable
-plan. Do not migrate `.plans`, `.archive/.plans`, Superpowers or PRP history.
+plan, with `spec.md` beside them for DEEP. Do not migrate `.plans`, `.archive/.plans`, Superpowers or PRP history.
 No artifact file is mandatory for every QUICK task.
 
 Packaged optional structures: [plan](../../resources/workflow/plan.md),
