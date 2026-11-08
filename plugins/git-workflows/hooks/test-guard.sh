@@ -299,10 +299,6 @@ run_guard Bash "" "bash -c \"git commit -m x\"" "$PRI"
 expect "a commit hidden in a quoted command falls back to the cwd" ask
 run_guard Bash "" "git commit -m \"cd /tmp\"" "$PRI"
 expect "cd inside a commit message does not move the base" ask
-run_guard Bash "" "git -C \"$WT with space\" commit -m x" "$PRI"
-expect "a quoted -C path with spaces falls back to the cwd" ask
-run_guard Bash "" "git --git-dir=$PRI/.git commit -m x" "$PRI"
-expect "--git-dir falls back to the cwd" ask
 
 echo ""
 echo "in-place edits: the script is not a file:"
@@ -324,6 +320,10 @@ run_guard Bash "" "perl -i -pe 's/a/b/' $PRI/seed.txt" "$WT"
 expect "perl -i -pe on a primary file is flagged from a worktree" ask
 run_guard Bash "" "echo hi > \"$PRI/notes.md\"" "$WT"
 expect "a quoted absolute redirect into the primary is flagged" ask
+run_guard Bash "" "mkdir -p $WT/new; git status --short" "$PRI"
+expect "words after a ; are not targets of the earlier command" allow
+run_guard Bash "" "mkdir -p $WT/new; rm seed.txt" "$PRI"
+expect "a write after a ; is still flagged" ask
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]

@@ -169,7 +169,7 @@ has_write_construct() {
 RESOLVED_TARGET=''
 target_is_primary() {
   t=$1 base=$2
-  t=${t#[\"\']}; t=${t%[\"\']}
+  t=${t%;}; t=${t#[\"\']}; t=${t%[\"\']}
   [ -n "$t" ] || return 1
   # '~/'* is a literal pattern, not an attempt to expand: the token arrives from
   # JSON unexpanded, so the expansion is ours to do.
@@ -207,14 +207,8 @@ writes_into_primary() {
   set -- $cmd
   set +f
 
-  expect=0 takes=0 cdnext=0 script=0 tool='' sq=''
+  expect=0 takes=0 cdnext=0 existing=0
   for w in "$@"; do
-    # Still inside a quoted in-place script that word splitting cut apart.
-    if [ -n "$sq" ]; then
-      case $w in *"$sq") sq='' ;; esac
-      continue
-    fi
-
     # `cd` inside the command moves the base that relative paths resolve
     # against. Without this, `cd /tmp && echo x > f` looks like a write to the
     # repo. An absolute path is still classified on its own, so this is not a
@@ -233,8 +227,8 @@ writes_into_primary() {
     fi
 
     case $w in
-      '|'|'||'|'&&'|';'|'&'|'('|')') takes=0; expect=0; script=0; continue ;;
-      cd) cdnext=1; takes=0; script=0; continue ;;
+      '|'|'||'|'&&'|';'|'&'|'('|')') takes=0; expect=0; continue ;;
+      cd) cdnext=1; takes=0; continue ;;
     esac
 
     if [ "$expect" = "1" ]; then
@@ -253,36 +247,19 @@ writes_into_primary() {
     esac
 
     if [ "$takes" = "1" ]; then
-      # The first operand of an in-place sed or perl is its script, unless a
-      # flag supplied one. Treated as a path it resolves to the current
-      # directory, which flags every in-place edit made from a primary cwd.
-      # '' is the suffix argument of BSD `sed -i ''`.
-      if [ "$script" = "1" ]; then
-        case "$tool:$w" in
-          *:-e|*:--expression|sed:-f|sed:--file|perl:-*e) script=2; continue ;;
-          *:--expression=*|*:--file=*) script=0; continue ;;
-          *:-*|*:"''"|*:'""') continue ;;
-        esac
-      fi
-      if [ "$script" != "0" ]; then
-        script=0
-        case $w in
-          \"*\"|\'*\') ;;
-          \"*) sq=\" ;;
-          \'*) sq=\' ;;
-        esac
-        continue
-      fi
-      case "$tool:$w" in sed:-e|sed:--expression|perl:-e|perl:-*e) script=2; continue ;; esac
       case $w in -*) continue ;; esac
-      target_is_primary "$w" "$base" && { WRITE_TARGET=$RESOLVED_TARGET; return 0; }
+      # sed and perl only edit files that exist; any other word is their script.
+      if target_is_primary "$w" "$base" && { [ "$existing" = "0" ] || [ -e "$RESOLVED_TARGET" ]; }; then
+        WRITE_TARGET=$RESOLVED_TARGET
+        return 0
+      fi
+      case $w in *';') takes=0 ;; esac
       continue
     fi
 
     case $w in
-      tee|cp|mv|rm|mkdir|rmdir|touch|ln|install|truncate|patch|dd) takes=1; tool=''; script=0 ;;
-      sed|gsed) [ "$inplace" = "0" ] && { takes=1; tool='sed'; script=1; } ;;
-      perl) [ "$inplace" = "0" ] && { takes=1; tool='perl'; script=1; } ;;
+      tee|cp|mv|rm|mkdir|rmdir|touch|ln|install|truncate|patch|dd) takes=1; existing=0 ;;
+      sed|perl|gsed) [ "$inplace" = "0" ] && { takes=1; existing=1; } ;;
     esac
   done
   return 1
@@ -307,113 +284,60 @@ gt_resolve() {
 
 # 0 = a git command here mutates a primary checkout; GIT_TARGET names it.
 #
-# Follows `cd` and `git -C`, so the repository the command acts on is what gets
-# classified. Where the text does not settle it (a variable, a commit wrapped in
-# `bash -c "..."`, --git-dir) this falls back to the cwd: the guard may be less
-# precise there, but never more permissive than classifying the cwd.
+# Follows `cd` and `git -C`, so the repository a command acts on is what gets
+# classified. Anything the walk cannot settle (a variable path, a commit wrapped
+# in `bash -c "..."`) is judged by the cwd.
 GIT_TARGET=''
 git_mutates_primary() {
   gt_cmd=$1 gt_orig=$2
   case "$gt_cmd" in *git*) ;; *) return 1 ;; esac
-
-  gt_text=1
-  is_mutating_command "$gt_cmd" "$gt_orig" && gt_text=0
 
   set -f
   # shellcheck disable=SC2086
   set -- $gt_cmd
   set +f
 
-  gt_base=$gt_orig gt_known=1 gt_cd=0 gt_q='' gt_seen=0
+  gt_base=$gt_orig gt_known=1 gt_cd=0 gt_seen=0
   while [ "$#" -gt 0 ]; do
     gt_w=$1; shift
-    if [ -n "$gt_q" ]; then
-      case $gt_w in *"$gt_q") gt_q='' ;; esac
-      continue
-    fi
     if [ "$gt_cd" = "1" ]; then
       gt_cd=0
-      case $gt_w in
-        \"*\"|\'*\') ;;
-        \"*) gt_q=\"; gt_known=0; continue ;;
-        \'*) gt_q=\'; gt_known=0; continue ;;
-      esac
       if gt_resolve "$gt_w" "$gt_base"; then gt_base=$GT_PATH; else gt_known=0; fi
       continue
     fi
     case $gt_w in
-      \"*\"|\'*\') continue ;;
-      \"*) gt_q=\"; continue ;;
-      \'*) gt_q=\'; continue ;;
       cd)  gt_cd=1; continue ;;
       git) ;;
       *)   continue ;;
     esac
 
-    gt_dir=$gt_base gt_dk=$gt_known gt_sub=''
-    while [ "$#" -gt 0 ]; do
+    gt_dir=$gt_base gt_dk=$gt_known
+    while [ "$#" -ge 2 ]; do
       case $1 in
-        -C)
-          [ "$#" -ge 2 ] || { shift; break; }
-          gt_v=$2; shift 2
-          case $gt_v in
-            \"*\"|\'*\') gt_c='' ;;
-            \"*) gt_c=\" ;;
-            \'*) gt_c=\' ;;
-            *)   gt_c='' ;;
-          esac
-          if [ -n "$gt_c" ]; then
-            gt_dk=0
-            while [ "$#" -gt 0 ]; do
-              case $1 in *"$gt_c") shift; break ;; esac
-              shift
-            done
-          elif [ "$gt_dk" = "1" ] && gt_resolve "$gt_v" "$gt_dir"; then
-            gt_dir=$GT_PATH
-          else
-            gt_dk=0
-          fi ;;
-        -c)
-          if [ "$#" -ge 2 ]; then shift 2; else shift; fi ;;
-        --git-dir|--work-tree)
-          gt_dk=0
-          if [ "$#" -ge 2 ]; then shift 2; else shift; fi ;;
-        --git-dir=*|--work-tree=*) gt_dk=0; shift ;;
-        -*) shift ;;
-        *)  gt_sub=$1; shift; break ;;
+        -C) if gt_resolve "$2" "$gt_dir"; then gt_dir=$GT_PATH; else gt_dk=0; fi ;;
+        -c) ;;
+        *)  break ;;
       esac
+      shift 2
     done
-
-    gt_mut=1
-    case $gt_sub in
-      commit|merge|rebase|cherry-pick|revert|apply) gt_mut=0 ;;
-      stash) case ${1:-} in pop|apply) gt_mut=0 ;; esac ;;
-      checkout|switch)
-        gt_br=''
-        for gt_a in "$@"; do
-          case $gt_a in
-            '&&'|'||'|';'|'|') break ;;
-            -*) ;;
-            *)  gt_br=$gt_a; break ;;
-          esac
-        done
-        if [ -n "$gt_br" ]; then
-          if [ "$gt_dk" != "1" ] || [ "$gt_br" != "$(default_branch "$(nearest_dir "$gt_dir")")" ]; then
-            gt_mut=0
-          fi
-        fi ;;
-    esac
-    [ "$gt_mut" = "0" ] || continue
-
-    gt_seen=1
     [ "$gt_dk" = "1" ] || gt_dir=$gt_orig
-    if [ "$(classify_target "$gt_dir")" = "primary" ]; then
-      GIT_TARGET=$gt_dir
-      return 0
+
+    gt_seg=git
+    for gt_a in "$@"; do
+      case $gt_a in '&&'|'||'|';'|'|') break ;; esac
+      gt_seg="$gt_seg $gt_a"
+    done
+    if is_mutating_command "$gt_seg" "$gt_dir"; then
+      gt_seen=1
+      if [ "$(classify_target "$gt_dir")" = "primary" ]; then
+        GIT_TARGET=$gt_dir
+        return 0
+      fi
     fi
   done
 
-  if [ "$gt_seen" = "0" ] && [ "$gt_text" = "0" ] && [ "$(classify_target "$gt_orig")" = "primary" ]; then
+  if [ "$gt_seen" = "0" ] && is_mutating_command "$gt_cmd" "$gt_orig" \
+    && [ "$(classify_target "$gt_orig")" = "primary" ]; then
     GIT_TARGET=$gt_orig
     return 0
   fi
