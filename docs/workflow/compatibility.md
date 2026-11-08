@@ -168,14 +168,19 @@ procedure and templates for these follow-ups; it adds no workflow definition.
 
 ## Release sequence and rollback
 
-Complete in-scope static checks, native discovery/installed-resource gates, required
-platform/guard trials and behavioral acceptance evidence before a conformance claim.
-T11 collects final evidence; unresolved required NOT RUN/FAIL results remain blockers.
-Then obtain explicit release/tag authority, publish a verified collection revision
-and record supported host/plugin versions before consumers begin depending on it
-(spec D4). T10 creates no release, tag, consumer PR or dependency on unreleased main.
-Select and verify the host-supported pin/update mechanism in the consumer follow-up;
-do not invent a version pin flag or treat a mutable branch as a reproducible release.
+A release is two steps, both on the owner's explicit instruction:
+
+1. Create a tag `ai-workflow-vX.Y.Z` on a verified `main` commit, after this
+   repository's static checks pass.
+2. In `mmalyska/dotfiles`, which governs how these plugins are installed, open a PR
+   that changes `accepted_sha` and `accepted_tag` and adds the acceptance record
+   (step 3 of its `docs/workflow/upgrade-runbook.md`).
+
+Gate runs (native discovery and installed-resource checks, platform and guard trials,
+behavioral and live scenarios) are optional. Run them when a change warrants it and
+record NOT RUN otherwise. They do not block a release, but a conformance claim still
+needs their evidence. Do not invent a version pin flag or treat a mutable branch as
+a reproducible release.
 
 Record a known-good tag/SHA, package versions and install state. Roll back collection
 changes as coordinated guidance/resource/test and paired-manifest reverts, reinstall

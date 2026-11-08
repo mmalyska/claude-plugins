@@ -1,5 +1,10 @@
 # Workflow verification and release gates
 
+Releases follow the [release sequence](compatibility.md#release-sequence-and-rollback):
+a tag here and the accepted revision in `mmalyska/dotfiles`. Gate runs are optional.
+"Release BLOCKED" in the records below is historical and refers to a full-conformance
+claim, not to creating a release.
+
 ## Spec depth repair — pending LIVE retest
 
 The [spec depth record](evidence/2026-11-08-spec-depth-fix.md) documents a real

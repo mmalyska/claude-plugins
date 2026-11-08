@@ -1019,10 +1019,24 @@ class OptionalProviderCompatibilityTest(unittest.TestCase):
     def test_host_limits_and_native_evidence_are_explicit(self):
         prose = (ROOT / 'docs/codex.md').read_text()
         for boundary in ('STANDARD + SOLO', 'hooks: []', 'No duplicate host adapter catalog',
-                         'not PASS', 'WORKFLOW_NATIVE_TESTS=1', 'remain release gates',
+                         'not PASS', 'WORKFLOW_NATIVE_TESTS=1', 'optional gate runs',
                          'No provider is installed'):
             self.assertIn(boundary, prose)
         self.assertIn('full OpenCode/consumer strategy remain later work', prose)
+
+    def test_release_is_a_tag_and_a_dotfiles_pin(self):
+        text = (ROOT / 'docs/workflow/compatibility.md').read_text()
+        release = ' '.join(sections(text)['Release sequence and rollback'].split())
+        for declaration in ('A release is two steps, both on the owner\'s explicit instruction',
+                            'Create a tag `ai-workflow-vX.Y.Z`',
+                            '`mmalyska/dotfiles`, which governs how these plugins are installed',
+                            '`accepted_sha` and `accepted_tag`',
+                            'Gate runs',
+                            'do not block a release',
+                            'a conformance claim still needs their evidence'):
+            with self.subTest(declaration=declaration):
+                self.assertIn(declaration, release)
+        self.assertNotIn('remain blockers', release)
 
     def test_native_tests_require_explicit_opt_in(self):
         import test_host_discovery as native
