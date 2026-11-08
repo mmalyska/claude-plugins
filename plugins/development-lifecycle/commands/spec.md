@@ -1,5 +1,5 @@
 ---
-description: "Define the problem before writing code — interactive spec with verification gate"
+description: "Define requirements before planning or coding, sized to the profile, with a separate specification and verification gate for DEEP. Use for a requested spec or when planning work that is or may be DEEP."
 argument-hint: [feature idea, or blank to start with questions]
 ---
 
