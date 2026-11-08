@@ -1568,10 +1568,10 @@
   ],
   "protected_files": {
     "plugins/development-lifecycle/rules/common/workflow.md": "d951ddc9236159389bf1d11b5a67f1293b3d9fbd075f367755f10ae3a8945892",
-    "plugins/git-workflows/hooks/guard-main-checkout.sh": "af5510df0aa35479f8dfda41b21bffbdeffd93c31a28fa8c9f59660f445e8c51",
+    "plugins/git-workflows/hooks/guard-main-checkout.sh": "918bfc7e1fd4e7a6c66770920ca767d4a061de83dad29a874649306ef1407063",
     "plugins/git-workflows/hooks/hooks.json": "501056f7d13da344b80ba6a49c687b9a45bb74ee8187eebbcd4d84827f4ff5bf",
     "plugins/git-workflows/hooks/inject-worktree-rule.sh": "302b8209043e5807a7a74050080b8659171edcf0ea38a09175788e91b28bf2c7",
-    "plugins/git-workflows/hooks/test-guard.sh": "0259c27e6320a2494ab6660f119693b21644dbece528cadaff51aca5f2c0ee52",
+    "plugins/git-workflows/hooks/test-guard.sh": "9b338f9eb874c3a588c25848045ec5c4d01d962c0c0d7662930a27aaab09e24e",
     "plugins/git-workflows/hooks/test-inject-worktree-rule.sh": "40121a526ce1506b918a1aa72c159f765906554bf142bb9494e60cdfe04b2e82",
     "plugins/git-workflows/hooks/test-linux-container.sh": "bf74859d90f56ec28a6dd3926b9d52d318a1d3a2f681cee4be8704e167b53d32",
     "plugins/git-workflows/rules/worktree-workflow.md": "c58b93dc49443d61b25fadf46dad5254e687246cd7973bbec9d6444830be8bb3"

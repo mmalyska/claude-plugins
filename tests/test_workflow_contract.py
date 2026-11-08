@@ -630,12 +630,11 @@ class RoleAuthorizationTest(unittest.TestCase):
 GIT_PLUGIN = ROOT / 'plugins/git-workflows'
 WORKTREE_CREATION = GIT_PLUGIN / 'skills/using-git-worktrees/SKILL.md'
 WORKTREE_FINISH = GIT_PLUGIN / 'skills/finishing-a-development-branch/SKILL.md'
-# Startup-preamble repair intentionally changes only the injector hash;
-# guard behavior and other frozen hook files remain unchanged.
-UNCHANGED_WORKTREE_HOOKS = {'guard-main-checkout.sh': 'af5510df0aa35479f8dfda41b21bffbdeffd93c31a28fa8c9f59660f445e8c51',
+# Frozen hook files. A deliberate guard change updates its hash here.
+UNCHANGED_WORKTREE_HOOKS = {'guard-main-checkout.sh': '918bfc7e1fd4e7a6c66770920ca767d4a061de83dad29a874649306ef1407063',
  'hooks.json': '501056f7d13da344b80ba6a49c687b9a45bb74ee8187eebbcd4d84827f4ff5bf',
  'inject-worktree-rule.sh': '302b8209043e5807a7a74050080b8659171edcf0ea38a09175788e91b28bf2c7',
- 'test-guard.sh': '0259c27e6320a2494ab6660f119693b21644dbece528cadaff51aca5f2c0ee52'}
+ 'test-guard.sh': '9b338f9eb874c3a588c25848045ec5c4d01d962c0c0d7662930a27aaab09e24e'}
 
 
 def isolation_creation_errors(document):
