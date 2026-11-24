@@ -1,0 +1,39 @@
+name: Release tag
+
+# Every merge to main that changes a plugin gets the next ai-workflow-vX.Y.Z tag.
+# Tagging is not acceptance: a consumer still pins a tag deliberately (in
+# mmalyska/dotfiles, docs/workflow/upgrade-runbook.md).
+
+on:
+  push:
+    branches: [main]
+    paths: [plugins/**]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-tag
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Create the next tag
+        run: |
+          set -euo pipefail
+          if git tag --points-at HEAD | grep -q '^ai-workflow-v'; then
+            echo "HEAD is already tagged"; exit 0
+          fi
+          latest=$(git tag -l 'ai-workflow-v*' | sort -V | tail -n1)
+          latest=${latest:-ai-workflow-v0.0.0}
+          IFS=. read -r major minor patch <<<"${latest#ai-workflow-v}"
+          next="ai-workflow-v${major}.${minor}.$((patch + 1))"
+          git tag "$next"
+          git push origin "refs/tags/$next"
+          echo "Tagged $(git rev-parse --short HEAD) as $next (previous: $latest)" >> "$GITHUB_STEP_SUMMARY"

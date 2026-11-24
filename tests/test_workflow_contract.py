@@ -1015,8 +1015,10 @@ class OptionalProviderCompatibilityTest(unittest.TestCase):
     def test_release_is_a_tag_and_a_dotfiles_pin(self):
         text = (ROOT / 'docs/workflow/compatibility.md').read_text()
         release = ' '.join(sections(text)['Release sequence and rollback'].split())
-        for declaration in ('A release is two steps, both on the owner\'s explicit instruction',
-                            'Create a tag `ai-workflow-vX.Y.Z`',
+        for declaration in ('A release is a tag here and a deliberate pin in `mmalyska/dotfiles`',
+                            'tagged `ai-workflow-vX.Y.Z` by `.github/workflows/release.yaml`',
+                            'Tagging is not acceptance',
+                            'fails a PR that changes a plugin without bumping its version',
                             '`mmalyska/dotfiles`, which governs how these plugins are installed',
                             '`accepted_sha` and `accepted_tag`',
                             'Gate runs',

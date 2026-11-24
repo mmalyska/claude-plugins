@@ -168,13 +168,18 @@ procedure and templates for these follow-ups; it adds no workflow definition.
 
 ## Release sequence and rollback
 
-A release is two steps, both on the owner's explicit instruction:
+A release is a tag here and a deliberate pin in `mmalyska/dotfiles`:
 
-1. Create a tag `ai-workflow-vX.Y.Z` on a verified `main` commit, after this
-   repository's static checks pass.
+1. Every merge to `main` that changes a plugin is tagged `ai-workflow-vX.Y.Z` by
+   `.github/workflows/release.yaml` (the previous tag with the patch number raised).
+   Tagging is not acceptance. CI (`.github/workflows/ci.yaml`) has already run the
+   static checks, and fails a PR that changes a plugin without bumping its version
+   (`scripts/bump_version.py <plugin> [patch|minor|major]` bumps both manifests and
+   refreshes the fixture hashes).
 2. In `mmalyska/dotfiles`, which governs how these plugins are installed, open a PR
    that changes `accepted_sha` and `accepted_tag` and adds the acceptance record
-   (step 3 of its `docs/workflow/upgrade-runbook.md`).
+   (step 3 of its `docs/workflow/upgrade-runbook.md`). That PR is the owner's
+   decision to accept a revision.
 
 Gate runs (native discovery and installed-resource checks, platform and guard trials,
 behavioral and live scenarios) are optional. Run them when a change warrants it and
