@@ -85,6 +85,15 @@ classify_target() {
     "$common"/*|"$gitdir"/*) printf 'git-internal'; return ;;
   esac
 
+  # `.worktrees/` under the repository is where the guard's own advice puts linked
+  # worktrees. A command that creates one and then works in it
+  # (`git worktree add .worktrees/x ... && cd .worktrees/x && ...`) names a path that
+  # does not exist when the hook runs, so nearest_dir would stop at the primary
+  # checkout and misreport the write as a primary write.
+  case "$raw" in
+    "$top"/.worktrees/*|"$abs"/.worktrees/*) printf 'worktree'; return ;;
+  esac
+
   if [ -n "$(git -C "$dir" rev-parse --show-superproject-working-tree 2>/dev/null)" ]; then
     printf 'submodule'; return
   fi
@@ -148,6 +157,31 @@ is_mutating_command() {
 # without running the command -- so it stays a backstop, not a fence. The
 # invariant in rules/worktree-workflow.md remains the actual rule.
 
+# Quoted text and heredoc bodies are data, not shell syntax. Without this, the word
+# after a `>` inside `echo "alert at >3"` or a Python heredoc (`if a > b:`) is read as a
+# redirect target and resolved against the cwd, so a read-only command started from a
+# primary checkout was denied as a write into it.
+#
+# Heredoc bodies are dropped, and quoted strings are emptied -- except a string that
+# looks like one path (starts with / ~ or ., no whitespace), which stays so a quoted
+# redirect target such as `> "/repo/notes.md"` is still classified. Anything that does
+# not match (an unterminated quote) is left as it was, so the result can only lose
+# detail, never invent a write. jq is already required; the case below keeps the
+# common command (no quote, no heredoc) from spawning it.
+strip_quoted() {
+  case "$1" in
+    *'"'*|*"'"*|*'<<'*) ;;
+    *) printf '%s' "$1"; return ;;
+  esac
+  out=$(printf '%s' "$1" | jq -Rrs '
+    gsub("<<-?[ \\t]*(?<q>[\u0027\"]?)(?<d>[A-Za-z_][A-Za-z0-9_]*)\\k<q>(?<rest>[^\\n]*)\\n(?:[^\\n]*\\n)*?[ \\t]*\\k<d>[ \\t]*(?:\\n|$)"; "<<EOF" + .rest + "\n")
+    | gsub("(?<s>\"(?:[^\"\\\\]|\\\\.)*\"|\u0027[^\u0027]*\u0027)";
+        if (.s | .[1:-1] | test("^[/~.][^ \\t]*$")) then .s else (.s[0:1] + .s[0:1]) end)
+  ' 2>/dev/null) || { printf '%s' "$1"; return; }
+  [ -n "$out" ] || { printf '%s' "$1"; return; }
+  printf '%s' "$out"
+}
+
 # Cheap pre-filter. Runs on every Bash call, so it is builtins only: no
 # subprocesses, no git, no jq. Most commands are reads and leave here.
 has_write_construct() {
@@ -191,6 +225,8 @@ target_is_primary() {
 WRITE_TARGET=''
 writes_into_primary() {
   cmd=$1 base=$2
+  has_write_construct "$cmd" || return 1
+  cmd=$(strip_quoted "$cmd")
   has_write_construct "$cmd" || return 1
 
   # `sed`/`perl` are overwhelmingly used to read. Only an in-place flag makes
