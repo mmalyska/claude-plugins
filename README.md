@@ -56,6 +56,19 @@ implementation session; no full workflow conformance or release readiness is cla
 | `android` | Android development (coming soon) |
 | `personal-essentials` | Installs all plugins above |
 
+## Changing a plugin
+
+Installed copies are keyed by plugin version, so a changed plugin must bump it:
+
+```sh
+scripts/bump_version.py <plugin> [patch|minor|major]
+```
+
+This updates both manifests and refreshes the fixture hashes of any protected file
+you changed. CI fails a PR that changes a plugin without a bump. Merging to `main`
+tags the commit `ai-workflow-vX.Y.Z`; accepting it is a separate PR in
+`mmalyska/dotfiles` (see the [release sequence](docs/workflow/compatibility.md#release-sequence-and-rollback)).
+
 ## Optional scoped setup
 
 Ask personal-setup for core (development-lifecycle + git-workflows) plus the

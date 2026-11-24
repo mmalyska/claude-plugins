@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Python tests
+        run: python3 -I -m unittest discover -s tests
+      - name: Hook tests
+        run: |
+          # test-linux-container.sh is meant to run inside a container (it calls apt-get
+          # and mounts the repository at /w); it only re-runs test-guard.sh.
+          for t in plugins/*/hooks/test-*.sh; do
+            [ "$(basename "$t")" = test-linux-container.sh ] && continue
+            echo "::group::$t"
+            bash "$t"
+            echo "::endgroup::"
+          done
+      - name: Plugin versions are bumped
+        if: github.event_name == 'pull_request'
+        run: python3 -I scripts/check_version_bump.py "origin/${{ github.base_ref }}"
