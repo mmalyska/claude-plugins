@@ -325,5 +325,43 @@ expect "words after a ; are not targets of the earlier command" allow
 run_guard Bash "" "mkdir -p $WT/new; rm seed.txt" "$PRI"
 expect "a write after a ; is still flagged" ask
 
+echo ""
+echo "quoted text and heredoc bodies are data, not redirects:"
+run_guard Bash "" 'echo "alert at >3 for 10m"; ls' "$PRI"
+expect "a > inside double quotes is not a redirect" allow
+run_guard Bash "" 'echo "x > y"; ls' "$PRI"
+expect "a spaced > inside double quotes is not a redirect" allow
+run_guard Bash "" "echo 'say \"a > b\"'; ls" "$PRI"
+expect "a > inside single quotes is not a redirect" allow
+run_guard Bash "" "echo \"it's >3\"; ls" "$PRI"
+expect "an apostrophe inside double quotes does not break the scan" allow
+run_guard Bash "" $'python3 - <<\'E\'\nx = 3 > 2\nprint(x)\nE' "$PRI"
+expect "a > in a heredoc body is not a redirect" allow
+run_guard Bash "" $'cat > '"$WT"$'/new.md <<\'EOF\'\na > b\nEOF' "$PRI"
+expect "a heredoc written to a worktree file is allowed from a primary cwd" allow
+run_guard Bash "" $'cat > notes.md <<\'EOF\'\nbody > text\nEOF' "$PRI"
+expect "a real redirect before a heredoc is still flagged" ask
+run_guard Bash "" 'echo hi > notes.md' "$PRI"
+expect "an unquoted redirect to a primary file is still flagged" ask
+run_guard Bash "" 'echo "done"; echo hi > notes.md' "$PRI"
+expect "a redirect after a quoted string is still flagged" ask
+run_guard Bash "" "echo hi > \"$PRI/notes.md\"" "$WT"
+expect "a quoted absolute redirect target is still flagged" ask
+run_guard Bash "" 'echo "oops > x' "$PRI"
+expect "an unterminated quote keeps the old, flagging behaviour" ask
+
+echo ""
+echo "a worktree that does not exist yet is still a worktree:"
+run_guard Write "$PRI/.worktrees/new/slug/f.txt" "" "$PRI"
+expect "a file under .worktrees/ is allowed before the worktree exists" allow
+run_guard Bash "" "cd $PRI && git worktree add -q .worktrees/new/slug -b new/slug && cd .worktrees/new/slug && echo hi > out.txt" "$PRI"
+expect "creating a worktree and writing in it in one command is allowed" allow
+run_guard Bash "" "cd $PRI/.worktrees/new/slug && git commit -m x" "$PRI"
+expect "a commit in a worktree that does not exist yet is allowed" allow
+run_guard Bash "" "cd $PRI && echo hi > out.txt" "$PRI"
+expect "a relative redirect from the primary root is still flagged" ask
+run_guard Write "$PRI/.worktrees-other/f.txt" "" "$PRI"
+expect "a sibling directory that only starts with .worktrees is still the primary" ask
+
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]
